@@ -1,0 +1,28 @@
+body, div {
+	padding: 0;
+	margin: 0;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+#root {
+	height: 100vh;
+	background-color: var(--primary-background-color);
+}
+
+:root {
+	/* Colors */
+	--secondary-background-color: black;
+	--primary-background-color: white;
+
+	/* Header */
+	--title-font-size: 24px;
+	--title-width: 150px;
+	--header-link-font-size: 18px;
+	--header-height: 50px;
+
+
+}

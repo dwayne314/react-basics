@@ -1,0 +1,46 @@
+.header {
+	height: var(--header-height);
+}
+
+.title-container {
+	width: 100%;
+
+}
+
+.title {
+	width: var(--title-width);
+	margin: 0px auto;
+	text-align: center;
+	line-height: var(--header-height);
+	font-size: var(--title-font-size);
+	cursor: pointer;
+
+}
+
+.header-links-container {
+	/*display: absolute;*/
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: var(--header-height);
+}
+.header-links {
+	height: 100%;
+	position: relative;
+	line-height: var(--header-height);
+}
+
+.header-links .header-link {
+	height: 100%;
+	padding: 10px;
+	font-size: var(--header-link-font-size);
+	color: var(--secondary-background-color);
+	background-color: var(--primary-background-color);
+	cursor: pointer;
+
+}
+
+.header-links .header-link:hover {
+	background-color: var(--secondary-background-color);
+	color: var(--primary-background-color);
+}
