@@ -17,12 +17,18 @@ a {
 	/* Colors */
 	--secondary-background-color: black;
 	--primary-background-color: white;
+	
+	/* Margins */
+	--section-margin: 20px;
 
 	/* Header */
 	--title-font-size: 24px;
 	--title-width: 150px;
 	--header-link-font-size: 18px;
 	--header-height: 50px;
+
+	/* Game */
+	--game-container-height: 500px;
 
 
 }

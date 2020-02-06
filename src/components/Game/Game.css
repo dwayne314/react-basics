@@ -1,0 +1,7 @@
+.game-container {
+	height: var(--game-container-height);
+}
+
+.game {
+	text-align: center;
+}
