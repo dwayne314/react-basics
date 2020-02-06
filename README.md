@@ -1,4 +1,4 @@
-This project is a simple tic-tac-toe game
+# This project is a simple tic-tac-toe game
 
 ## Features
 
