@@ -9,10 +9,6 @@ const App = () => {
 	return (
 		<div className="app">
 			<Header />
-			
-
-
-
 			<Route exact path="/" component={Home}></Route>
 			<Route exact path="/login" component={Login}></Route>
 			<Route exact path="/settings" component={Settings}></Route>

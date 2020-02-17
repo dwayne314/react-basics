@@ -1,7 +1,23 @@
 .game-container {
 	height: var(--game-container-height);
+	display: flex;
+	justify-content: center;
+	align-items: baseline;
+
 }
 
 .game {
 	text-align: center;
+	display: inline-flex;
+
+}
+
+.row {
+	display: inline-block;
+	position: relative;
+	border-right: 1px solid black;
+}
+
+.row:last-child {
+	border: 0px;
 }

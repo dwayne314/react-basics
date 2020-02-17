@@ -1,5 +1,7 @@
 import React from 'react';
 import Game from '../Game/Game';
+
+// Styles
 import './Home.css';
 
 const Home = () => {
@@ -8,7 +10,7 @@ const Home = () => {
 			<div className="home-title">
 				Human vs Computer
 			</div>
-			<Game />
+			<Game mode={0} />
 		</div>
 	);
 };

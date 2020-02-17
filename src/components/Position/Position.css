@@ -1,0 +1,23 @@
+.position {
+	height: 30px;
+	width: 30px;
+	border-top: 1px solid black;
+}
+
+.position > div {
+	/*These must be the same*/
+	height: 30px;
+	line-height: 30px;
+}
+
+.position:first-child {
+	border: 0px;
+}
+
+.winner {
+	background-color: green;
+}
+
+.loser {
+	background-color: red;
+}
