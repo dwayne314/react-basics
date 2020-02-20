@@ -8,10 +8,10 @@ const Position = (props) => {
 	let { status, text } = mergeBoard(id)
 
 	return (
-		<div className={`position${status}`}
+		<div data-testid="position" className={`position${status}`}
 			 key={id} 
 			 onClick={()=> onClick(id)}>
-			 <div>{text}</div>
+			 <div data-testid="position-text">{text}</div>
 		</div>
 	);
 };

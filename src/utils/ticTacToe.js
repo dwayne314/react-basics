@@ -13,8 +13,6 @@ export const getLocation = (id) => {
 };
 
 export const getPositionIcon = (location, board) => {
-	console.log(board)
-	console.log(location)
 	const positionDisplay = board[location.x][location.y];
 	// console.log(positionDisplay)
 	// console.log(location)
@@ -98,12 +96,11 @@ export const checkGameOver = (board) => {
 
 export const makeRandomComputerMove = (board) => {
 	const location = {};
-	location.x = Math.floor(Math.random() * (3 - 0) + 0);
-	location.y = Math.floor(Math.random() * (3 - 0) + 0);
+	location.x = Math.floor(Math.random() * 3);
+	location.y = Math.floor(Math.random() * 3);
 	if (!getPositionIcon(location, board)) {
 		return location
 	
 	}
-	return makeRandomComputerMove(board);
-	
+	return makeRandomComputerMove(board);	
 };

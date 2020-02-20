@@ -8,7 +8,7 @@ const Header = () => {
 	return (
 		<div className="header-container">
 			<div className="title-container">
-				<div className="title">
+				<div data-testid="title" className="title">
 					<Link to="/">		
 						Tic-Tac-Toe
 					</Link>
@@ -17,10 +17,10 @@ const Header = () => {
 			<span className="header-links-container">
 				<div className="header-links">
 					<Link to="/login">
-						<span className="header-link">Login</span>
+						<span data-testid="login" className="header-link">Login</span>
 					</Link>
 					<Link to="/settings">
-						<span className="header-link">Settings</span>
+						<span data-testid="settings" className="header-link">Settings</span>
 					</Link>
 				</div>
 

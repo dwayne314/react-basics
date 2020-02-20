@@ -86,18 +86,18 @@ const Game = (props) => {
 
 	return (
 		<div className="game-container">
-			<div className="game">
-				<div className="row">
+			<div data-testid="game" className="game">
+				<div data-testid="col-1" className="row">
 					<Position mergeBoard={mergeBoard} id={0} onClick={onClick} />
 					<Position mergeBoard={mergeBoard} id={1} onClick={onClick} />
 					<Position mergeBoard={mergeBoard} id={2} onClick={onClick} />
 				</div>
-				<div className="row">
+				<div data-testid="col-2" className="row">
 					<Position mergeBoard={mergeBoard} id={3} onClick={onClick} />
 					<Position mergeBoard={mergeBoard} id={4} onClick={onClick} />
 					<Position mergeBoard={mergeBoard} id={5} onClick={onClick} />
 				</div>
-				<div className="row">
+				<div data-testid="col-3" className="row">
 					<Position mergeBoard={mergeBoard} id={6} onClick={onClick} />
 					<Position mergeBoard={mergeBoard} id={7} onClick={onClick} />
 					<Position mergeBoard={mergeBoard} id={8} onClick={onClick} />
