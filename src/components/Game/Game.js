@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import { createGameOver } from '../../redux/actions/actions';
 import Position from '../Position/Position';
 
 // Utilities
@@ -24,6 +26,8 @@ const Game = (props) => {
 	const [isGameOver, setGameOver] = useState(false);
 	const userIconRef = useRef(firstMove === 'human' ? 'X' : 'O');
 
+	const dispatch = useDispatch();
+
 	const makeMove = useCallback((location) => {
 		setCurrentPlayer(currentPlayer => {
 			return (currentPlayer === 'X') ? 'O' : 'X';
@@ -36,12 +40,15 @@ const Game = (props) => {
 		if (gameTerminated && gameTerminated.winner) {
 			setGameOver(gameTerminated);
 			alert(gameTerminated.winner);
+
+			dispatch(createGameOver(gameTerminated.winner));
 		}
 		else if (gameTerminated && !gameTerminated.winner) {
 			setGameOver(gameTerminated);
 			alert('its a tie');
+			dispatch(createGameOver());
 		}
-	}, [board, currentPlayer]);
+	}, [board, currentPlayer, dispatch]);
 
 	const onClick = (id) => {
 		if (!isComputerMove && !isGameOver) {

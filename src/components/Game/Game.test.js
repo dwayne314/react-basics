@@ -1,8 +1,12 @@
 import React from 'react';
 import { render, fireEvent, screen, act } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import { store } from '../../redux/store/store';
 
 import Game from './Game';
-import * as Utils from '../../utils/TicTacToe/TicTacToe'
+import * as Utils from '../../utils/TicTacToe/TicTacToe';
+
+import { wrapProvider } from '../../test-utils.js';
 
 let randomCpuMoveSpy = jest.spyOn(Utils, 'makeRandomComputerMove');
 const windowAlert = jest.spyOn(window, 'alert').mockImplementation(() => {});
@@ -12,7 +16,7 @@ describe('Game', () => {
 	let wrapper;
 
 	beforeEach(() => {
-		wrapper = render(<Game mode={0} firstMove='human'/>);
+		wrapper = render(wrapProvider(<Game mode={0} firstMove='human'/>))
 	});
 
 	afterEach(() => {
@@ -152,7 +156,7 @@ describe('Game', () => {
 describe('Game Implementation', () => {
 	it('Tests cpu goes if human is not the first move', () => {
 		randomCpuMoveSpy.mockReturnValueOnce({x: 0, y: 0})
-		const wrapper = render(<Game mode={0} firstMove='cpu'/>);
+		const wrapper = render(wrapProvider(<Game mode={0} firstMove='cpu'/>));
 
 		act(() => {
 		 	jest.runAllTimers();
@@ -164,7 +168,7 @@ describe('Game Implementation', () => {
 
 	it('Tests the human cannot click during the cpu move', () => {
 		randomCpuMoveSpy.mockReturnValueOnce({x: 0, y: 0})
-		const wrapper = render(<Game mode={1} firstMove='cpu'/>);
+		const wrapper = render(wrapProvider(<Game mode={1} firstMove='cpu'/>));
 		const positionOne = wrapper.getByTestId('col-1').children[1];
 
 		act(() => {
@@ -177,7 +181,7 @@ describe('Game Implementation', () => {
 	})
 
 	it('Tests human vs. human mode enables human clicks', () => {
-		const wrapper = render(<Game mode={1} firstMove='human'/>);
+		const wrapper = render(wrapProvider(<Game mode={1} firstMove='human'/>));
 		const positionOne = wrapper.getByTestId('col-1').children[0];
 	 	const positionTwo = wrapper.getByTestId('col-1').children[1];
 
@@ -193,7 +197,7 @@ describe('Game Implementation', () => {
 
 	it('Tests a human cannot click on an occupied square', () => {
 		
-		const wrapper = render(<Game mode={0} firstMove='human'/>);
+		const wrapper = render(wrapProvider(<Game mode={0} firstMove='human'/>));
 	 	const positionOne = wrapper.getByTestId('col-1').children[1];
 	 	const occupiedPosition = wrapper.getByTestId('col-1').children[0];
 
@@ -214,7 +218,7 @@ describe('Game Implementation', () => {
 	})
 
 	it('Tests the win background is green if the second player loses in mode 1', () => {
-		const wrapper = render(<Game mode={1} firstMove='human'/>);
+		const wrapper = render(wrapProvider(<Game mode={1} firstMove='human'/>));
 
 		const humanLoserPositionOne = wrapper.getByTestId('col-1').children[1];
 	 	const humanLoserPositionTwo = wrapper.getByTestId('col-2').children[2];
@@ -260,8 +264,3 @@ describe('Game Implementation', () => {
 
 	})
 })
-
-
-
-
-
