@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Position from '../Position/Position';
 
 // Utilities
@@ -24,7 +24,7 @@ const Game = (props) => {
 	const [isGameOver, setGameOver] = useState(false);
 	const userIconRef = useRef(firstMove === 'human' ? 'X' : 'O');
 
-	const makeMove = (location) => {
+	const makeMove = useCallback((location) => {
 		setCurrentPlayer(currentPlayer => {
 			return (currentPlayer === 'X') ? 'O' : 'X';
 		});
@@ -41,7 +41,7 @@ const Game = (props) => {
 			setGameOver(gameTerminated);
 			alert('its a tie');
 		}
-	};
+	}, [board, currentPlayer]);
 
 	const onClick = (id) => {
 		if (!isComputerMove && !isGameOver) {
@@ -82,7 +82,7 @@ const Game = (props) => {
 				makeMove(location);	
 			}, 500)
 		}
-	}, [currentPlayer, isComputerMove, isGameOver]);
+	}, [currentPlayer, isComputerMove, isGameOver, board, makeMove]);
 
 	return (
 		<div className="game-container">
