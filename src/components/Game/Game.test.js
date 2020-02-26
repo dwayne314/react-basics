@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent, screen, act } from '@testing-library/react';
 
 import Game from './Game';
-import * as Utils from '../../utils/ticTacToe';
+import * as Utils from '../../utils/TicTacToe/TicTacToe'
 
 let randomCpuMoveSpy = jest.spyOn(Utils, 'makeRandomComputerMove');
 const windowAlert = jest.spyOn(window, 'alert').mockImplementation(() => {});

@@ -6,7 +6,7 @@ import {
 	getLocation, 
 	getPositionIcon, 
 	checkGameOver, 
-	makeRandomComputerMove } from '../../utils/ticTacToe';
+	makeRandomComputerMove } from '../../utils/TicTacToe/TicTacToe';
 
 // Styles
 import './Game.css';

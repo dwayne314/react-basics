@@ -1,3 +1,6 @@
+import { getRandomNumber } from '../utils';
+
+
 export const getLocation = (id) => {
 	let location;
 	if (id < 3) {
@@ -96,8 +99,8 @@ export const checkGameOver = (board) => {
 
 export const makeRandomComputerMove = (board) => {
 	const location = {};
-	location.x = Math.floor(Math.random() * 3);
-	location.y = Math.floor(Math.random() * 3);
+	location.x = getRandomNumber(0, board.length - 1);
+	location.y = getRandomNumber(0, board.length - 1);
 	if (!getPositionIcon(location, board)) {
 		return location
 	
