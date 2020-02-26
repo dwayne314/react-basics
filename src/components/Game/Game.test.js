@@ -212,6 +212,53 @@ describe('Game Implementation', () => {
 		    .map(position => position.innerHTML);
 		expect(board).toStrictEqual(["O", "X", "", "", "", "", "", "", ""]);
 	})
+
+	it('Tests the win background is green if the second player loses in mode 1', () => {
+		const wrapper = render(<Game mode={1} firstMove='human'/>);
+
+		const humanLoserPositionOne = wrapper.getByTestId('col-1').children[1];
+	 	const humanLoserPositionTwo = wrapper.getByTestId('col-2').children[2];
+	 	const humanLoserPositionThree = wrapper.getByTestId('col-3').children[1];
+
+	 	const humanWinnerPositionOne = wrapper.getByTestId('col-1').children[0];
+	 	const humanWinnerPositionTwo = wrapper.getByTestId('col-2').children[1];
+	 	const humanWinnerPositionThree = wrapper.getByTestId('col-3').children[2];
+		
+	 	act(() => {
+		 	fireEvent.click(humanLoserPositionOne);
+			jest.runAllTimers();
+			
+			fireEvent.click(humanWinnerPositionOne);
+		 	jest.runAllTimers();
+	 	});
+	 	
+	 	act(() => {
+		 	fireEvent.click(humanLoserPositionTwo);	
+			jest.runAllTimers();
+			
+			fireEvent.click(humanWinnerPositionTwo);	
+		 	
+	 	});
+	 	
+	 	act(() => {
+		 	fireEvent.click(humanLoserPositionThree);
+			jest.runAllTimers();
+			
+			fireEvent.click(humanWinnerPositionThree);
+		 	
+	 	})
+	 	const board = wrapper.getAllByTestId('position-text')
+		    .map(position => position.innerHTML);
+	 	console.log(board)
+		const humanTwoPositionOne = wrapper.getByTestId('col-1').children[0];
+		const humanTwoPositionTwo = wrapper.getByTestId('col-2').children[1];
+		const humanTwoPositiontThree = wrapper.getByTestId('col-3').children[2];
+
+		expect(humanTwoPositionOne.classList.contains('winner')).toBe(true)
+		expect(humanTwoPositionTwo.classList.contains('winner')).toBe(true)
+		expect(humanTwoPositiontThree.classList.contains('winner')).toBe(true)
+
+	})
 })
 
 
