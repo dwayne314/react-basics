@@ -54,12 +54,12 @@ const Home = () => {
 					<div className="side-menu-title">Game Order</div>
 					<div className="settings-box-container">
 						<div className="settings-box-section">
-							<div className="settings-box-text">
+							<div className="settings-box-text angled-text">
 								Human
 							</div>
 						</div>
 						<div className="settings-box-section">
-							<div className="settings-box-text">
+							<div className="settings-box-text angled-text">
 								CPU
 							</div>
 						</div>
