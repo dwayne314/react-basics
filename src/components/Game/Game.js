@@ -62,7 +62,6 @@ const Game = (props) => {
 			}) : [];
 		let statusClass = '';
 
-		// Probably convert to a case statement when the mode affects the color for H v H which always shows green
 		if (isGameOver && isWinningLocation.length) {
 			const cpuPlayingWinStatus = props.mode === 1 ? ' winner' : ' loser';
 			statusClass = userIconRef.current === isGameOver.winner && cpuPlayingWinStatus ? ' winner' : cpuPlayingWinStatus

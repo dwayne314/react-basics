@@ -249,7 +249,7 @@ describe('Game Implementation', () => {
 	 	})
 	 	const board = wrapper.getAllByTestId('position-text')
 		    .map(position => position.innerHTML);
-	 	console.log(board)
+
 		const humanTwoPositionOne = wrapper.getByTestId('col-1').children[0];
 		const humanTwoPositionTwo = wrapper.getByTestId('col-2').children[1];
 		const humanTwoPositiontThree = wrapper.getByTestId('col-3').children[2];

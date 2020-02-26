@@ -3,8 +3,8 @@
 ## Features
 
 * There will be 2 modes
-	[X] Against the computer
-	[X] Against another human
+[X] Against the computer
+[X] Against another human
 
 * Who goes first will alternate if the game is against the computer by default with functionality to decide who goes first.
 * The color of the winning combination will highlight green.
