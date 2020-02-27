@@ -26,9 +26,55 @@ a {
 	--title-width: 150px;
 	--header-link-font-size: 18px;
 	--header-height: 50px;
+	--header-padding: 10px;
 
 	/* Game */
-	--game-container-height: 200px;
+	--game-container-height: 300px;
+	--game-position-font-size: 50px;
+	
+	/* Side Menu */
+	--side-menu-title-height: 25px;
+	--side-menu-title-font-size: 20px;
+	--settings-box-container-height: 60px;
+	--settings-box-text-padding: 20px;
+	--setting-box-text-size: 16px;
+	--settings-box-angled-text: rotate(45deg);
+	--scoreboard-container-height: 40px;
+	--scoreboard-title-size: 16px;
+	--side-menu-section-margin-bottom: 20px;
+	--scoreboard-container-flex-justify: space-between;
+	--side-menu-container-position: absolute;
+	--side-menu-container-width: 200px;
+	--side-menu-container-padding-right: 10px;
+
+	--hidden-block-on-lg-screen: none;
+	--hidden-block-on-sm-screen: block;
+}
+
+@media screen and (max-width: 750px) {
+	:root {
+		--side-menu-title-height: 100px;
+		--side-menu-title-font-size: 35px;
+		--settings-box-container-height: 100px;
+		--settings-box-text-padding: 40px;
+		--setting-box-text-size: 26px;
+		--settings-box-angled-text: rotate(25deg);
+		--scoreboard-container-height: 100px;
+		--scoreboard-data-size: 30px;
+		--side-menu-section-margin-bottom: 0px;
+		--scoreboard-container-flex-justify: space-around;
+		--side-menu-container-position: relative;
+		--side-menu-container-width: 100%;
+		--side-menu-container-padding-right: 0px;
+	}
+}
+
+@media screen and (max-width: 500px) {
+	:root {
+		--settings-box-angled-text: rotate(45deg);
+			--hidden-block-on-lg-screen: block;
+			--hidden-block-on-sm-screen: none;
 
 
+	}
 }

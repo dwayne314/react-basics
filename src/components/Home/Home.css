@@ -5,30 +5,30 @@
 
 .home-title {
 	text-align: center;
-	margin-bottom: 50px;
+	margin-bottom: 25px;
 }
 
-/* Update this on shrink below a certain width*/
 .side-menu-container {
-	position: absolute;
+	position: var(--side-menu-container-position);
 	right: 0;
 	top: 0;
-	width: 200px;
-	padding-right: 10px;
+	width: var(--side-menu-container-width);
+	padding-right: var(--side-menu-container-padding-right);
 }
+
 .side-menu-section {
-	margin-bottom: 20px;
+	margin-bottom: var(--side-menu-section-margin-bottom)
 }
 
 
 .side-menu-title {
 	width: 100%;
-	height: 25px;
+	height: var(--side-menu-title-height);
 	text-align: center;
 
 
-	font-size: 20px;
-	line-height: 25px;
+	font-size: var(--side-menu-title-font-size);
+	line-height: var(--side-menu-title-height);
 	background-color: black;
 	color: white;
 	margin: auto;
@@ -36,18 +36,23 @@
 
 .scoreboard-container {
 	display: flex;
-	justify-content: space-between;
+	justify-content: var(--scoreboard-container-flex-justify);
 	flex-direction: row;
-	height: 40px;
+	height: var(--scoreboard-container-height);
     padding-top: 5px;
+}
+
+.scoreboard-title {
+	font-size: var(--scoreboard-data-size)
 }
 
 .scoreboard-score {
 	text-align: center;
+	font-size: var(--scoreboard-data-size)
 }
 
 .settings-box-container {
-	height: 60px;
+	height: var(--settings-box-container-height);
 	display: flex;
 	justify-content: space-between;
 	width: 100%;
@@ -58,31 +63,29 @@
 	height: 100%;
 	width: 100%;
 	background-color: grey;
-	border: 1px solid black;
 	position: relative;
 	text-align: center;
-
+	border-left: 1px solid white;
 }
 
 .settings-box-text {
 	cursor: pointer;
 	position: absolute;
-	top: 20px;
+	top: var(--settings-box-text-padding);
 	width: 100%;
+	font-size: var(--setting-box-text-size);
+}
+
+.settings-box-container > .settings-box-section:first-child {
+	border: 0px;
+}
+
+.settings-box-container > .settings-box-section:last-child {
+	border: 0px;
+	border-left: 1px solid white;
 }
 
 .angled-text {
-	transform: rotate(45deg);
+	transform: var(--settings-box-angled-text);
 }
 
-@media screen and (max-width: 700px) {
-	.side-menu-container {
-		position: relative;
-		width: 100%;
-		padding: 0px;
-	}
-	.scoreboard-container {
-		justify-content: space-around;
-		
-	}
-}

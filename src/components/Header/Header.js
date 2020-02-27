@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 // Styles
 import './Header.css';
 
+// Images
+import hamburgerMenu from '../../static/hamburger.png'
+
 const Header = () => {
 	return (
 		<div className="header-container">
@@ -23,7 +26,9 @@ const Header = () => {
 						<span data-testid="settings" className="header-link">Settings</span>
 					</Link>
 				</div>
-
+			</span>
+			<span className="mobile-settings-menu">
+				<img src={hamburgerMenu} alt="settings-menu"/>
 			</span>
 		</div>
 	);

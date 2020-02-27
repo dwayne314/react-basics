@@ -26,7 +26,27 @@
 	right: 0;
 	height: var(--header-height);
 }
+
+.mobile-settings-menu {
+	display: var(--hidden-block-on-lg-screen);
+	cursor: pointer;
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: var(--header-height);
+	width: var(--header-height);
+	box-sizing: border-box;
+	padding: var(--header-padding);
+}
+
+.mobile-settings-menu > img {
+	height: 30px;
+	width: 30px;
+
+}
+
 .header-links {
+	display: var(--hidden-block-on-sm-screen);
 	height: 100%;
 	position: relative;
 	line-height: var(--header-height);
@@ -34,12 +54,11 @@
 
 .header-links .header-link {
 	height: 100%;
-	padding: 10px;
+	padding: var(--header-padding);
 	font-size: var(--header-link-font-size);
 	color: var(--secondary-background-color);
 	background-color: var(--primary-background-color);
 	cursor: pointer;
-
 }
 
 .header-links .header-link:hover {

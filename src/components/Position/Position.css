@@ -1,13 +1,18 @@
 .position {
-	height: 30px;
-	width: 30px;
+	height: 100%;
+	width: 100%;
+	position: relative;
 	border-top: 1px solid black;
 }
 
 .position > div {
-	/*These must be the same*/
-	height: 30px;
-	line-height: 30px;
+	position:absolute;
+	left:0; right:0;
+	top:0; bottom:0;
+	margin:auto;
+	height: var(--game-position-font-size);
+	font-size: var(--game-position-font-size);
+	line-height: var(--game-position-font-size);
 }
 
 .position:first-child {
