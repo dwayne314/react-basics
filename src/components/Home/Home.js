@@ -26,7 +26,7 @@ const Home = () => {
 				Human vs Computer
 			</div>
 			<Game mode={gameMode} />
-			<SideMenu wins={wins} losses={losses} ties={ties} updateGameMode={updateGameMode}/>
+			<SideMenu mode={gameMode} wins={wins} losses={losses} ties={ties} updateGameMode={updateGameMode}/>
 		</div>
 	);
 };
