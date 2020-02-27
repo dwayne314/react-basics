@@ -1,6 +1,4 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { getGameMode } from '../../redux/selectors/selectors';
 
 
 const SideMenu = (props) => {

@@ -18,6 +18,7 @@ const Home = () => {
 	const dispatch = useDispatch()
 
 	const updateGameMode = mode => dispatch(changeGameMode(mode))
+	// const clearBoard = () => dispatch(clearBoard())
 
 	return (
 		<div className="home-container">
