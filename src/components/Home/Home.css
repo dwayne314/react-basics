@@ -62,7 +62,7 @@
 .settings-box-section {
 	height: 100%;
 	width: 100%;
-	background-color: grey;
+	background-color: #b6b6b6;
 	position: relative;
 	text-align: center;
 	border-left: 1px solid white;
@@ -87,5 +87,9 @@
 
 .angled-text {
 	transform: var(--settings-box-angled-text);
+}
+
+.settings-box-chosen {
+	background-color: grey;
 }
 

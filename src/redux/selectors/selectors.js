@@ -18,3 +18,5 @@ export const getTies = (state) => {
 		return ties + addGame
 	}, 0)
 };
+
+export const getGameMode = state => state.gameState.gameMode

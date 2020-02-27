@@ -1,5 +1,5 @@
 export const GAME_OVER = 'GAME_OVER';
-
+export const CHANGE_GAME_MODE = 'CHANGE_GAME_MODE';
 
 export const createGameOver = (userIcon) => {
 	let isWin;
@@ -19,6 +19,14 @@ export const createGameOver = (userIcon) => {
 		payload: {
 			status: isWin
 		}
+	}
+}
 
+export const changeGameMode = (mode) => {
+	return {
+		type: CHANGE_GAME_MODE,
+		payload: {
+			gameMode: mode
+		}
 	}
 }

@@ -90,6 +90,7 @@ const Game = (props) => {
 			}, 500)
 		}
 	}, [currentPlayer, isComputerMove, isGameOver, board, makeMove]);
+	const [t, r] = useState(mode)
 
 	return (
 		<div className="game-container">
