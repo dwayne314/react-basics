@@ -1,16 +1,20 @@
+// Library Dependencies
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
+
+// App Dependencies
 import Header from './Header';
 
 // Utilities
 import { wrapRouter } from '../../test-utils.js';
 
+
 describe('Header', () => {
 	let wrapper;
 
 	beforeEach(() => {
-		wrapper = render(<Header />, {wrapper: MemoryRouter})
+		wrapper = render(<Header />, {wrapper: MemoryRouter});
 	})
 	it('renders a title', () => {
 		const title = wrapper.getByTestId('title').firstChild;

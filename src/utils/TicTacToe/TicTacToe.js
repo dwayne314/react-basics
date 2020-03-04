@@ -1,3 +1,4 @@
+// Utility Dependencies
 import { getRandomNumber } from '../utils';
 
 
@@ -20,7 +21,7 @@ export const getPositionIcon = (location, board) => {
 	// console.log(positionDisplay)
 	// console.log(location)
 	if (Boolean(positionDisplay.length)) {
-		return positionDisplay[0]
+		return positionDisplay[0];
 	}
 	return Boolean(positionDisplay.length);
 }
@@ -67,7 +68,7 @@ export const checkGameOver = (board) => {
 			{x: 1, y: 1},
 			{x: 0, y: 2}
 		]
-	]
+	];
 	const winningCombination = winningCombinations.map((combo, index) => {
 		const winningComboIcons = combo
 		    .map(location => getPositionIcon(location, board))
@@ -78,23 +79,23 @@ export const checkGameOver = (board) => {
 				location: combo,
 				winner: filteredCombo[0]
 			} :
-			undefined
+			undefined;
 	}).filter(combo => combo !== undefined);
 
-	const isTie = board.reduce((row, acc) => {
-		return [...acc, ...row]
-	}, []).filter((position) => position.length !== 0).length === 9
+	const isTie = board
+	    .reduce((row, acc) => [...acc, ...row], [])
+	    .filter((position) => position.length !== 0).length === 9;
 	
 	if (winningCombination.length > 0) {
-		return winningCombination[0] 
+		return winningCombination[0];
 	}
 	else if (isTie) {
 		return {
 			location: undefined,
 			winner: ""
-		} 
+		};
 	}
-	return false
+	return false;
 };
 
 export const makeRandomComputerMove = (board) => {
@@ -102,8 +103,12 @@ export const makeRandomComputerMove = (board) => {
 	location.x = getRandomNumber(0, board.length - 1);
 	location.y = getRandomNumber(0, board.length - 1);
 	if (!getPositionIcon(location, board)) {
-		return location
+		return location;
 	
 	}
 	return makeRandomComputerMove(board);	
 };
+
+
+
+

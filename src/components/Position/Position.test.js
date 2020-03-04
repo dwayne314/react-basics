@@ -1,6 +1,10 @@
+// Library Dependencies
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
+
+// App Dependencies
 import Position from './Position';
+
 
 describe('Position', () => {
 	let onClick = jest.fn();
@@ -20,8 +24,8 @@ describe('Position', () => {
 	});
 	it('fires onClick when clicking a position', () => {
 		const position = wrapper.getByTestId("position");
-		expect(onClick).toHaveBeenCalledTimes(0)
-		fireEvent.click(position)
-		expect(onClick).toHaveBeenCalledTimes(1)
+		expect(onClick).toHaveBeenCalledTimes(0);
+		fireEvent.click(position);
+		expect(onClick).toHaveBeenCalledTimes(1);
 	});
 });

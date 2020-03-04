@@ -1,266 +1,304 @@
+// Library Dependencies
 import React from 'react';
 import { render, fireEvent, screen, act } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { store } from '../../redux/store/store';
 
+// App Dependencies
 import Game from './Game';
+
+// Test Dependencies
+import { createMockStore } from '../../test-utils';
+
+// Mock Dependencies
 import * as Utils from '../../utils/TicTacToe/TicTacToe';
+import * as Actions from '../../redux/actions/actions';
 
-import { wrapProvider } from '../../test-utils.js';
 
-let randomCpuMoveSpy = jest.spyOn(Utils, 'makeRandomComputerMove');
+const randomCpuMoveSpy = jest.spyOn(Utils, 'makeRandomComputerMove');
+const checkGameOverSpy = jest.spyOn(Utils, 'checkGameOver');
+const changeIconSpy = jest.spyOn(Actions, 'changeHumanIcon');
 const windowAlert = jest.spyOn(window, 'alert').mockImplementation(() => {});
+
 jest.useFakeTimers();
+
 
 describe('Game', () => {
 	let wrapper;
+	let store;
+	let initialState;
 
 	beforeEach(() => {
-		wrapper = render(wrapProvider(<Game mode={0} firstMove='human'/>))
+		initialState = {
+			games: [],
+			gameState: {
+				gameOrder: 'A',
+				gameMode: 0,
+				currentPlayer: 'X',
+				humanIcon: 'X',
+				cpuIcon: 'O',
+				currentBoard: [
+					[[], [], []],
+					[[], [], []],
+					[[], [], []]
+				]
+			}
+		};
+		store = createMockStore([], initialState);
+
+		wrapper = render(
+			<Provider store={store}>
+				<Game mode={0} firstMove='human'/>
+			</Provider>);
 	});
 
 	afterEach(() => {
 		randomCpuMoveSpy.mockClear();
 		windowAlert.mockClear();
+		checkGameOverSpy.mockClear();
+		changeIconSpy.mockClear();
+		store.clearActions();
 	})
 	it('renders 3 rows for the game', () => {
 		const game = wrapper.getByTestId('game').children;
 		expect(game.length).toBe(3);
 	})
-	it('Clicking an empty position updates the display', () => {
-
+	it('After the human moves, the computer moves if the mode is 1.', () => {
 		const positionOne = wrapper.getByTestId('game').firstChild.firstChild;
 
 		randomCpuMoveSpy.mockReturnValueOnce({x: 0, y: 1})
 		act(() => {
 			fireEvent.click(positionOne);
-		});
-
-		const board = wrapper.getAllByTestId('position-text')
-		    .map(position => position.innerHTML);
-		expect(board).toStrictEqual(["X", "", "", "", "", "", "", "", ""]);
-
-		act(() => {
 			jest.runAllTimers();
+
 		});
-		const updatedBoard = wrapper.getAllByTestId('position-text')
-		    .map(position => position.innerHTML);
-		expect(updatedBoard).toStrictEqual(["X", "O", "", "", "", "", "", "", ""]);
 
+		expect(store.getActions()).toStrictEqual(
+			[
+				{
+					type: 'MAKE_MOVE', payload: {
+						location: {
+							x: 0,
+							y: 0,
+						},
+						icon: 'X'
+					}
+				},
+				{
+					type: 'MAKE_MOVE',
+					payload: {
+						location: {
+							x: 0,
+							y: 1,
+							},
+							icon: 'O'
+						}
+					}
+				]
+			);
 	})
-	it('Tests a human win calls the correct alert and the winning squares highlight', async () => {
-	 	const positionOne = wrapper.getByTestId('col-1').children[0];
-	 	const positionTwo = wrapper.getByTestId('col-2').children[1];
-	 	const positionThree = wrapper.getByTestId('col-3').children[2];
-		
-		randomCpuMoveSpy.mockReturnValueOnce({x: 0, y: 1})
-	 	act(() => {
-		 	fireEvent.click(positionOne);	
-		 	jest.runAllTimers();
-	 	});
-	 	
-	 	randomCpuMoveSpy.mockReturnValueOnce({x: 1, y: 2});
-	 	act(() => {
-		 	fireEvent.click(positionTwo);	
-		 	jest.runAllTimers();
-	 	});
-	 	
-	 	act(() => {
-		 	fireEvent.click(positionThree);
-		 	jest.runAllTimers();
-	 	})
-		// The alerts are called correctly
-		expect(windowAlert).toHaveBeenCalledTimes(1)
-		expect(windowAlert).toHaveBeenCalledWith('X')
+	it('If the game is over the GAME_OVER action with a winner the status is dispatched', () => {
+		const { humanIcon } = store.getState().gameState;
 
-		// The position classes get updated correctly
-		expect(positionOne.classList.contains('winner')).toBe(true)
-		expect(positionTwo.classList.contains('winner')).toBe(true)
-		expect(positionThree.classList.contains('winner')).toBe(true)
-	})
-	it('Tests a cpu win calls the correct alert and the losing squares highlight', () => {
-	 	const positionOne = wrapper.getByTestId('col-1').children[1];
-	 	const positionTwo = wrapper.getByTestId('col-2').children[2];
-	 	const positionThree = wrapper.getByTestId('col-3').children[1];
-		
-		randomCpuMoveSpy.mockReturnValueOnce({x: 0, y: 0})
-	 	act(() => {
-		 	fireEvent.click(positionOne);	
-		 	jest.runAllTimers();
-	 	});
-	 	
-	 	randomCpuMoveSpy.mockReturnValueOnce({x: 1, y: 1});
-	 	act(() => {
-		 	fireEvent.click(positionTwo);	
-		 	jest.runAllTimers();
-	 	});
-	 	
-	 	randomCpuMoveSpy.mockReturnValueOnce({x: 2, y: 2});
-	 	act(() => {
-		 	fireEvent.click(positionThree);
-		 	jest.runAllTimers();
-	 	})
+		checkGameOverSpy
+			.mockReturnValueOnce({winner: humanIcon, location:[]});
 
+		const positionOne = wrapper.getByTestId('game').firstChild.firstChild;
+
+		randomCpuMoveSpy
+		    .mockReturnValueOnce({x: 0, y: 1});
+		act(() => {
+			fireEvent.click(positionOne);
+		 	jest.runAllTimers();
+
+		});
+
+		expect(store.getActions()[1]).toStrictEqual({ type: 'GAME_OVER', payload: { status: 1 } });
 		expect(windowAlert).toHaveBeenCalledTimes(1);
-		expect(windowAlert).toHaveBeenCalledWith('O');
-
-		const cpuPositionOne = wrapper.getByTestId('col-1').children[0];
-		const cpuPositionTwo = wrapper.getByTestId('col-2').children[1];
-		const cpuPositiontThree = wrapper.getByTestId('col-3').children[2];
-
-		expect(cpuPositionOne.classList.contains('loser')).toBe(true)
-		expect(cpuPositionTwo.classList.contains('loser')).toBe(true)
-		expect(cpuPositiontThree.classList.contains('loser')).toBe(true)
+		expect(windowAlert).toHaveBeenCalledWith('X');
 	})
-	it('Tests a tie an alert for a tie', () => {
-	 	const positionOne = wrapper.getByTestId('col-1').children[0];
-	 	const positionTwo = wrapper.getByTestId('col-1').children[2];
-	 	const positionThree = wrapper.getByTestId('col-2').children[1];
-	 	const positionFour = wrapper.getByTestId('col-2').children[2];
-	 	const positionFive = wrapper.getByTestId('col-3').children[1];
-		
-		randomCpuMoveSpy.mockReturnValueOnce({x: 0, y: 1})
-	 	act(() => {
-		 	fireEvent.click(positionOne);	
-		 	jest.runAllTimers();
-	 	});
-	 	
-	 	randomCpuMoveSpy.mockReturnValueOnce({x: 1, y: 0});
-	 	act(() => {
-		 	fireEvent.click(positionTwo);	
-		 	jest.runAllTimers();
-	 	});
-	 	
-	 	randomCpuMoveSpy.mockReturnValueOnce({x: 2, y: 0});
-	 	act(() => {
-		 	fireEvent.click(positionThree);
-		 	jest.runAllTimers();
-	 	})
+	it('If the game is over the GAME_OVER action with a tie status is dispatched if the winner is undefined', () => {
+		checkGameOverSpy
+			.mockReturnValueOnce({winner: undefined});
 
-	 	randomCpuMoveSpy.mockReturnValueOnce({x: 2, y: 2});
-	 	act(() => {
-		 	fireEvent.click(positionFour);
-		 	jest.runAllTimers();
-	 	})
+		const positionOne = wrapper.getByTestId('game').firstChild.firstChild;
 
-	 	act(() => {
-		 	fireEvent.click(positionFive);
+		randomCpuMoveSpy.mockReturnValueOnce({x: 0, y: 1});
+		act(() => {
+			fireEvent.click(positionOne);
 		 	jest.runAllTimers();
-	 	})
 
+		});
+
+		expect(store.getActions()[1]).toStrictEqual({ type: 'GAME_OVER', payload: { status: 0 } });
 		expect(windowAlert).toHaveBeenCalledTimes(1);
 		expect(windowAlert).toHaveBeenCalledWith('its a tie');
 	})
-	
-})
-describe('Game Implementation', () => {
-	it('Tests cpu goes if human is not the first move', () => {
-		randomCpuMoveSpy.mockReturnValueOnce({x: 0, y: 0})
-		const wrapper = render(wrapProvider(<Game mode={0} firstMove='cpu'/>));
+	it('The mergeboard function will highlight the winning squares if the human won', () => {
+		const { cpuIcon } = store.getState().gameState;
 
-		act(() => {
-		 	jest.runAllTimers();
-	 	})
-	 	const board = wrapper.getAllByTestId('position-text')
-		    .map(position => position.innerHTML);
-		expect(board).toStrictEqual(["X", "", "", "", "", "", "", "", ""]);
-	})
+		checkGameOverSpy
+			.mockReturnValueOnce({winner: 'X', location:[
+					{x: 0, y: 0},
+					{x: 0, y: 1},
+					{x: 0, y: 2}
+				]});
 
-	it('Tests the human cannot click during the cpu move', () => {
-		randomCpuMoveSpy.mockReturnValueOnce({x: 0, y: 0})
-		const wrapper = render(wrapProvider(<Game mode={1} firstMove='cpu'/>));
-		const positionOne = wrapper.getByTestId('col-1').children[1];
-
-		act(() => {
-		 	fireEvent.click(positionOne);	
-		 	jest.runAllTimers();
-	 	});
-	 	const board = wrapper.getAllByTestId('position-text')
-		    .map(position => position.innerHTML);
-		expect(board).toStrictEqual(["X", "", "", "", "", "", "", "", ""]);
-	})
-
-	it('Tests human vs. human mode enables human clicks', () => {
-		const wrapper = render(wrapProvider(<Game mode={1} firstMove='human'/>));
 		const positionOne = wrapper.getByTestId('col-1').children[0];
-	 	const positionTwo = wrapper.getByTestId('col-1').children[1];
+		const positionTwo = wrapper.getByTestId('col-1').children[1];
+		const positionThree = wrapper.getByTestId('col-1').children[2];
 
 		act(() => {
-		 	fireEvent.click(positionOne);
-		 	jest.runAllTimers();
-		 	fireEvent.click(positionTwo);
-	 	});
-	 	const board = wrapper.getAllByTestId('position-text')
-		    .map(position => position.innerHTML);
-		expect(board).toStrictEqual(["X", "O", "", "", "", "", "", "", ""]);
+			fireEvent.click(positionOne);
+
+		});
+
+		expect(positionOne.classList.contains('winner')).toBe(true);
+		expect(positionTwo.classList.contains('winner')).toBe(true);
+		expect(positionThree.classList.contains('winner')).toBe(true);
+	})
+	it('The mergeboard function will highlight the losing squares if the cpu won', () => {
+		const { cpuIcon } = store.getState().gameState;
+		checkGameOverSpy
+			.mockReturnValueOnce({winner: cpuIcon, location:[
+					{x: 0, y: 0},
+					{x: 0, y: 1},
+					{x: 0, y: 2}
+				]});
+
+		const positionOne = wrapper.getByTestId('col-1').children[0];
+		const positionTwo = wrapper.getByTestId('col-1').children[1];
+		const positionThree = wrapper.getByTestId('col-1').children[2];
+
+		act(() => {
+			fireEvent.click(positionOne);
+
+		});
+
+		expect(positionOne.classList.contains('loser')).toBe(true);
+		expect(positionTwo.classList.contains('loser')).toBe(true);
+		expect(positionThree.classList.contains('loser')).toBe(true);
 	})
 
-	it('Tests a human cannot click on an occupied square', () => {
-		
-		const wrapper = render(wrapProvider(<Game mode={0} firstMove='human'/>));
-	 	const positionOne = wrapper.getByTestId('col-1').children[1];
-	 	const occupiedPosition = wrapper.getByTestId('col-1').children[0];
 
-		randomCpuMoveSpy.mockReturnValueOnce({x: 0, y: 0})
-	 	act(() => {
-		 	fireEvent.click(positionOne);	
-		 	jest.runAllTimers();
-	 	});
-	 	
-	 	act(() => {
-		 	fireEvent.click(occupiedPosition);	
-		 	jest.runAllTimers();
-	 	});
-	 	
-	 	const board = wrapper.getAllByTestId('position-text')
-		    .map(position => position.innerHTML);
-		expect(board).toStrictEqual(["O", "X", "", "", "", "", "", "", ""]);
+})
+describe('Game', () => {
+	let wrapper;
+	let store;
+	let initialState;
+
+	beforeEach(() => {
+		initialState = {
+			games: [],
+			gameState: {
+				gameOrder: 'A',
+				gameMode: 0,
+				currentPlayer: 'X',
+				humanIcon: 'X',
+				cpuIcon: 'O',
+				currentBoard: [
+					[[], [], []],
+					[[], [], []],
+					[[], [], []]
+				]
+			}
+		};
+		store = createMockStore([], initialState);
+
+	});
+
+	afterEach(() => {
+		randomCpuMoveSpy.mockClear();
+		windowAlert.mockClear();
+		store.clearActions();
 	})
 
-	it('Tests the win background is green if the second player loses in mode 1', () => {
-		const wrapper = render(wrapProvider(<Game mode={1} firstMove='human'/>));
+	it('The changeHumanIcon function is called after each move if the the mode is 1', () => {
 
-		const humanLoserPositionOne = wrapper.getByTestId('col-1').children[1];
-	 	const humanLoserPositionTwo = wrapper.getByTestId('col-2').children[2];
-	 	const humanLoserPositionThree = wrapper.getByTestId('col-3').children[1];
+		wrapper = render(
+			<Provider store={store}>
+				<Game mode={1} firstMove='human'/>
+			</Provider>);
 
-	 	const humanWinnerPositionOne = wrapper.getByTestId('col-1').children[0];
-	 	const humanWinnerPositionTwo = wrapper.getByTestId('col-2').children[1];
-	 	const humanWinnerPositionThree = wrapper.getByTestId('col-3').children[2];
-		
-	 	act(() => {
-		 	fireEvent.click(humanLoserPositionOne);
-			jest.runAllTimers();
-			
-			fireEvent.click(humanWinnerPositionOne);
-		 	jest.runAllTimers();
-	 	});
-	 	
-	 	act(() => {
-		 	fireEvent.click(humanLoserPositionTwo);	
-			jest.runAllTimers();
-			
-			fireEvent.click(humanWinnerPositionTwo);	
-		 	
-	 	});
-	 	
-	 	act(() => {
-		 	fireEvent.click(humanLoserPositionThree);
-			jest.runAllTimers();
-			
-			fireEvent.click(humanWinnerPositionThree);
-		 	
-	 	})
-	 	const board = wrapper.getAllByTestId('position-text')
-		    .map(position => position.innerHTML);
 
-		const humanTwoPositionOne = wrapper.getByTestId('col-1').children[0];
-		const humanTwoPositionTwo = wrapper.getByTestId('col-2').children[1];
-		const humanTwoPositiontThree = wrapper.getByTestId('col-3').children[2];
+		const positionOne = wrapper.getByTestId('game').firstChild.firstChild;
 
-		expect(humanTwoPositionOne.classList.contains('winner')).toBe(true)
-		expect(humanTwoPositionTwo.classList.contains('winner')).toBe(true)
-		expect(humanTwoPositiontThree.classList.contains('winner')).toBe(true)
+		act(() => {
+			fireEvent.click(positionOne);
 
+		});
+
+		expect(changeIconSpy).toHaveBeenCalledTimes(1);
+
+	})
+	it('The changeHumanIcon function is called after each move if the the mode is 1', () => {
+
+		wrapper = render(
+			<Provider store={store}>
+				<Game mode={1} firstMove='cpu'/>
+			</Provider>);
+
+
+		const positionOne = wrapper.getByTestId('game').firstChild.firstChild;
+
+		act(() => {
+			fireEvent.click(positionOne);
+
+		});
+
+		expect(changeIconSpy).toHaveBeenCalledTimes(1);
+	})
+	it('The mergeboard function will highlight the losing squares if the cpu icon won but the mode is 1', () => {
+		const { cpuIcon } = store.getState().gameState;
+		wrapper = render(
+			<Provider store={store}>
+				<Game mode={1} firstMove='human'/>
+			</Provider>)
+
+		checkGameOverSpy
+			.mockReturnValueOnce({winner: cpuIcon, location:[
+					{x: 0, y: 0},
+					{x: 0, y: 1},
+					{x: 0, y: 2}
+				]});
+
+		const positionOne = wrapper.getByTestId('col-1').children[0];
+		const positionTwo = wrapper.getByTestId('col-1').children[1];
+		const positionThree = wrapper.getByTestId('col-1').children[2];
+
+		act(() => {
+			fireEvent.click(positionOne);
+
+		});
+
+		expect(positionOne.classList.contains('winner')).toBe(true);
+		expect(positionTwo.classList.contains('winner')).toBe(true);
+		expect(positionThree.classList.contains('winner')).toBe(true);
+	})
+	it('A human click is not registered if the square is occupied', () => {
+		const board = [
+					[['X'], ['O'], []],
+					[[], [], []],
+					[[], [], []]
+				];
+		store = createMockStore([], Object.assign({}, initialState, {
+			...initialState,
+			gameState: {
+				...initialState.gameState,
+				currentBoard: board
+			}
+		}));
+		wrapper = render(
+			<Provider store={store}>
+				<Game mode={1} firstMove='human'/>
+			</Provider>);
+
+		const positionOne = wrapper.getByTestId('col-1').children[0];
+
+		act(() => {
+			fireEvent.click(positionOne);
+		});
+		const visibleBoard = wrapper.getAllByTestId('position-text')
+			.map(position => position.innerHTML);
+		expect(visibleBoard).toStrictEqual(["X", "O", "", "", "", "", "", "", ""]);
 	})
 })

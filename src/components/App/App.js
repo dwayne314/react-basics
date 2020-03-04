@@ -1,10 +1,15 @@
+// Library Dependencies
 import React from 'react';
 import { Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
+
+// App Dependencies
 import Header from '../Header/Header';
 import Home from '../Home/Home';
 import Login from '../Login/Login';
 import Settings from '../Settings/Settings';
+
+// Utility Dependencies
 import { store } from '../../redux/store/store';
 
 

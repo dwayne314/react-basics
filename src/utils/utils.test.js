@@ -1,12 +1,13 @@
+// App Dependencies
 import { getRandomNumber } from './utils';
 
 
 describe('Utils', () => {
 	it('getRandomNumber contains both boundary numbers', () => {
-		const randomNumbers = []
+		const randomNumbers = [];
 		for (let i=0; i<201; i++) {
-			const newRandomNumber = getRandomNumber(0, 3)
-			randomNumbers.push(newRandomNumber)
+			const newRandomNumber = getRandomNumber(0, 3);
+			randomNumbers.push(newRandomNumber);
 		}
 		
 		const randomContainsBoundaries = new Set(randomNumbers.filter(num => num === 0 || num === 3));
@@ -17,10 +18,10 @@ describe('Utils', () => {
 	it('getRandomNumber contains both boundary numbers', () => {
 		const randomNumbers = []
 		for (let i=0; i<201; i++) {
-			const newRandomNumber = getRandomNumber(0, 3)
-			randomNumbers.push(newRandomNumber)
+			const newRandomNumber = getRandomNumber(0, 3);
+			randomNumbers.push(newRandomNumber);
 		}
 
-		expect([...new Set(randomNumbers)].length).toBe(4)
+		expect([...new Set(randomNumbers)].length).toBe(4);
 	})
 })

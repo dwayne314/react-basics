@@ -1,13 +1,16 @@
+// Library Dependencies
 import React from 'react';
-import * as ReactReduxHooks from 'react-redux';
 import { render, fireEvent, act } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { createMockStore } from '../../test-utils';
-import { initialState } from '../../redux/reducers/rootReducer';
 
+// App Dependencies
 import Home from './Home';
 
+// Test Dependencies
+import { createMockStore } from '../../test-utils';
 
+// Mock Dependencies
+import * as ReactReduxHooks from 'react-redux';
 
 
 describe('Home', () => {
@@ -19,10 +22,18 @@ describe('Home', () => {
 			games: [],
 			gameState: {
 				gameOrder: 'A',
-				gameMode: 0
+				gameMode: 0,
+				currentPlayer: 'X',
+				humanIcon: 'X',
+				cpuIcon: 'O',
+				currentBoard: [
+					[[], [], []],
+					[[], [], []],
+					[[], [], []]
+				]
 			}
-		}
-		store = createMockStore([], initialState)
+		};
+		store = createMockStore([], initialState);
 
 		jest
 			.spyOn(ReactReduxHooks, "useDispatch")
@@ -30,27 +41,26 @@ describe('Home', () => {
 			wrapper = render(
 				<Provider store={store}>
 					<Home />
-				</Provider>)
-	})
+				</Provider>);
+	});
 	afterEach(() => {
-		store.clearActions()
-
-	})
+		store.clearActions();
+	});
 	
 	it('renders the login container', () => {
-		const homeTitle = wrapper.getByTestId('home-title')
-		expect(homeTitle.innerHTML).toBe("Human vs Computer")
+		const homeTitle = wrapper.getByTestId('home-title');
+		expect(homeTitle.innerHTML).toBe("Human vs Computer");
 	})
-	it('changes the game mode when the button is clicked.', () => {
+	it('changes the game mode and clears the board when the button is clicked.', () => {
 		
 		const humanMode = wrapper.getByTestId("game-mode-human");
-		expect(JSON.stringify(store.getActions())).toBe("[]")
+		expect(JSON.stringify(store.getActions())).toBe("[]");
 		act(() => {
 			fireEvent.click(humanMode);
-		})
-		const expectedAction = JSON.stringify([ { type: 'CHANGE_GAME_MODE', payload: { gameMode: 1 } } ])
-		const storeAction = JSON.stringify(store.getActions())
-		expect(storeAction).toBe(expectedAction)
+		});
+		const expectedAction = JSON.stringify([ {type: 'CLEAR_BOARD'}, { type: 'CHANGE_GAME_MODE', payload: { gameMode: 1 } } ]);
+		const storeAction = JSON.stringify(store.getActions());
+		expect(storeAction).toBe(expectedAction);
 	})
 
 })

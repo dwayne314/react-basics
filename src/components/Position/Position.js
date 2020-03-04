@@ -1,11 +1,13 @@
+// App Dependencies
 import React from 'react';
 
 // Styles
 import './Position.css';
 
+
 const Position = (props) => {
 	const { id, mergeBoard, onClick } = props;
-	let { status, text } = mergeBoard(id)
+	let { status, text } = mergeBoard(id);
 
 	return (
 		<div data-testid="position" className={`position${status}`}

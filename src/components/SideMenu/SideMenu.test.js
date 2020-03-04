@@ -1,26 +1,26 @@
+// Library Dependencies
 import React from 'react';
-import { render, fireEvent, screen, act } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import { store } from '../../redux/store/store';
+import { render, fireEvent, act } from '@testing-library/react';
 
+// App Dependencies
 import SideMenu from './SideMenu';
 
-
+// Test Dependencies
 import { wrapProvider } from '../../test-utils.js';
+
+// Mock Dependencies
 import * as ReactRedux from 'react-redux';
 
-
-// {wins, losses, ties, updateGameMode} 
 
 describe('SideMenu', () => {
 
 	const mockUpdateGameMode = jest.fn();
-	const useSelectorMock = jest.spyOn(ReactRedux, 'useSelector')
+	const useSelectorMock = jest.spyOn(ReactRedux, 'useSelector');
 
 	afterEach(() => {
 		mockUpdateGameMode.mockReset();
 		useSelectorMock.mockReset();
-	})
+	});
 	it('The scroeboard shows the current score.', () => {
 		const wrapper = render(wrapProvider(
 			<SideMenu wins={20}
@@ -43,7 +43,7 @@ describe('SideMenu', () => {
 				losses={7}
 				ties={0}
 				mode={1}
-				updateGameMode={mockUpdateGameMode}/>))
+				updateGameMode={mockUpdateGameMode}/>));
 
 		humanMode = wrapper.getByTestId("game-mode-human");
 		cpuMode = wrapper.getByTestId("game-mode-cpu");
@@ -59,7 +59,7 @@ describe('SideMenu', () => {
 				losses={7}
 				ties={0}
 				mode={0}
-				updateGameMode={mockUpdateGameMode}/>))
+				updateGameMode={mockUpdateGameMode}/>));
 
 		humanMode = wrapper.getByTestId("game-mode-human");
 		cpuMode = wrapper.getByTestId("game-mode-cpu");
@@ -73,7 +73,7 @@ describe('SideMenu', () => {
 			<SideMenu wins={20}
 				losses={7}
 				ties={0}
-				updateGameMode={mockUpdateGameMode}/>))
+				updateGameMode={mockUpdateGameMode}/>));
 
 		const humanMode = wrapper.getByTestId("game-mode-human");
 		const cpuMode = wrapper.getByTestId("game-mode-cpu");
@@ -82,8 +82,8 @@ describe('SideMenu', () => {
 			fireEvent.click(cpuMode);
 			fireEvent.click(humanMode);
 		})
-		expect(mockUpdateGameMode).toHaveBeenNthCalledWith(1, 0)
-		expect(mockUpdateGameMode).toHaveBeenNthCalledWith(2, 1)
+		expect(mockUpdateGameMode).toHaveBeenNthCalledWith(1, 0);
+		expect(mockUpdateGameMode).toHaveBeenNthCalledWith(2, 1);
 
 	})
 })

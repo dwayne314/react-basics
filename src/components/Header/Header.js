@@ -1,3 +1,4 @@
+// Library Dependencies
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -6,6 +7,7 @@ import './Header.css';
 
 // Images
 import hamburgerMenu from '../../static/hamburger.png'
+
 
 const Header = () => {
 	return (
