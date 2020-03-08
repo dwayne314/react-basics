@@ -4,15 +4,18 @@ export const CLEAR_BOARD = 'CLEAR_BOARD';
 export const MAKE_MOVE = 'MAKE_MOVE';
 export const CHANGE_CURRENT_PLAYER = 'CHANGE_CURRENT_PLAYER';
 export const CHANGE_HUMAN_ICON = 'CHANGE_HUMAN_ICON';
+export const SET_GAME_OVER = 'SET_GAME_OVER';
+export const SET_COMPUTER_MOVE = 'SET_COMPUTER_MOVE';
+export const CHANGE_GAME_ORDER = 'CHANGE_GAME_ORDER';
 
 
-export const createGameOver = (userIcon) => {
+export const createGameOver = (winner, humanIcon, cpuIcon) => {
 	let isWin;
 
-	if (userIcon === 'X') {
+	if (winner === humanIcon) {
 		isWin = 1
 	} 
-	else if (userIcon === 'O') {
+	else if (winner === cpuIcon) {
 		isWin = -1
 	}
 	else {
@@ -61,5 +64,35 @@ export const changeCurrentPlayer = () => {
 export const changeHumanIcon = () => {
 	return {
 		type: CHANGE_HUMAN_ICON,
+	}
+}
+
+export const setGameOverStatus = (gameStatus) => {
+	const { location, winner } = gameStatus;
+	return {
+		type: SET_GAME_OVER,
+		payload: {
+			location: location,
+			winner: winner
+		}
+	}
+}
+
+
+export const setComputerMove = (isComputerMove) => {
+	return {
+		type: SET_COMPUTER_MOVE,
+		payload: {
+			isComputerMove: isComputerMove
+		}
+	}
+}
+
+export const changeGameOrder = (newOrder) => {
+	return {
+		type: CHANGE_GAME_ORDER,
+		payload: {
+			gameOrder: newOrder
+		}
 	}
 }

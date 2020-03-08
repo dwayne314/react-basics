@@ -5,14 +5,20 @@ import {
 	CLEAR_BOARD,
 	MAKE_MOVE,
 	CHANGE_HUMAN_ICON,
-	CHANGE_CURRENT_PLAYER
+	CHANGE_CURRENT_PLAYER,
+	SET_GAME_OVER,
+	SET_COMPUTER_MOVE,
+	CHANGE_GAME_ORDER
 } from '../actions/actions';
 
 
 const initialState = {
 	games: [],
 	gameState: {
-		gameOrder: 'A',
+		isComputerMove: false,
+		lastFirstMove: 1,
+		isGameOver: false,
+		gameOrder: 'H',
 		gameMode: 0,
 		currentPlayer: 'X',
 		humanIcon: 'X',
@@ -35,9 +41,14 @@ export const rootReducer = (state=initialState, action) => {
 			};
 		case CHANGE_GAME_MODE:
 			const { gameMode } = action.payload;
+			const computerMoveTrue = gameMode === 1 ? false : state.gameState.isComputerMove;
 			return {
 				...state,
-				gameState: Object.assign({}, state.gameState, {gameMode: gameMode})
+				gameState: {
+					...state.gameState,
+					gameMode: gameMode,
+					isComputerMove: computerMoveTrue
+				}
 			};
 		case CLEAR_BOARD:
 			const emptyBoard = [
@@ -45,11 +56,32 @@ export const rootReducer = (state=initialState, action) => {
 				[[], [], []],
 				[[], [], []]
 				];
+
+			let { gameOrder, lastFirstMove } = state.gameState;
+			let cpuGoesFirst;
+
+			if (gameOrder === 'H') {
+				cpuGoesFirst = false;
+			}
+			else if (gameOrder === 'C') {
+				cpuGoesFirst = true;
+			}
+			else if (gameOrder === 'A' && lastFirstMove === 1) {
+				cpuGoesFirst = true
+			}
+			else {
+				cpuGoesFirst = false
+			}
+			const currentLastFirstMove = cpuGoesFirst === true ? 0 : 1
+
 			return {
 				...state,
 				gameState: {
 					...state.gameState,
-					currentBoard: emptyBoard
+					currentBoard: emptyBoard,
+					isComputerMove: cpuGoesFirst,
+					isGameOver: false,
+					lastFirstMove: currentLastFirstMove
 				}
 			};
 		case MAKE_MOVE:
@@ -81,6 +113,33 @@ export const rootReducer = (state=initialState, action) => {
 					currentPlayer: (state.gameState.currentPlayer === 'X') ? 'O' : 'X'
 				}
 			};
+		case SET_GAME_OVER:
+			return {
+				...state,
+				gameState: {
+					...state.gameState,
+					isGameOver: action.payload,
+					isComputerMove: false,
+				}
+			}
+		case SET_COMPUTER_MOVE:
+			const { isComputerMove } = action.payload;
+			return {
+				...state,
+				gameState: {
+					...state.gameState,
+					isComputerMove: isComputerMove
+				}
+			}
+		case CHANGE_GAME_ORDER:
+			const newGameOrder = action.payload.gameOrder
+			return {
+				...state,
+				gameState: {
+					...state.gameState,
+					gameOrder: newGameOrder
+				}
+			}
 		default:
 			return state;
 	}

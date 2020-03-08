@@ -69,4 +69,27 @@ describe('TicTacToe Utils', () => {
 		const gameOverStatus = TicTacUtils.checkGameOver(board);
 		expect(gameOverStatus).toStrictEqual(expectedStatus);
 	})
+	it('checkGameOver will return false if the game is still going', () => {
+		board = [
+		[['X'], [], []],
+		[[], [], []],
+		[[], [], ['O']]
+		];
+		const expectedStatus =  false
+
+		const gameOverStatus = TicTacUtils.checkGameOver(board);
+		expect(gameOverStatus).toBe(false);
+	})
+	it('getPositionStatusClass will return " winner" if the mode is 1 and and the human is the game winner', ()=> {
+		const positionStatus = TicTacUtils.getPositionStatusClass(1, 'X', 'X');
+		expect(positionStatus).toBe(' winner');
+	})
+	it('getPositionStatusClass will return " winner" if the mode is 1 and and the human is not the game winner', ()=> {
+		const positionStatus = TicTacUtils.getPositionStatusClass(1, 'X', 'O');
+		expect(positionStatus).toBe(' winner');
+	})
+	it('getPositionStatusClass will return " loser" if the mode is 1 and and the human is the game winner', ()=> {
+		const positionStatus = TicTacUtils.getPositionStatusClass(0, 'X', 'O');
+		expect(positionStatus).toBe(' loser');
+	})
 })

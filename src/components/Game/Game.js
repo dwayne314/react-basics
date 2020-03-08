@@ -1,33 +1,46 @@
 // Library Dependencies
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // App Dependencies
 import Position from '../Position/Position';
 
 // Utility Dependencies
-import { createGameOver, makeMove, changeHumanIcon } from '../../redux/actions/actions';
-import { getGameBoard, getHumanIcon, getCpuIcon } from '../../redux/selectors/selectors';
+import {
+	createGameOver,
+	makeMove,
+	changeHumanIcon,
+	setGameOverStatus,
+	setComputerMove,
+	clearBoard
+} from '../../redux/actions/actions';
+import {
+	getGameBoard,
+	getHumanIcon,
+	getCpuIcon,
+	isGameOver,
+	isComputerMove
+} from '../../redux/selectors/selectors';
 import { 
 	getLocation, 
 	getPositionIcon, 
 	checkGameOver, 
-	makeRandomComputerMove } from '../../utils/TicTacToe/TicTacToe';
+	makeRandomComputerMove,
+	getPositionStatusClass
+} from '../../utils/TicTacToe/TicTacToe';
 
 // Styles
 import './Game.css';
 
 
 const Game = (props) => {
-	const { mode, firstMove='human' } = props;
+	const { mode } = props;
 	const board = useSelector(getGameBoard);
-	const [isComputerMove, setComputerMove] = useState(
-		(firstMove === 'human') ? false : true);
 	
-	const [isGameOver, setGameOver] = useState(false);
 	const userIconRef = useSelector(getHumanIcon);
 	const cpuIcon = useSelector(getCpuIcon);
-
+	const gameOver = useSelector(isGameOver);
+	const computerMoveTrue = useSelector(isComputerMove);
 	const dispatch = useDispatch();
 
 	const handleMakeMove = useCallback((location, icon) => {
@@ -35,27 +48,26 @@ const Game = (props) => {
 		const gameTerminated = checkGameOver(board);
 
 		if (gameTerminated) {
-			setGameOver(gameTerminated);
+			dispatch(setGameOverStatus(gameTerminated));
 
 			if (gameTerminated.winner) {
 				alert(gameTerminated.winner);
-				dispatch(createGameOver(gameTerminated.winner));
+				dispatch(createGameOver(gameTerminated.winner, userIconRef, cpuIcon));
 			}
 			else {
 				alert('its a tie');
-				dispatch(createGameOver());
+				dispatch(createGameOver(gameTerminated.winner, userIconRef, cpuIcon));
 			}
 		}
-
-	}, [board, dispatch]);
+	}, [board, dispatch, userIconRef, cpuIcon]);
 
 	const onClick = (id) => {
-		if (!isComputerMove && !isGameOver) {
+		if (!computerMoveTrue && !gameOver) {
 			const location = getLocation(id);
 			if (!getPositionIcon(location, board)) {
 				handleMakeMove(location, userIconRef);
 				if (mode === 0) {
-					setComputerMove(true);
+					dispatch(setComputerMove(true));
 				}
 				else {
 					dispatch(changeHumanIcon());
@@ -66,14 +78,13 @@ const Game = (props) => {
 
 	const mergeBoard = (index) => {
 		const location = getLocation(index);
-		let isWinningLocation = (isGameOver && isGameOver.winner) ? isGameOver.location.filter((combo) => {
+		let isWinningLocation = (gameOver && gameOver.winner) ? gameOver.location.filter((combo) => {
 				return JSON.stringify(combo) === JSON.stringify(location);
 			}) : [];
 		let statusClass = '';
 
-		if (isGameOver && isWinningLocation.length) {
-			const cpuPlayingWinStatus = props.mode === 1 ? ' winner' : ' loser';
-			statusClass = userIconRef === isGameOver.winner && cpuPlayingWinStatus ? ' winner' : cpuPlayingWinStatus;
+		if (gameOver && isWinningLocation.length) {
+ 			statusClass = getPositionStatusClass(mode, userIconRef, gameOver.winner);
 		}
 			
 		return {
@@ -81,19 +92,24 @@ const Game = (props) => {
 			status: statusClass
 		};
 	};
+
 	useEffect(() => {
 		let mounted = true;
-		if (isComputerMove && !isGameOver && mounted) {
+		if (computerMoveTrue && !gameOver && mounted) {
 
 			mounted = setTimeout(() => {
 				const location = makeRandomComputerMove(board);
-				setComputerMove(false);
+				dispatch(setComputerMove(false));
 				handleMakeMove(location, cpuIcon);
 			}, 500);
 		}
 		return () => clearTimeout(mounted);
 
-	}, [isComputerMove, isGameOver, board, handleMakeMove, cpuIcon]);
+	}, [computerMoveTrue, gameOver, board, handleMakeMove, cpuIcon, dispatch]);
+
+	useEffect(() => {
+		dispatch(clearBoard())
+	}, [dispatch]);
 
 	return (
 		<div className="game-container">

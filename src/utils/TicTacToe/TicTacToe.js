@@ -109,6 +109,9 @@ export const makeRandomComputerMove = (board) => {
 	return makeRandomComputerMove(board);	
 };
 
+export const getPositionStatusClass = (gameMode, humanIcon, gameWinner) => {
+	const cpuPlayingWinStatus = gameMode === 1 ? ' winner' : ' loser';
+	const statusClass = humanIcon === gameWinner ? ' winner' : cpuPlayingWinStatus;
 
-
-
+	return statusClass
+}

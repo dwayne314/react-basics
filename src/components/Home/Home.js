@@ -7,8 +7,8 @@ import Game from '../Game/Game';
 import SideMenu from '../SideMenu/SideMenu';
 
 // Utility Dependencies
-import { getWins, getLosses, getTies, getGameMode } from '../../redux/selectors/selectors';
-import { changeGameMode, clearBoard } from '../../redux/actions/actions';
+import { getWins, getLosses, getTies, getGameMode, isGameOver, getGameOrder } from '../../redux/selectors/selectors';
+import { changeGameMode, clearBoard, changeGameOrder } from '../../redux/actions/actions';
 
 // Styles
 import './Home.css';
@@ -20,12 +20,19 @@ const Home = () => {
 	const ties = useSelector(getTies);
 	const gameMode = useSelector(getGameMode);
 	const dispatch = useDispatch();
+	const gameOver = useSelector(isGameOver)
+	const gameOrder = useSelector(getGameOrder)
+
 
 	const updateGameMode = mode => {
-		dispatch(clearBoard());
 		dispatch(changeGameMode(mode));
-	}
-	// const clearBoard = () => dispatch(clearBoard())
+		dispatch(clearBoard());
+	};
+
+	const updateGameOrder = order => {
+		dispatch(changeGameOrder(order));
+		dispatch(clearBoard());
+	};
 
 	return (
 		<div className="home-container">
@@ -33,7 +40,15 @@ const Home = () => {
 				Human vs Computer
 			</div>
 			<Game mode={gameMode} />
-			<SideMenu mode={gameMode} wins={wins} losses={losses} ties={ties} updateGameMode={updateGameMode}/>
+			<SideMenu
+				mode={gameMode}
+				wins={wins}
+				losses={losses}
+				ties={ties}
+				updateGameMode={updateGameMode}
+				gameOver={gameOver}
+				updateGameOrder={updateGameOrder}
+				gameOrder={gameOrder}/>
 		</div>
 	);
 };

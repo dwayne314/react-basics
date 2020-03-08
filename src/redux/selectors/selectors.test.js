@@ -7,7 +7,8 @@ import {
 	getGameBoard,
 	getCurrentPlayer,
 	getHumanIcon,
-	getCpuIcon
+	getCpuIcon,
+	isGameOver
 } from './selectors';
 
 
@@ -59,6 +60,11 @@ describe('Selectors', () => {
 		const state = {gameState: { cpuIcon: 'O'}};
 		const gameMode = getCpuIcon(state);
 		expect(gameMode).toBe('O');
+	})
+	it('isGameOver', () => {
+		const state = {gameState: { isGameOver: false }};
+		const gameOver = isGameOver(state);
+		expect(gameOver).toBe(false);
 	})
 
 })

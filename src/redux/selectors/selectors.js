@@ -28,3 +28,9 @@ export const getCurrentPlayer = state => state.gameState.currentPlayer;
 export const getHumanIcon = state => state.gameState.humanIcon;
 
 export const getCpuIcon = state => state.gameState.cpuIcon;
+
+export const isGameOver = state => state.gameState.isGameOver;
+
+export const isComputerMove = state => state.gameState.isComputerMove;
+
+export const getGameOrder = state => state.gameState.gameOrder;

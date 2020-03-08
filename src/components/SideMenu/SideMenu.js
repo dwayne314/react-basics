@@ -1,16 +1,29 @@
 // App Dependencies
 import React from 'react';
+import { useDispatch } from 'react-redux';
+
+// Utility Dependencies
+import { clearBoard } from '../../redux/actions/actions';
+
+// Styles
+import './SideMenu.css';
 
 
 const SideMenu = (props) => {
-	const {mode, wins, losses, ties, updateGameMode} = props;
+	const {mode, wins, losses, ties, updateGameMode, updateGameOrder, gameOrder} = props;
+	const dispatch = useDispatch();
+
+	const startNewGame = () => dispatch(clearBoard())
+
 
 	return (
 		<div className="side-menu-container">
+			<div data-testid="start-new-game" onClick={startNewGame} className="new-game-button-container">
+				<span>New Game</span>
+			</div>
 			<div className="side-menu-section">
 				<div className="side-menu-title">Score Board</div>
 				<div className="scoreboard-container">
-					
 					<div className="scoreboard-section">
 						<div className="scoreboard-title">
 							Wins
@@ -19,7 +32,6 @@ const SideMenu = (props) => {
 							{ wins }
 						</div>
 					</div>
-
 					<div className="scoreboard-section">
 						<div className="scoreboard-title">
 							Losses
@@ -41,17 +53,20 @@ const SideMenu = (props) => {
 			<div className="side-menu-section">
 				<div className="side-menu-title">Game Order</div>
 				<div className="settings-box-container">
-					<div className="settings-box-section">
+					<div data-testid="game-order-human" onClick={() => updateGameOrder('H')}
+							className={`settings-box-section${(gameOrder === 'H' ? " settings-box-chosen" : "")}`}>
 						<div className="settings-box-text angled-text">
 							Human
 						</div>
 					</div>
-					<div className="settings-box-section">
+					<div data-testid="game-order-cpu" onClick={() => updateGameOrder('C')}
+							className={`settings-box-section${(gameOrder === 'C' ? " settings-box-chosen" : "")}`}>
 						<div className="settings-box-text angled-text">
 							CPU
 						</div>
 					</div>
-					<div className="settings-box-section">
+					<div data-testid="game-order-alternate" onClick={() => updateGameOrder('A')}
+							className={`settings-box-section${(gameOrder === 'A' ? " settings-box-chosen" : "")}`}>
 						<div className="settings-box-text angled-text">
 							Alternate
 						</div>
