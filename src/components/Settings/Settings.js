@@ -1,40 +1,42 @@
 // App Dependencies
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+// Utility Dependencies
+import { toggleAIActive, toggleSaveSession, resetScore } from '../../redux/actions/actions';
+import { isAIActive, isSessionSaved } from '../../redux/selectors/selectors';
 
 // Styles
 import './Settings.css'
 
+
 const Settings = () => {
 
-	const [isAIActive, setAIActive] = useState(false);
-	const [isSessionSaved, setSessionSave] = useState(false);
+	const activeAI = useSelector(isAIActive);
+	const sessionSaved = useSelector(isSessionSaved);
+	const dispatch = useDispatch();
 
 	const handleActiveAICheckbox = (evt) => {
-		setAIActive(isAIActive ? false : true);
+		dispatch(toggleAIActive(activeAI ? false : true));
 	}
 
 	const handleSaveSessionCheckbox = (evt) => {
-		setSessionSave(isSessionSaved ? false : true);
+		dispatch(toggleSaveSession(sessionSaved ? false : true));
 	}
 
 	const handleResetScore = (evt) => {
-		console.log('dispatching score reset')
+		dispatch(resetScore());
 	}
 
-	useEffect(() => {
-		console.log('AI active: ' + isAIActive)
-		console.log('Is session saved: ' + isSessionSaved)
-	}, [isAIActive, isSessionSaved])
-
 	return (
-		<div data-testid = "settings-container" className="settings-container">
+		<div data-testid="settings-container" className="settings-container">
 			<label htmlFor="active-ai">
 				<div className="settings-line-container">
 					<div className="settings-line-text">
 							AI Computer Active
 					</div>
 					<div className="settings-line-input">
-						<input id="active-ai" type="checkbox" onChange={handleActiveAICheckbox} checked={isAIActive}></input>
+						<input data-testid="active-ai-button" id="active-ai" type="checkbox" onChange={handleActiveAICheckbox} checked={activeAI}></input>
 					</div>
 				</div>
 			</label>
@@ -45,14 +47,13 @@ const Settings = () => {
 							Record Session Score
 					</div>
 					<div className="settings-line-input">
-						<input id="record-score" type="checkbox" onChange={handleSaveSessionCheckbox} checked={isSessionSaved}></input>
+						<input data-testid="record-session-button" id="record-score" type="checkbox" onChange={handleSaveSessionCheckbox} checked={sessionSaved}></input>
 					</div>
 				</div>
 			</label>
-			<div className="settings-button-container" onClick={handleResetScore}>
+			<div data-testid='reset-score-button' className="settings-button-container" onClick={handleResetScore}>
 				Reset Score
 			</div>
-
 		</div>
 	);
 };

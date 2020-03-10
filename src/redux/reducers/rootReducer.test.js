@@ -9,7 +9,11 @@ import {
 	CHANGE_CURRENT_PLAYER,
 	SET_GAME_OVER,
 	SET_COMPUTER_MOVE,
-	CHANGE_GAME_ORDER
+	CHANGE_GAME_ORDER,
+	TOGGLE_HAMBURGER_MENU,
+	TOGGLE_AI_ACTIVE,
+	TOGGLE_SAVE_SESSION,
+	RESET_SCORE
 } from '../actions/actions';
 
 
@@ -373,5 +377,74 @@ describe('RootReducer', () => {
 		};
 		const updatedState = rootReducer(initialState, action);
 		expect(updatedState).toStrictEqual(expectedState);
+	})
+	it('The hamburger menu is toggled when a new isOpenStatus is given', () => {
+		const initialState = {hamburgerMenuHiddenCls: ' hidden'};
+
+		const action = {
+			type: TOGGLE_HAMBURGER_MENU,
+			payload: {
+				hamburgerMenuHiddenCls: ""
+			}
+		};
+
+		const expectedState = {
+			hamburgerMenuHiddenCls: ""
+		}
+
+		const updatedState = rootReducer(initialState, action);
+		expect(updatedState).toStrictEqual(expectedState);
+	})
+	it('isAIActive is toggled when the status is updated', () => {
+		const initialState = {
+			gameState: {
+				isAIActive: false
+			}
+		};
+
+		const action = {
+			type: TOGGLE_AI_ACTIVE,
+			payload: {
+				isAIActive: true
+			}
+		};
+
+		const expectedState = {
+			gameState: {
+				isAIActive: true
+			}
+		}
+
+		const updatedState = rootReducer(initialState, action);
+		expect(updatedState).toStrictEqual(expectedState);
+	})
+	it('isSessionSaved is toggled when the status is updated', () => {
+		const initialState = {isSessionSaved: true};
+
+		const action = {
+			type: TOGGLE_SAVE_SESSION,
+			payload: {
+				isSessionSaved: false
+			}
+		};
+
+		const expectedState = {
+			isSessionSaved: false
+		};
+
+		const updatedState = rootReducer(initialState, action);
+		expect(updatedState).toStrictEqual(expectedState);
+	})
+	it('resetScore clears the games', () => {
+		const initialState = {games: [1, -0, 1]};
+		const action = {
+			type: RESET_SCORE
+		};
+
+		const expectedState = {games: []};
+
+		const updatedState = rootReducer(initialState, action);
+		expect(updatedState).toStrictEqual(expectedState)
+
 	})
 })

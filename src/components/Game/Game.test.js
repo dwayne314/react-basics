@@ -1,6 +1,6 @@
 // Library Dependencies
 import React from 'react';
-import { render, fireEvent, screen, act } from '@testing-library/react';
+import { render, fireEvent, act } from '@testing-library/react';
 import { Provider } from 'react-redux';
 
 // App Dependencies
@@ -9,7 +9,6 @@ import Game from './Game';
 // Test Dependencies
 import { createMockStore } from '../../test-utils';
 import { rootReducer } from '../../redux/reducers/rootReducer';
-
 
 // Mock Dependencies
 import * as Utils from '../../utils/TicTacToe/TicTacToe';

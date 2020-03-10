@@ -65,3 +65,9 @@
 	background-color: var(--secondary-background-color);
 	color: var(--primary-background-color);
 }
+
+.hidden {
+	transform: translateX(-200px);
+	transition: .5s;
+	visibility: hidden;
+}

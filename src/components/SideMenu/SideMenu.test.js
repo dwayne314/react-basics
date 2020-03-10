@@ -153,6 +153,6 @@ describe('SideMenu', () => {
 					gameOrder='C'/>
 			</Provider>);
 		const cpuFirst = wrapper.getByTestId("game-order-cpu");
-		expect(cpuFirst.classList.contains("settings-box-chosen"))
+		expect(cpuFirst.classList.contains("settings-box-chosen"));
 	})
 })

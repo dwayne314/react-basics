@@ -7,6 +7,10 @@ export const CHANGE_HUMAN_ICON = 'CHANGE_HUMAN_ICON';
 export const SET_GAME_OVER = 'SET_GAME_OVER';
 export const SET_COMPUTER_MOVE = 'SET_COMPUTER_MOVE';
 export const CHANGE_GAME_ORDER = 'CHANGE_GAME_ORDER';
+export const TOGGLE_HAMBURGER_MENU = 'TOGGLE_HAMBURGER_MENU';
+export const TOGGLE_AI_ACTIVE = 'TOGGLE_AI_ACTIVE';
+export const TOGGLE_SAVE_SESSION = 'TOGGLE_SAVE_SESSION';
+export const RESET_SCORE = 'RESET_SCORE';
 
 
 export const createGameOver = (winner, humanIcon, cpuIcon) => {
@@ -28,7 +32,7 @@ export const createGameOver = (winner, humanIcon, cpuIcon) => {
 			status: isWin
 		}
 	}
-}
+};
 
 export const changeGameMode = (mode) => {
 	return {
@@ -37,13 +41,13 @@ export const changeGameMode = (mode) => {
 			gameMode: mode
 		}
 	}
-}
+};
 
 export const clearBoard = () => {
 	return {
 		type: CLEAR_BOARD
 	}
-}
+};
 
 export const makeMove = (location, icon) => {
 	return {
@@ -53,19 +57,19 @@ export const makeMove = (location, icon) => {
 			icon: icon
 		}
 	}
-}
+};
 
 export const changeCurrentPlayer = () => {
 	return {
 		type: CHANGE_CURRENT_PLAYER
 	}
-}
+};
 
 export const changeHumanIcon = () => {
 	return {
 		type: CHANGE_HUMAN_ICON,
 	}
-}
+};
 
 export const setGameOverStatus = (gameStatus) => {
 	const { location, winner } = gameStatus;
@@ -76,7 +80,7 @@ export const setGameOverStatus = (gameStatus) => {
 			winner: winner
 		}
 	}
-}
+};
 
 
 export const setComputerMove = (isComputerMove) => {
@@ -86,7 +90,7 @@ export const setComputerMove = (isComputerMove) => {
 			isComputerMove: isComputerMove
 		}
 	}
-}
+};
 
 export const changeGameOrder = (newOrder) => {
 	return {
@@ -95,4 +99,39 @@ export const changeGameOrder = (newOrder) => {
 			gameOrder: newOrder
 		}
 	}
-}
+};
+
+export const toggleHamburgerMenu = (hiddenCls) => {
+	const newHiddenCls = hiddenCls === '' ? ' hidden' : '';
+	return {
+		type: TOGGLE_HAMBURGER_MENU,
+		payload: {
+			hamburgerMenuHiddenCls: newHiddenCls
+		}
+	}
+};
+
+export const toggleAIActive = (activeStatus) => {
+
+	return {
+		type: TOGGLE_AI_ACTIVE,
+		payload: {
+			isAIActive: activeStatus
+		}
+	}
+};
+
+export const toggleSaveSession = (isSessionSaved) => {
+	return {
+		type: TOGGLE_SAVE_SESSION,
+		payload: {
+			isSessionSaved: isSessionSaved
+		}
+	}
+};
+
+export const resetScore = () => {
+	return {
+		type: RESET_SCORE
+	}
+};

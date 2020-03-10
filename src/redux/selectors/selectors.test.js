@@ -8,7 +8,11 @@ import {
 	getCurrentPlayer,
 	getHumanIcon,
 	getCpuIcon,
-	isGameOver
+	isGameOver,
+	isComputerMove,
+	isAIActive,
+	hamburgerMenuHiddenCls,
+	isSessionSaved
 } from './selectors';
 
 
@@ -65,6 +69,26 @@ describe('Selectors', () => {
 		const state = {gameState: { isGameOver: false }};
 		const gameOver = isGameOver(state);
 		expect(gameOver).toBe(false);
+	})
+	it('isComputerMove', () => {
+		const state = {gameState: {isComputerMove: false}};
+		const computerMove = isComputerMove(state);
+		expect(computerMove).toBe(false);
+	})
+	it('isAIActive', () => {
+		const state = {gameState: {isAIActive: false}};
+		const aiActive = isAIActive(state);
+		expect(aiActive).toBe(false)
+	})
+	it('hamburgerMenuHiddenCls', () => {
+		const state = {hamburgerMenuHiddenCls: ' hidden'};
+		const hamburgerTrayOpen = hamburgerMenuHiddenCls(state);
+		expect(hamburgerTrayOpen).toBe(' hidden');
+	})
+	it('isSessionSaved', () => {
+		const state = {isSessionSaved: true};
+		const sessionSaved = isSessionSaved(state);
+		expect(sessionSaved).toBe(true);
 	})
 
 })

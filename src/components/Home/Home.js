@@ -23,7 +23,6 @@ const Home = () => {
 	const gameOver = useSelector(isGameOver)
 	const gameOrder = useSelector(getGameOrder)
 
-
 	const updateGameMode = mode => {
 		dispatch(changeGameMode(mode));
 		dispatch(clearBoard());

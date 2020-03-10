@@ -34,3 +34,9 @@ export const isGameOver = state => state.gameState.isGameOver;
 export const isComputerMove = state => state.gameState.isComputerMove;
 
 export const getGameOrder = state => state.gameState.gameOrder;
+
+export const isAIActive = state => state.gameState.isAIActive;
+
+export const isSessionSaved = state => state.isSessionSaved;
+
+export const hamburgerMenuHiddenCls = state => state.hamburgerMenuHiddenCls;

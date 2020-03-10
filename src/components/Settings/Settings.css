@@ -15,9 +15,6 @@
 	box-sizing: border-box;
 }
 
-.settings-line-container:first-child {
-	border-top: .5px solid black;
-}
 .settings-line-container input {
 	zoom: 1.7;
 	line-height: 40px;

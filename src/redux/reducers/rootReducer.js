@@ -8,13 +8,20 @@ import {
 	CHANGE_CURRENT_PLAYER,
 	SET_GAME_OVER,
 	SET_COMPUTER_MOVE,
-	CHANGE_GAME_ORDER
+	CHANGE_GAME_ORDER,
+	TOGGLE_HAMBURGER_MENU,
+	TOGGLE_AI_ACTIVE,
+	TOGGLE_SAVE_SESSION,
+	RESET_SCORE
 } from '../actions/actions';
 
 
 const initialState = {
 	games: [],
+	hamburgerMenuHiddenCls: ' hidden',
+	isSessionSaved: true,
 	gameState: {
+		isAIActive: false,
 		isComputerMove: false,
 		lastFirstMove: 1,
 		isGameOver: false,
@@ -139,6 +146,33 @@ export const rootReducer = (state=initialState, action) => {
 					...state.gameState,
 					gameOrder: newGameOrder
 				}
+			}
+		case TOGGLE_HAMBURGER_MENU:
+			const { hamburgerMenuHiddenCls } = action.payload
+
+			return {
+				...state,
+				hamburgerMenuHiddenCls: hamburgerMenuHiddenCls
+			}
+		case TOGGLE_AI_ACTIVE:
+			const { isAIActive } = action.payload;
+			return {
+				...state,
+				gameState: {
+					...state.gameState,
+					isAIActive: isAIActive
+				}
+			}
+		case TOGGLE_SAVE_SESSION:
+			const { isSessionSaved } = action.payload;
+			return {
+				...state,
+				isSessionSaved: isSessionSaved
+			}
+		case RESET_SCORE:
+			return {
+				...state,
+				games: []
 			}
 		default:
 			return state;
