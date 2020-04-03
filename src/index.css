@@ -49,6 +49,12 @@ a {
 
 	--hidden-block-on-lg-screen: none;
 	--hidden-block-on-sm-screen: block;
+
+	/* Forms */
+	--form-width: 300px;
+
+	/* Buttons */
+	--button-height: 30px;
 }
 
 @media screen and (max-width: 750px) {
@@ -66,14 +72,16 @@ a {
 		--side-menu-container-position: relative;
 		--side-menu-container-width: 100%;
 		--side-menu-container-padding-right: 0px;
+
 	}
 }
 
 @media screen and (max-width: 500px) {
 	:root {
 		--settings-box-angled-text: rotate(45deg);
-			--hidden-block-on-lg-screen: block;
-			--hidden-block-on-sm-screen: none;
+		--hidden-block-on-lg-screen: block;
+		--hidden-block-on-sm-screen: none;
+		--form-width: 100%;
 
 
 	}

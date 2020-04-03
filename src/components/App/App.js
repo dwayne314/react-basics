@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import Header from '../Header/Header';
 import Home from '../Home/Home';
 import Login from '../Login/Login';
+import Signup from '../Signup/Signup';
 import Settings from '../Settings/Settings';
 
 // Utility Dependencies
@@ -19,7 +20,7 @@ const App = () => {
 			<div className="app">
 				<Header />
 				<Route exact path="/" component={Home}></Route>
-				<Route exact path="/login" component={Login}></Route>
+				<Route exact path="/register" component={Signup}></Route>
 				<Route exact path="/settings" component={Settings}></Route>
 			</div>
 		</Provider>

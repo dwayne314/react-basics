@@ -28,7 +28,7 @@ const HamburgerMenu = () => {
 					</Link>
 				</div>
 				<div className="hamburger-menu-line">
-					<Link to="/login">
+					<Link to="/register">
 						Login
 					</Link>
 				</div>
