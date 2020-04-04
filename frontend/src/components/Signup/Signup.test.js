@@ -21,6 +21,20 @@ describe('Signup', () => {
 		const signup = wrapper.getByTestId('signup-container');
 		expect(signup.innerHTML).toBeTruthy();
 	})
+	it('updates the first_name field if something is typed', () => {
+		const firstNameInput = wrapper.getByTestId('firstName-input');
+		const firstNameInputValue = 'Frank';
+		fireEvent.change(firstNameInput, { target: { value: firstNameInputValue}});
+		
+		expect(firstNameInput.value).toBe(firstNameInputValue);
+	})
+	it('updates the last_name field if something is typed', () => {
+		const lastNameInput = wrapper.getByTestId('lastName-input');
+		const lastNameInputValue = 'Johns';
+		fireEvent.change(lastNameInput, { target: { value: lastNameInputValue}});
+		
+		expect(lastNameInput.value).toBe(lastNameInputValue);
+	})
 	it('updates the username field if something is typed', () => {
 		const usernameInput = wrapper.getByTestId('username-input');
 		const usernameInputValue = 'username1';
