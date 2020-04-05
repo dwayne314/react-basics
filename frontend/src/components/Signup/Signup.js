@@ -1,6 +1,6 @@
 // App Dependencies
 import React, { useState } from 'react';
-
+import validate from '../../validators/auth';
 // Styles
 import './Signup.css';
 
@@ -28,7 +28,13 @@ const Signup = () => {
 	}
 
 	const submitForm = () => {
-		console.log(first_name, ' ', last_name, ' ', username, ' ', password)
+		const {errors, result, isValid } = validate.registration({first_name, last_name, username, password})
+		if (!isValid) {
+			console.log('dispatch errors')
+		}
+		else {
+			console.log('dispatch registration')
+		}
 	}
 
 	return (

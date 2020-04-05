@@ -4,11 +4,13 @@ import { render, fireEvent, act } from '@testing-library/react';
 
 // App Dependencies
 import Signup from './Signup';
+import validate from '../../validators/auth';
 
 
 describe('Signup', () => {
 	let wrapper;
 	const consoleMock = jest.spyOn(window.console, 'log');
+	const validateSignupMock = jest.spyOn(validate, 'registration')
 
 	beforeEach(() => {
 		wrapper = render(<Signup />);
@@ -49,10 +51,16 @@ describe('Signup', () => {
 		
 		expect(passwordInput.value).toBe(passwordInputValue);
 	})
-	it('logs when submit is clicked', () => {
-		expect(consoleMock).toHaveBeenCalledTimes(0);
+	it('dispatches errors when submit is clicked and the form is not valid', () => {
+		validateSignupMock.mockReturnValueOnce({isValid: false})
 		const submitBtn = wrapper.getByTestId('submit-button');
 		fireEvent.click(submitBtn);
-		expect(consoleMock).toHaveBeenCalledTimes(1);
+		expect(consoleMock).toHaveBeenCalledWith('dispatch errors')
+	})
+	it('dispatches registration when submit is clicked and the form is not valid', () => {
+		validateSignupMock.mockReturnValueOnce({isValid: true})
+		const submitBtn = wrapper.getByTestId('submit-button');
+		fireEvent.click(submitBtn);
+		expect(consoleMock).toHaveBeenCalledWith('dispatch registration')
 	})
 })
