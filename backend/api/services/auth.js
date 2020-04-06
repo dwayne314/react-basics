@@ -3,8 +3,8 @@ const Users = require('../models/users');
 
 module.exports = {
 	createUser: async(attrs) => {
-		let newUser;
-		let error;
+		let newUser = null;
+		let error = null;
 		let isValid = true;
 
 		try {
@@ -16,7 +16,7 @@ module.exports = {
 
 		return {
 			newUser,
-			error: error ? error : null,
+			error,
 			isValid
 		}
 		

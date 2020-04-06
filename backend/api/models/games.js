@@ -1,4 +1,6 @@
 const mongoose = reuqire('mongoose');
+const customHooks = require('./hooks');
+
 
 const GameSchema = new mongoose.Schema({
 	win: {
@@ -23,8 +25,6 @@ const GameSchema = new mongoose.Schema({
 	}
 });
 
-GameSchema.pre('update', () => {
-	this.update({}, { $set: { updated_at: new Date() }});
-});
+GameSchema.pre('update', customHooks.setUpdatedAt)
 
 module.exports = mongoose.model('Games', GameSchema);

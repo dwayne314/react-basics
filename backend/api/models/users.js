@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const customHooks = require('./hooks');
 
 const UserSchema = new mongoose.Schema({
 	first_name: {
@@ -34,8 +34,6 @@ const UserSchema = new mongoose.Schema({
 
 });
 
-UserSchema.pre('update', () => {
-	this.update({}, { $set: { updated_at: new Date() }});
-});
+UserSchema.pre('update', customHooks.setUpdatedAt)
 
 module.exports = mongoose.model('Users', UserSchema);

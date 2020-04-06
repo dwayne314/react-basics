@@ -5,7 +5,9 @@ module.exports = {
 		res.json = jest.fn().mockReturnValue(res);
 		return res;
 	},
-	getMockRequest: () => {
-		const res = {};
+	getMockRequest: (body={}) => {
+		const req = {};
+		req.body = jest.fn().mockReturnValue(body);
+		return req
 	}
 }
