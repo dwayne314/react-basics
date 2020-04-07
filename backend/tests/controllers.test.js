@@ -16,10 +16,6 @@ describe('Controllers', () => {
 
 	describe('authController', () => {
 
-		it('login', () => {
-			authController.login(req, res);
-			expect(res.json).toHaveBeenCalledWith('Posting to login route');
-		})
 		it('register if the registration is valid', async () => {
 			mockRegisterReturn = {
 				newUser: {_id: 1, first_name: 'Fred'},
