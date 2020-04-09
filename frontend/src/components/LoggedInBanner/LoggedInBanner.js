@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { getCurrentUser } from '../../redux/selectors/selectors';
 import { isEmpty } from '../../utils/utils';

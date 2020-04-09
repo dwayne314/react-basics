@@ -5,8 +5,6 @@ const Users = require('../models/users');
 
 const validateRegistration = async ({first_name='', last_name='', username='', password=''}) => {
 	let errors = {};
-	const requiredFieldName = {name: 'required'};
-	const minMaxFieldName = {name: 'minMax'};
 	const usernameMinMax = {min: 4, max: 10};
 	const passwordMinMax = {min: 4, max: 10};
 

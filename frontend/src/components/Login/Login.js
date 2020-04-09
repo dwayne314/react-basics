@@ -1,5 +1,5 @@
 // App Dependencies
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import validate from '../../validators/auth';
 import { loginUser, setErrors } from '../../redux/actions/auth';

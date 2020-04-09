@@ -39,6 +39,10 @@ describe('Utils', () => {
 			expect(cls).toBe(expectedResult.cls);
 			expect(msg).toBe(expectedResult.msg);
 		})
+		it('returns null if no type is specified', () => {
+			const expectedResult = null;
+			expect(getErrors()).toBe(null);
+		})
 	})
 	describe('isEmpty', () => {
 		it('returns true if an object is empty', () => {

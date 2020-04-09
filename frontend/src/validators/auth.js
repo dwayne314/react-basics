@@ -6,8 +6,6 @@ const authValidator = {
 
 	registration: ({first_name='', last_name='', username='', password=''}) => {
 		let errors = {};
-		const requiredFieldName = {name: 'required'};
-		const minMaxFieldName = {name: 'minMax'};
 		const usernameMinMax = {min: 4, max: 10};
 		const passwordMinMax = {min: 4, max: 10};
 
@@ -36,7 +34,6 @@ const authValidator = {
 	},
 	login: ({username, password}) => {
 		let errors = {};
-		const requiredFieldName = {name: 'required'};
 
 		if (!username) {
 			errors.username = getErrors('auth', 'required', {fieldName: 'Username'})

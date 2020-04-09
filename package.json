@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently \"mongod\" \"npm run start --prefix frontend\" \"nodemon backend/server\""
+    "start": "concurrently \"mongod\" \"npm run start --prefix frontend\" \"nodemon backend/server\"",
+    "test": "concurrently \"cd ./backend && npm run test\" \"cd ./frontend && npm run test\""
   },
   "repository": {
     "type": "git",
