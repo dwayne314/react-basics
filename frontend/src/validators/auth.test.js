@@ -5,7 +5,7 @@ import * as Utils from '../utils/utils';
 describe('Validators', () => {
 
 	const getErrorsMock = jest.spyOn(Utils, 'getErrors')
-	describe('authValidator', () => {
+	describe('registrationValidator', () => {
 		const { registration } = authValidator;
 		let first_name = '';
 		let last_name = '';
@@ -62,6 +62,37 @@ describe('Validators', () => {
 			const {errors, result, isValid } = registration({});
 			expect(errors.first_name.msg).toBeTruthy();
 			expect(errors.last_name.msg).toBeTruthy();
+			expect(errors.username.msg).toBeTruthy();
+			expect(errors.password.msg).toBeTruthy();
+		})
+	})
+	describe('loginValidator', () => {
+		const { login } = authValidator;
+		let username = '';
+		let password = '';
+
+		afterEach(() => {
+			username = '';
+			password = '';
+		})
+		it('missing fields have error messages', () => {
+			const {errors, result, isValid } = login({username, password});
+			expect(errors.isValid).toBeFalsy();
+			expect(errors.result).toBeFalsy();
+			expect(errors.username.msg).toBeTruthy();
+			expect(errors.password.msg).toBeTruthy();
+		})
+		it('errors are null if the form is valid', () => {
+			username = 'Juern';
+			password = 'Killgor';
+			const {errors, result, isValid } = login({username, password});
+			expect(isValid).toBeTruthy();
+			expect(Object.keys(result).length).toBe(2);
+			expect(errors).toBeFalsy();
+
+		})
+		it('coerces missing fields to empty strings and generates errors', () => {
+			const {errors, result, isValid } = login({});
 			expect(errors.username.msg).toBeTruthy();
 			expect(errors.password.msg).toBeTruthy();
 		})

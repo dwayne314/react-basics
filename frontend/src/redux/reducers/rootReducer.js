@@ -15,7 +15,7 @@ import {
 	RESET_SCORE
 } from '../actions/actions';
 
-import { SET_ERRORS, SET_LOADING} from '../actions/auth';
+import { SET_ERRORS, SET_LOADING, SET_USER} from '../actions/auth';
 
 const initialState = {
 	games: [],
@@ -38,7 +38,8 @@ const initialState = {
 		]
 	},
 	errors: {},
-	isLoading: false
+	isLoading: false,
+	currentUser: {}
 };
 
 export const rootReducer = (state=initialState, action) => {
@@ -188,6 +189,11 @@ export const rootReducer = (state=initialState, action) => {
 			return {
 				...state,
 				isLoading: action.payload
+			}
+		case SET_USER:
+			return {
+				...state,
+				currentUser: action.payload
 			}
 		default:
 			return state;

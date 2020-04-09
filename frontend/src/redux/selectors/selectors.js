@@ -43,3 +43,5 @@ export const hamburgerMenuHiddenCls = state => state.hamburgerMenuHiddenCls;
 
 
 export const getErrors = state => state.errors;
+
+export const getCurrentUser = state => state.currentUser;

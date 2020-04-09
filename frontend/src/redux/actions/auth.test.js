@@ -65,4 +65,39 @@ describe('actions', () => {
 		expect(storeActions[2].type).toBe('SET_LOADING');
 		expect(storeActions[2].payload).toBe(false);
 	})
+	it('loginUser dispatches the correct actions if the post is successful', async () => {
+		axiosMock.mockImplementationOnce(
+	        () => new Promise((resolved, rejected) =>{
+	            resolved({data: 'user data'});
+	        }));
+
+		await auth.loginUser('user')(store.dispatch)
+		const storeActions = store.getActions();
+		
+		expect(axiosMock).toHaveBeenCalledWith('/api/login', expect.any(String));
+		expect(storeActions[0].type).toBe('SET_LOADING');
+		expect(storeActions[0].payload).toBe(true);
+		expect(storeActions[1].type).toBe('SET_USER');
+		expect(storeActions[1].payload).toBe('user data');
+		expect(storeActions[2].type).toBe('SET_LOADING');
+		expect(storeActions[2].payload).toBe(false);
+	})
+	it('loginUser dispatches the correct actions if the post is rejected', async () => {
+		const errorMessage = 'post error'
+		axiosMock.mockImplementationOnce(
+	        () => new Promise((resolved, rejected) =>{
+	            rejected({response: {data: errorMessage}});
+	        }));
+
+		await auth.loginUser('user')(store.dispatch)		
+		const storeActions = store.getActions();
+
+		expect(axiosMock).toHaveBeenCalledWith('/api/login', expect.any(String));
+		expect(storeActions[0].type).toBe('SET_LOADING');
+		expect(storeActions[0].payload).toBe(true);
+		expect(storeActions[1].type).toBe('SET_ERRORS');
+		expect(storeActions[1].payload).toBe(errorMessage);
+		expect(storeActions[2].type).toBe('SET_LOADING');
+		expect(storeActions[2].payload).toBe(false);
+	})
 })

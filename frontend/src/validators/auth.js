@@ -33,6 +33,23 @@ const authValidator = {
 			result: isEmpty(errors) ? {first_name, last_name, username, password} : null,
 			isValid: isEmpty(errors)
 		};
+	},
+	login: ({username, password}) => {
+		let errors = {};
+		const requiredFieldName = {name: 'required'};
+
+		if (!username) {
+			errors.username = getErrors('auth', 'required', {fieldName: 'Username'})
+		}
+		if (!password) {
+			errors.password = getErrors('auth', 'required', {fieldName: 'Password'})
+		}
+
+		return {
+			errors: isEmpty(errors) ? null : errors,
+			result: isEmpty(errors) ? {username, password} : null,
+			isValid: isEmpty(errors)
+		};
 	}
 }
 

@@ -16,7 +16,7 @@ import {
 	RESET_SCORE,
 } from '../actions/actions';
 import {
-	SET_ERRORS, SET_LOADING
+	SET_ERRORS, SET_LOADING, SET_USER
 } from '../actions/auth';
 
 
@@ -469,6 +469,17 @@ describe('RootReducer', () => {
 		};
 
 		const expectedState = {isLoading: true};
+		const updatedState = rootReducer(initialState, action);
+		expect(updatedState).toStrictEqual(expectedState)
+	})
+	it('setUser places add the user to the state', () => {
+		const initialState = {currentUser: {}};
+		const action = {
+			type: SET_USER,
+			payload: {id: 1, name: 'Fred'}
+		};
+
+		const expectedState = {currentUser: {id: 1, name: 'Fred'}};
 		const updatedState = rootReducer(initialState, action);
 		expect(updatedState).toStrictEqual(expectedState)
 	})
