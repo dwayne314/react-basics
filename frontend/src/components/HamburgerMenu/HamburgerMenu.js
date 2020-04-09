@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 
 // Utility Dependencies
 import { hamburgerMenuHiddenCls } from '../../redux/selectors/selectors';
+import { getCurrentUser } from '../../redux/selectors/selectors';
+import { isEmpty } from '../../utils/utils';
 
 // Styles
 import './HamburgerMenu.css';
@@ -13,6 +15,7 @@ import './HamburgerMenu.css';
 const HamburgerMenu = () => {
 
 	const hiddenCls = useSelector(hamburgerMenuHiddenCls);
+	const userLoggedIn = useSelector(getCurrentUser);
 
 	return (
 		<div data-testid = "hamburger-menu-container" className="hamburger-menu-container">
@@ -28,9 +31,15 @@ const HamburgerMenu = () => {
 					</Link>
 				</div>
 				<div className="hamburger-menu-line">
-					<Link to="/login">
-						Login
-					</Link>
+				{isEmpty(userLoggedIn) ? 
+						<Link to="/login">
+							<span data-testid="login" className="header-link">Login</span>
+						</Link> 
+						:
+						<Link to="/logout">
+							<span data-testid="logout" className="header-link">Logout</span>
+						</Link>
+					}
 				</div>
 			</div>
 		</div>

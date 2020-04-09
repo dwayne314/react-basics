@@ -3,14 +3,13 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-
-
 // App Dependencies
 import HamburgerMenu from '../HamburgerMenu/HamburgerMenu';
 
 // Utility Dependencies
 import { toggleHamburgerMenu } from '../../redux/actions/actions';
-import { hamburgerMenuHiddenCls } from '../../redux/selectors/selectors';
+import { hamburgerMenuHiddenCls, getCurrentUser } from '../../redux/selectors/selectors';
+import { isEmpty } from '../../utils/utils';
 
 // Styles
 import './Header.css';
@@ -23,6 +22,7 @@ const Header = () => {
 	const dispatch = useDispatch();
 
 	const hiddenCls = useSelector(hamburgerMenuHiddenCls)
+	const userLoggedIn = useSelector(getCurrentUser);
 
 	const handleHamburgerMenuClick = () => {
 		dispatch(toggleHamburgerMenu(hiddenCls))
@@ -31,7 +31,7 @@ const Header = () => {
 	return (
 		<div className="header-container">
 			<div className="title-container">
-				<div data-testid="title" className="title">
+				<div data-testid="title-header" className="title">
 					<Link to="/">		
 						Tic-Tac-Toe
 					</Link>
@@ -39,11 +39,17 @@ const Header = () => {
 			</div>
 			<span className="header-links-container">
 				<div className="header-links">
-					<Link to="/login">
-						<span data-testid="login" className="header-link">Login</span>
-					</Link>
+					{isEmpty(userLoggedIn) ? 
+						<Link to="/login">
+							<span data-testid="login-header" className="header-link">Login</span>
+						</Link> 
+						:
+						<Link to="/logout">
+							<span data-testid="logout-header" className="header-link">Logout</span>
+						</Link>
+					}
 					<Link to="/settings">
-						<span data-testid="settings" className="header-link">Settings</span>
+						<span data-testid="settings-header" className="header-link">Settings</span>
 					</Link>
 				</div>
 			</span>

@@ -40,17 +40,18 @@ describe('HamburgerMenu', () => {
 					[[], [], []],
 					[[], [], []]
 				]
-			}
+			},
+			currentUser: {}
 		};
-		store = createMockStore([], initialState);
 
 	});
 	afterEach(() => {
 		jest.resetAllMocks();
 		store.clearActions();
 	})
-	it('The hamburger menu gets a hidden class when the hamburger tray is not open', () => {
+	it('gets a hidden class when the hamburger tray is not open', () => {
 		hamburgerMenuHiddenClsSpy.mockReturnValue(' hidden');
+		store = createMockStore([], initialState);
 
 		wrapper = render(
 			<Provider store={store}>
@@ -61,8 +62,9 @@ describe('HamburgerMenu', () => {
 		expect(hamburgerTray.classList.contains('hidden')).toBe(true);
 
 	})
-	it('The hamburger menu does not have a hidden class when the hamburger tray is open', () => {
+	it('does not have a hidden class when the hamburger tray is open', () => {
 		hamburgerMenuHiddenClsSpy.mockReturnValue('');
+		store = createMockStore([], initialState);
 
 		wrapper = render(
 			<Provider store={store}>
@@ -71,6 +73,33 @@ describe('HamburgerMenu', () => {
 
 		const hamburgerTray = wrapper.getByTestId('hamburger-menu');
 		expect(hamburgerTray.classList.contains('hidden')).toBe(false);
+	})
+	it('does not show login when the user is logged in only logout', () => {
+		store = createMockStore([], Object.assign({}, {
+			...initialState,
+			currentUser: {id: 1}}));
+		wrapper = render(
+			<Provider store={store}>
+				<HamburgerMenu />
+			</Provider>, {wrapper: MemoryRouter});
 
+		const loginLink = wrapper.queryByTestId('login');
+		const logoutLink = wrapper.queryByTestId('logout');
+		expect(loginLink).toBeFalsy();
+		expect(logoutLink).toBeTruthy();
+	})
+	it('does not show logout when the user is logged out login', () => {
+		store = createMockStore([], Object.assign({}, {
+			...initialState,
+			currentUser: {}}));
+		wrapper = render(
+			<Provider store={store}>
+				<HamburgerMenu />
+			</Provider>, {wrapper: MemoryRouter});
+
+		const loginLink = wrapper.queryByTestId('login');
+		const logoutLink = wrapper.queryByTestId('logout');
+		expect(loginLink).toBeTruthy();
+		expect(logoutLink).toBeFalsy();
 	})
 })
