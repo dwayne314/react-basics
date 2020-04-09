@@ -7,7 +7,7 @@ export const getErrors = (cls, type, data) => {
 		return {cls: cls, msg: `${data.fieldName} is a required field`}
 	}
 	else {
-		return {type: type, cls: cls, msg: `${data.fieldName} must be between ${data.min} and ${data.max} characters`}
+		return {cls: cls, msg: `${data.fieldName} must be between ${data.min} and ${data.max} characters`}
 	}
 }
 

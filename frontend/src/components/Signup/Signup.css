@@ -43,3 +43,10 @@
 	border: 1px solid black;
 	border-color: var(--secondary-background-color);
 }
+
+
+.form-error {
+	display: inline-block;
+	color: red;
+	padding-top: 7px;
+}

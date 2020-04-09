@@ -20,7 +20,6 @@ describe('Validators', () => {
 		})
 		it('missing fields have error messages', () => {
 			const {errors, result, isValid } = registration({first_name, last_name, username, password});
-			console.log(registration({first_name, last_name, username, password}))
 			expect(errors.isValid).toBeFalsy();
 			expect(errors.result).toBeFalsy();
 			expect(errors.first_name.msg).toBeTruthy();
@@ -40,7 +39,6 @@ describe('Validators', () => {
 		})
 		it('passwords enforce min length validation', () => {
 			password = 'PWD';
-			console.log(username)
 			const {errors, result, isValid } = registration({first_name, last_name, username, password});
 			expect(errors.password.msg).toBe('Password must be between 4 and 10 characters');
 		})

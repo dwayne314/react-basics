@@ -13,8 +13,11 @@ import {
 	TOGGLE_HAMBURGER_MENU,
 	TOGGLE_AI_ACTIVE,
 	TOGGLE_SAVE_SESSION,
-	RESET_SCORE
+	RESET_SCORE,
 } from '../actions/actions';
+import {
+	SET_ERRORS, SET_LOADING
+} from '../actions/auth';
 
 
 describe('RootReducer', () => {
@@ -446,5 +449,27 @@ describe('RootReducer', () => {
 		const updatedState = rootReducer(initialState, action);
 		expect(updatedState).toStrictEqual(expectedState)
 
+	})
+	it('setErrors adds the errors to the state', () => {
+		const initialState = {errors: {}};
+		const action = {
+			type: SET_ERRORS,
+			payload: {first_name: 'Fred', last_name: 'Jack'}
+		};
+
+		const expectedState = {first_name: 'Fred', last_name: 'Jack'}
+		const updatedState = rootReducer(initialState, action);
+		expect(updatedState.errors).toStrictEqual(expectedState)
+	})
+	it('setLoading updates isLoading on the state', () => {
+		const initialState = {isLoading: false};
+		const action = {
+			type: SET_LOADING,
+			payload: true
+		};
+
+		const expectedState = {isLoading: true};
+		const updatedState = rootReducer(initialState, action);
+		expect(updatedState).toStrictEqual(expectedState)
 	})
 })

@@ -19,6 +19,5 @@ module.exports = {
 			error,
 			isValid
 		}
-		
 	}
 };

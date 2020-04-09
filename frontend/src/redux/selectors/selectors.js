@@ -40,3 +40,6 @@ export const isAIActive = state => state.gameState.isAIActive;
 export const isSessionSaved = state => state.isSessionSaved;
 
 export const hamburgerMenuHiddenCls = state => state.hamburgerMenuHiddenCls;
+
+
+export const getErrors = state => state.errors;
