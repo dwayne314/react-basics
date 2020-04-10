@@ -21,7 +21,6 @@ module.exports = {
 	},
 	login: (req, res, next) => {
 		passport.authenticate('local', (err, user, info) => {
-			// When using custom callback the user must be manually get logged in (added to req and placed on the session)
 			if (err) return next(err);
 			if (!user) return res.status(401).json({auth: 'Invalid username or password'});
 			req.login(user, err => {
@@ -32,6 +31,7 @@ module.exports = {
 		})(req, res, next)
 	},
 	logout: (req, res, next) => {
-		return res.json('Posting to logout route');
+		req.logout()
+		return res.status(201).json({auth: 'User has been logged out'});
 	}
 };

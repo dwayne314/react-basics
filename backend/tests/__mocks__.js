@@ -8,6 +8,7 @@ module.exports = {
 	getMockRequest: (body={}) => {
 		const req = {};
 		req.body = jest.fn().mockReturnValue(body);
+		req.logout = jest.fn().mockReturnValue(req)
 		return req
 	}
 }

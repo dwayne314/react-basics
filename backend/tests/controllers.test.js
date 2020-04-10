@@ -65,7 +65,8 @@ describe('Controllers', () => {
 		})
 		it('logout', () => {
 			authController.logout(req, res);
-			expect(res.json).toHaveBeenCalledWith('Posting to logout route');
+			expect(res.json).toHaveBeenCalledWith({"auth": "User has been logged out"});
+			expect(res.status).toHaveBeenCalledWith(201);
 		})
 	})
 

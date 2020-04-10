@@ -26,8 +26,8 @@ const Login = () => {
 
 	const submitForm = (e) => {
 		e.preventDefault();
-		
-		dispatch(setErrors({}));		
+
+		dispatch(setErrors({}));	
 		const userAttrs = {username, password};
 		const {errors, result, isValid } = validate.login(userAttrs);
 		if (!isValid) {

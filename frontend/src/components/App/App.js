@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import Header from '../Header/Header';
 import Home from '../Home/Home';
 import Login from '../Login/Login';
+import Logout from '../Logout/Logout';
 import Signup from '../Signup/Signup';
 import Settings from '../Settings/Settings';
 import LoggedInBanner from '../LoggedInBanner/LoggedInBanner';
@@ -25,6 +26,7 @@ const App = () => {
 				<Route exact path="/register" component={Signup}></Route>
 				<Route exact path="/settings" component={Settings}></Route>
 				<Route exact path="/login" component={Login}></Route>
+				<Route exact path="/logout" component={Logout}></Route>
 			</div>
 		</Provider>
 	);

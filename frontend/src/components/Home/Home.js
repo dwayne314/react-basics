@@ -1,5 +1,5 @@
 // Library Dependencies
-import React from 'react';
+import React, from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // App Dependencies
@@ -19,9 +19,10 @@ const Home = () => {
 	const losses = useSelector(getLosses);
 	const ties = useSelector(getTies);
 	const gameMode = useSelector(getGameMode);
-	const dispatch = useDispatch();
 	const gameOver = useSelector(isGameOver)
 	const gameOrder = useSelector(getGameOrder)
+
+	const dispatch = useDispatch();
 
 	const updateGameMode = mode => {
 		dispatch(changeGameMode(mode));

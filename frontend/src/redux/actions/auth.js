@@ -54,3 +54,13 @@ export const loginUser = (userData) => dispatch => {
 	        dispatch(setLoading(false));
         })
 };
+
+
+export const logoutUser = () => dispatch => {
+	return axios
+		.post('/api/logout')
+		.then(() => dispatch(setUser({})))
+		.catch((err) => {
+			dispatch(setErrors(err.response.data));
+		})
+};

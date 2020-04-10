@@ -100,4 +100,31 @@ describe('actions', () => {
 		expect(storeActions[2].type).toBe('SET_LOADING');
 		expect(storeActions[2].payload).toBe(false);
 	})
+		it('logoutUser dispatches the correct actions if the post is successful', async () => {
+		axiosMock.mockImplementationOnce(
+	        () => new Promise((resolved, rejected) =>{
+	            resolved({});
+	        }));
+
+		await auth.logoutUser()(store.dispatch)
+		const storeActions = store.getActions();
+		
+		expect(axiosMock).toHaveBeenCalledWith('/api/logout');
+		expect(storeActions[0].type).toBe('SET_USER');
+		expect(storeActions[0].payload).toStrictEqual({});
+	})
+	it('logoutUser dispatches the correct actions if the post is rejected', async () => {
+		const errorMessage = 'post error'
+		axiosMock.mockImplementationOnce(
+	        () => new Promise((resolved, rejected) =>{
+	            rejected({response: {data: errorMessage}});
+	        }));
+
+		await auth.logoutUser()(store.dispatch)		
+		const storeActions = store.getActions();
+
+		expect(axiosMock).toHaveBeenCalledWith('/api/logout');
+		expect(storeActions[0].type).toBe('SET_ERRORS');
+		expect(storeActions[0].payload).toBe(errorMessage);
+	})
 })
