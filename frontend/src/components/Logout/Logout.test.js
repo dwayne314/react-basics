@@ -22,19 +22,20 @@ describe('Logout', () => {
 	let store;
 	let initialState;
 	let dispatchMock;
+	let historyMock;
 
-	const getCurrentUserMock = jest.spyOn(selectors, 'getCurrentUser')
-
+	const getCurrentUserMock = jest.spyOn(selectors, 'getCurrentUser');
 	const isEmptyMock = jest.spyOn(utils, 'isEmpty')
 		
 	const logoutUserMock = jest.spyOn(authActions, 'logoutUser')
 		.mockImplementationOnce(() => {type: 'e'})
-	const historyMock = {push: jest.fn(), goBack: jest.fn()}
 
-	afterEach(() => {
+	beforeEach(() => {
 		jest.resetAllMocks();
+
 	})
 	it('The user is redirected to home if someone is logged in', () => {
+		historyMock = {push: jest.fn(), goBack: jest.fn()}		
 		getCurrentUserMock.mockReturnValueOnce({id: 1});
 		const initialState = { currentUser: {id: 1} };
 		store = createMockStore([], initialState);
@@ -49,6 +50,7 @@ describe('Logout', () => {
 		expect(historyMock.push).toHaveBeenCalledWith('/')
 	})
 	it('The user is redirected to to their last location if someone is not logged in', () => {
+		historyMock = {push: jest.fn(), goBack: jest.fn()};
 		isEmptyMock.mockImplementationOnce((getCurrentUserMock) => true);
 		getCurrentUserMock.mockReturnValueOnce({});
 
@@ -62,6 +64,6 @@ describe('Logout', () => {
 			<Provider store={store}>
 				<Logout history={historyMock} />
 			</Provider>);
-		expect(historyMock.goBack).toHaveBeenCalledTimes(1)
+		expect(historyMock.push).toHaveBeenCalledWith('/');
 	})
 })

@@ -79,46 +79,26 @@ describe('Game', () => {
 			jest.runAllTimers();
 
 		});
-		const actionTwo = store.getActions()[1];
-		const actionThree = store.getActions()[2];
-
-		expect(actionTwo).toStrictEqual({
-			type: 'MAKE_MOVE',
-			payload: {
-				location: {
-					x: 0,
-					y: 0,
-				},
-				icon: 'X'
-			}
-		})
-
-		expect(actionThree).toStrictEqual({
-			type: 'SET_COMPUTER_MOVE',
-			payload: {
-				isComputerMove: true
-			}
-		})
+		const action = store.getActions().find(action => action.type === 'SET_COMPUTER_MOVE');
+		expect(action.payload.isComputerMove).toBe(true);
 	})
-	it('If the game is over the GAME_OVER action with a winner the status is dispatched', () => {
+	it('dispatches SET_GAME_OVER with a winner and location if the game is won', () => {
 		const { humanIcon } = store.getState().gameState;
+		const location = [['X', 'X', 'X']]
 
-		checkGameOverSpy.mockReturnValueOnce({winner: humanIcon, location:[]});
+		checkGameOverSpy.mockReturnValueOnce({winner: humanIcon, location:location});
 
 		const positionOne = wrapper.getByTestId('game').firstChild.firstChild;
 
-		randomCpuMoveSpy
-		    .mockReturnValueOnce({x: 0, y: 1});
+		randomCpuMoveSpy.mockReturnValueOnce({x: 0, y: 1});
 		act(() => {
 			fireEvent.click(positionOne);
 		});
-
-		expect(store.getActions()[2]).toStrictEqual({ type: 'SET_GAME_OVER', payload: { location: [], winner: 'X' } })
-        expect(store.getActions()[3]).toStrictEqual({ type: 'GAME_OVER', payload: { status: 1 } })
-		expect(windowAlert).toHaveBeenCalledTimes(1);
-		expect(windowAlert).toHaveBeenCalledWith('X');
+		const action = store.getActions().find(action => action.type === 'SET_GAME_OVER')
+		expect(action.payload.winner).toBe('X');
+		expect(action.payload.location).toStrictEqual(location);
 	})
-	it('If the game is over the GAME_OVER action with a tie status is dispatched if the winner is undefined', () => {
+	it('dispatches SET_GAME_OVER with a winner and location if the game is tied', () => {
 		checkGameOverSpy.mockReturnValueOnce({winner: undefined});
 		randomCpuMoveSpy.mockReturnValueOnce({x: 0, y: 1});
 
@@ -127,46 +107,51 @@ describe('Game', () => {
 		act(() => {
 			fireEvent.click(positionOne);
 		});
-
-		expect(store.getActions()[2]).toStrictEqual({ type: 'SET_GAME_OVER', payload: { location: undefined, winner: undefined } });
+		const action = store.getActions().find(action => action.type === 'SET_GAME_OVER');
+		expect(action.payload.location).toBe(undefined);
+		expect(action.payload.winner).toBe(undefined);
 		expect(windowAlert).toHaveBeenCalledTimes(1);
 		expect(windowAlert).toHaveBeenCalledWith('its a tie');
 	})
-	it('The mergeboard function will highlight the winning squares if the human won', () => {
-		checkGameOverSpy
-			.mockReturnValueOnce({winner: 'X', location:[
-					{x: 0, y: 0},
-					{x: 0, y: 1},
-					{x: 0, y: 2}
-				]});
+	it('dispatches GAME_OVER with the correct status if the game is over', () => {
+		const { humanIcon } = store.getState().gameState;
 
-		const positionOne = wrapper.getByTestId('col-1').children[0];
+		checkGameOverSpy.mockReturnValueOnce({winner: humanIcon, location:[]});
 
+		const positionOne = wrapper.getByTestId('game').firstChild.firstChild;
+
+		randomCpuMoveSpy.mockReturnValueOnce({x: 0, y: 1});
 		act(() => {
 			fireEvent.click(positionOne);
 		});
 
-		const actionThree = store.getActions()[2];
+		const action = store.getActions().find(action => action.type === 'GAME_OVER')
+		expect(action.payload.status).toBe(1);
+	})
+	it('The mergeboard function will highlight the winning squares if the human won', () => {
+		const location = [
+			{x: 0, y: 0},
+			{x: 0, y: 1},
+			{x: 0, y: 2}]
 
-		expect(actionThree).toStrictEqual( {
-			type: 'SET_GAME_OVER',
-			payload: {
-				location: [
-					{x: 0, y: 0},
-					{x: 0, y: 1},
-					{x: 0, y: 2}],
-				winner: 'X'
-			}
-        })
-})
+		checkGameOverSpy.mockReturnValueOnce({winner: 'X', location:location});
+		const positionOne = wrapper.getByTestId('col-1').children[0];
+		act(() => {
+			fireEvent.click(positionOne);
+		});
+
+		const action = store.getActions().find(action => action.type === 'SET_GAME_OVER');
+		expect(action.payload.location).toStrictEqual(location)
+		expect(action.payload.winner).toBe('X');
+	})
 	it('The mergeBoard function will highlight the losing squares if the cpu won', () => {
 		const { cpuIcon } = store.getState().gameState;
+		const location = [
+			{x: 0, y: 0},
+			{x: 0, y: 1},
+			{x: 0, y: 2}]
 		checkGameOverSpy
-			.mockReturnValueOnce({winner: cpuIcon, location:[
-					{x: 0, y: 0},
-					{x: 0, y: 1},
-					{x: 0, y: 2}
-				]});
+			.mockReturnValueOnce({winner: cpuIcon, location:location});
 
 		const positionOne = wrapper.getByTestId('col-1').children[0];
 
@@ -175,18 +160,9 @@ describe('Game', () => {
 
 		});
 
-		const actionThree = store.getActions()[2];
-
-		expect(actionThree).toStrictEqual( {
-			type: 'SET_GAME_OVER',
-			payload: {
-				location: [
-					{x: 0, y: 0},
-					{x: 0, y: 1},
-					{x: 0, y: 2}],
-				winner: 'O'
-			}
-        })
+		const action = store.getActions().find(action => action.type === 'SET_GAME_OVER');
+		expect(action.payload.location).toStrictEqual(location);
+		expect(action.payload.winner).toBe('O');
 	})
 	it('No move is made if the position is covered', () => {
 		getPositionIconSpy.mockReturnValueOnce('X');
@@ -199,10 +175,10 @@ describe('Game', () => {
 		act(() => {
 			fireEvent.click(positionOne);
 			jest.runAllTimers();
-
 		});
 
-		expect(store.getActions()).toStrictEqual([{"type": "CLEAR_BOARD"}])
+		const action = store.getActions().find(action => action.type === 'MAKE_MOVE');
+		expect(action).toBeFalsy();
 
 	})
 	it('No move is made if the position is covered and the game is over', () => {
@@ -217,13 +193,11 @@ describe('Game', () => {
 			jest.runAllTimers();
 
 		});
-
-		expect(store.getActions()).toStrictEqual([{"type": "CLEAR_BOARD"}])
-
+		const action = store.getActions().find(action => action.type === 'MAKE_MOVE');
+		expect(action).toBeFalsy();
 	})
-
-
 })
+
 describe('Game', () => {
 	let wrapper;
 	let store;
@@ -274,24 +248,10 @@ describe('Game', () => {
 
 		});
 		jest.runAllTimers();
-		const actionTwo = store.getActions()[1];
-		const actionThree = store.getActions()[2];
-		expect(actionTwo).toStrictEqual({
-			type: 'SET_COMPUTER_MOVE',
-			payload: {
-				isComputerMove: false
-			}
-		})
-		expect(actionThree).toStrictEqual({
-			type: 'MAKE_MOVE',
-			payload: {
-				location: {
-					x: 0,
-					y: 0
-				},
-				icon: 'O'
-			}
-		})
+		const action = store.getActions().find(action => action.type === 'MAKE_MOVE');
+		expect(action.payload.location).toStrictEqual({ x: 0, y: 0});
+		expect(action.payload.icon).toStrictEqual('O');
+
 	})
 	it('The mergeboard function will highlight the losing squares if the cpu icon won but the mode is 1', () => {
 		const action = {
@@ -357,25 +317,8 @@ describe('Game', () => {
 			</Provider>);
 		jest.runAllTimers();
 
-		const actionTwo = store.getActions()[1];
-		const actionThree = store.getActions()[2];
-
-
-		expect(actionTwo).toStrictEqual({
-			type: 'SET_COMPUTER_MOVE',
-			payload: {
-				isComputerMove: false
-			}
-		})
-		expect(actionThree).toStrictEqual({
-			type: 'MAKE_MOVE',
-			payload: {
-				location: {
-					x: 0,
-					y: 1
-				},
-				icon: 'O'
-			}
-        })
+		const actionThree = store.getActions().find(action => action.type === 'MAKE_MOVE');
+		expect(actionThree.payload.location).toStrictEqual({x: 0, y: 1});
+		expect(actionThree.payload.icon).toBe('O');
 	})
 })

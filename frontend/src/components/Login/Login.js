@@ -9,7 +9,7 @@ import { getErrors } from '../../redux/selectors/selectors'
 import './Login.css';
 
 
-const Login = () => {
+const Login = (props) => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 
@@ -35,6 +35,7 @@ const Login = () => {
 		}
 		else {
 			dispatch(loginUser(result))
+			props.history.push('/')
 		}
 	}
 

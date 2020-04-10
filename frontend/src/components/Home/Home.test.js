@@ -51,18 +51,15 @@ describe('Home', () => {
 		const homeTitle = wrapper.getByTestId('home-title');
 		expect(homeTitle.innerHTML).toBe("Human vs Computer");
 	})
-	it('changes the game mode and clears the board when the button is clicked.', () => {
+	it('changes the game mode when the button is clicked.', () => {
 		
 		const humanMode = wrapper.getByTestId("game-mode-human");
 		act(() => {
 			fireEvent.click(humanMode);
 		});
 
-		const actionOne = store.getActions()[1];
-		const actionTwo = store.getActions()[2];
-
-		expect(actionTwo).toStrictEqual({type: 'CLEAR_BOARD'});
-		expect(actionOne).toStrictEqual({type: 'CHANGE_GAME_MODE', payload: {gameMode: 1}});
+		const action = store.getActions().find(action => action.type === 'CHANGE_GAME_MODE');
+		expect(action.payload.gameMode).toBe(1);
 	})
 	it('changes the game order to human when the human button is clicked.', () => {
 		const humanFirst = wrapper.getByTestId("game-order-human");
@@ -72,11 +69,8 @@ describe('Home', () => {
 
 		});
 
-		const actionOne = store.getActions()[1];
-		const actionTwo = store.getActions()[2];
-
-		expect(actionTwo).toStrictEqual({type: 'CLEAR_BOARD'});
-		expect(actionOne).toStrictEqual({type: 'CHANGE_GAME_ORDER', payload: {gameOrder: 'H'}});
+		const action = store.getActions().find(action => action.type === 'CHANGE_GAME_ORDER');
+		expect(action.payload.gameOrder).toBe('H');
 	})
 	it('changes the game order to computer when the cpu button is clicked.', () => {
 		const cpuFirst = wrapper.getByTestId("game-order-cpu");
@@ -85,11 +79,8 @@ describe('Home', () => {
 			fireEvent.click(cpuFirst);
 		});
 
-		const actionOne = store.getActions()[1];
-		const actionTwo = store.getActions()[2];
-
-		expect(actionTwo).toStrictEqual({type: 'CLEAR_BOARD'});
-		expect(actionOne).toStrictEqual({type: 'CHANGE_GAME_ORDER', payload: {gameOrder: 'C'}});
+		const action = store.getActions().find(action => action.type === 'CHANGE_GAME_ORDER');
+		expect(action.payload.gameOrder).toBe('C');;
 	})
 	it('changes the game order to alternate when the alternate button is clicked.', () => {
 		const alternateFirst = wrapper.getByTestId("game-order-alternate");
@@ -98,11 +89,8 @@ describe('Home', () => {
 			fireEvent.click(alternateFirst);
 		});
 
-		const actionOne = store.getActions()[1];
-		const actionTwo = store.getActions()[2];
-
-		expect(actionTwo).toStrictEqual({type: 'CLEAR_BOARD'});
-		expect(actionOne).toStrictEqual({type: 'CHANGE_GAME_ORDER', payload: {gameOrder: 'A'}});
+		const action = store.getActions().find(action => action.type === 'CHANGE_GAME_ORDER');
+		expect(action.payload.gameOrder).toBe('A');
 	})
 
 

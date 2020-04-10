@@ -26,10 +26,11 @@ describe('Login', () => {
 		let store;
 		let initialState;
 		let dispatchMock;
-	
+		let historyMock;
 		
 
 		beforeEach(() => {
+			historyMock = {push: jest.fn(), goBack: jest.fn()}
 			const initialState = {
 				errors: {}
 			};
@@ -40,7 +41,7 @@ describe('Login', () => {
 	
 				wrapper = render(
 					<Provider store={store}>
-						<Login />
+						<Login history={historyMock}/>
 					</Provider>);
 		});
 		afterEach(() => {
@@ -85,6 +86,17 @@ describe('Login', () => {
 			expect(loginMock).toHaveBeenCalledWith('user')
 			expect(store.getActions().find(action => action.type === 'login').payload).toBe(true)
 		})
+		it('redirects to home if the user is logged in', () => {
+			loginMock.mockReturnValueOnce({
+				type: 'login',
+				payload: true
+			})
+			validateSignupMock.mockReturnValueOnce({isValid: true, result: 'user'})
+			const submitBtn = wrapper.getByTestId('submit-button');
+			fireEvent.click(submitBtn);
+
+			expect(historyMock.push).toHaveBeenCalledWith('/')
+		})
 		it('does not render any errors', () => {
 			const usernameError = wrapper.queryByTestId('username-error');
 			const passwordError = wrapper.queryByTestId('password-error');
@@ -99,10 +111,12 @@ describe('Login', () => {
 		let store;
 		let initialState;
 		let dispatchMock;
+		let historyMock;
 	
 		
 
 		beforeEach(() => {
+			historyMock = {push: jest.fn(), goBack: jest.fn()}
 			const initialState = {
 				errors: {username: 'usrerrr', password: 'juntres'}
 			};
@@ -113,7 +127,7 @@ describe('Login', () => {
 	
 				wrapper = render(
 					<Provider store={store}>
-						<Login />
+						<Login history={historyMock}/>
 					</Provider>);
 		});
 		afterEach(() => {

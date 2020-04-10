@@ -14,17 +14,17 @@ const Logout = (props) => {
 	const logout = useCallback(() => {
 
 		if (!isEmpty(userLoggedIn)) {
-			dispatch(logoutUser())
-			props.history.push('/')
+			dispatch(logoutUser());
 		}
-		else {
-			props.history.goBack()
-		}
+		console.log(props.history)
+		alert()
+		props.history.push('/');
+
 
 	}, [dispatch, props.history, userLoggedIn])
 
 	useEffect(() => {
-		logout()
+		logout();
 	}, [logout])
 
 	return null;

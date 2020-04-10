@@ -107,10 +107,6 @@ const Game = (props) => {
 
 	}, [computerMoveTrue, gameOver, board, handleMakeMove, cpuIcon, dispatch]);
 
-	useEffect(() => {
-		dispatch(clearBoard())
-	}, [dispatch]);
-
 	return (
 		<div className="game-container">
 			<div data-testid="game" className="game">

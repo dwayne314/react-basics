@@ -1,5 +1,5 @@
 // Library Dependencies
-import React, from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // App Dependencies
