@@ -1,11 +1,10 @@
 // Library Dependencies
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // App Dependencies
 import Game from '../Game/Game';
 import SideMenu from '../SideMenu/SideMenu';
-import { toggleFlash } from '../../redux/actions/actions';
 
 // Utility Dependencies
 import { getWins, getLosses, getTies, getGameMode, isGameOver, getGameOrder } from '../../redux/selectors/selectors';

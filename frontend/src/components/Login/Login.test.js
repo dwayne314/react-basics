@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 
 // App Dependencies
 import * as authActions from '../../redux/actions/auth';
+import * as actions from '../../redux/actions/actions';
 
 // Test Dependencies
 import { createMockStore } from '../../test-utils';
@@ -27,7 +28,8 @@ describe('Login', () => {
 		let initialState;
 		let dispatchMock;
 		let historyMock;
-		
+		const toggleFlashMock = jest.spyOn(actions, 'toggleFlash')
+
 
 		beforeEach(() => {
 			historyMock = {push: jest.fn(), goBack: jest.fn()}
@@ -79,6 +81,8 @@ describe('Login', () => {
 				type: 'login',
 				payload: true
 			})
+			toggleFlashMock.mockReturnValueOnce({type: 'f', payload: []});
+
 			validateSignupMock.mockReturnValueOnce({isValid: true, result: 'user'})
 			const submitBtn = wrapper.getByTestId('submit-button');
 			fireEvent.click(submitBtn);
@@ -91,6 +95,7 @@ describe('Login', () => {
 				type: 'login',
 				payload: true
 			})
+			toggleFlashMock.mockReturnValueOnce({type: 'f', payload: []});
 			validateSignupMock.mockReturnValueOnce({isValid: true, result: 'user'})
 			const submitBtn = wrapper.getByTestId('submit-button');
 			fireEvent.click(submitBtn);

@@ -25,7 +25,7 @@ const changeIconSpy = jest.spyOn(actions, 'changeHumanIcon');
 const isGameOverSpy = jest.spyOn(Selectors, 'isGameOver');
 const isComputerMoveSpy = jest.spyOn(Selectors, 'isComputerMove');
 const windowSetTimeout = jest.spyOn(window, 'setTimeout').mockImplementation(() => {});
-	const toggleFlashMock = jest.spyOn(actions, 'toggleFlash')
+const toggleFlashMock = jest.spyOn(actions, 'toggleFlash')
 
 
 const windowAlert = jest.spyOn(window, 'alert').mockImplementation(() => {});
@@ -104,6 +104,9 @@ describe('Game', () => {
 	it('dispatches SET_GAME_OVER with a winner and location if the game is tied', () => {
 		checkGameOverSpy.mockReturnValueOnce({winner: undefined});
 		randomCpuMoveSpy.mockReturnValueOnce({x: 0, y: 1});
+		toggleFlashMock.mockReturnValueOnce({
+			type:'TOGGLE_HAMBURGER_MENU',
+			payload: {message: 'tie', status: 1}})
 
 		const positionOne = wrapper.getByTestId('game').firstChild.firstChild;
 
@@ -113,8 +116,6 @@ describe('Game', () => {
 		const action = store.getActions().find(action => action.type === 'SET_GAME_OVER');
 		expect(action.payload.location).toBe(undefined);
 		expect(action.payload.winner).toBe(undefined);
-		expect(windowAlert).toHaveBeenCalledTimes(1);
-		expect(windowAlert).toHaveBeenCalledWith('its a tie');
 	})
 	it('dispatches GAME_OVER with the correct status if the game is over', () => {
 		toggleFlashMock.mockReturnValueOnce({type: 'f', payload: []});

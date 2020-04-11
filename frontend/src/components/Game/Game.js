@@ -51,17 +51,17 @@ const Game = (props) => {
 			dispatch(setGameOverStatus(gameTerminated));
 
 			if (gameTerminated.winner) {
-				alert(gameTerminated.winner);
-				dispatch(toggleFlash(`${gameTerminated.winner} won`, 1))	
+				const winStatus = (mode === 0 && computerMoveTrue) ? 3 : 1
+				dispatch(toggleFlash(`${gameTerminated.winner} won`, winStatus))	
 
 				dispatch(createGameOver(gameTerminated.winner, userIconRef, cpuIcon));
 			}
 			else {
-				alert('its a tie');
+				dispatch(toggleFlash('Its a tie', 1))	
 				dispatch(createGameOver(gameTerminated.winner, userIconRef, cpuIcon));
 			}
 		}
-	}, [board, dispatch, userIconRef, cpuIcon]);
+	}, [board, dispatch, userIconRef, cpuIcon, computerMoveTrue, mode]);
 
 	const onClick = (id) => {
 		if (!computerMoveTrue && !gameOver) {

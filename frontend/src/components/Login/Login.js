@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import validate from '../../validators/auth';
 import { loginUser, setErrors } from '../../redux/actions/auth';
 import { getErrors } from '../../redux/selectors/selectors'
+import { toggleFlash } from '../../redux/actions/actions';
 
 // Styles
 import './Login.css';
@@ -34,8 +35,9 @@ const Login = (props) => {
 			dispatch(setErrors(errors));
 		}
 		else {
-			dispatch(loginUser(result))
-			props.history.push('/')
+			dispatch(loginUser(result));
+			dispatch(toggleFlash(`Welcome ${result.username}`, 1));
+			props.history.push('/');
 		}
 	}
 

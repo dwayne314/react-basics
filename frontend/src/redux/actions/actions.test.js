@@ -9,6 +9,7 @@ import {
 	toggleSaveSession,
 	resetScore,
 	setFlashMessage,
+	toggleFlash,
 	CHANGE_GAME_MODE,
 	CHANGE_CURRENT_PLAYER,
 	GAME_OVER,
@@ -96,5 +97,11 @@ describe('actions', () => {
 			}
 		}
 		expect(setFlashMessage('an error', 1)).toEqual(action);
+	})
+	it('toggleFlash dispatches the setFlashMessage action', () => {
+		const setTimeoutMock = window.setTimeout = jest.fn();
+		const action = setFlashMessage('msg', 1)
+		expect(action.type).toBe('SET_FLASH_MESSAGE');
+		expect(action.payload.message).toBe('msg');
 	})
 })
