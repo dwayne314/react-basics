@@ -1,5 +1,5 @@
 // Library Dependencies
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Route } from 'react-router-dom';
 import { useLocation } from 'react-router';
@@ -23,17 +23,20 @@ const App = () => {
 	const location = useLocation();
 	const hiddenCls = useSelector(hamburgerMenuHiddenCls);
 	const dispatch = useDispatch();
-	const windowWidth = window.innerWidth;
 
-	const closeHamburgerMenu = () => {
-		dispatch(toggleHamburgerMenu(''));
-	}
+	const closeHamburgerMenu = useCallback(() => {
+		dispatch(toggleHamburgerMenu(''))
+	}, [dispatch])
 
 	useEffect(() => {
 		if (hiddenCls) {
 			closeHamburgerMenu()
 		}
-	}, [location.pathname])
+	}, [location.pathname, hiddenCls, closeHamburgerMenu])
+
+	useEffect(() => {
+		closeHamburgerMenu()
+	}, [location.pathname, closeHamburgerMenu])
 
 	useEffect(() => {
 	    window.addEventListener("resize", closeHamburgerMenu);
@@ -42,6 +45,7 @@ const App = () => {
 
 	return (
 			<div className="app">
+				<div></div>
 				<LoggedInBanner />
 				<Header />
 				<Route exact path="/" component={Home}></Route>

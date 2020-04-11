@@ -27,6 +27,13 @@ const HamburgerMenu = (props) => {
 		}
 	};
 
+	useEffect(() => {
+		document.addEventListener('click', closeHamburgerMenu);
+
+		return () => {
+			document.removeEventListener('click', closeHamburgerMenu);
+		}
+	});
 
 	return (
 		<div data-testid="hamburger-menu-container" className="hamburger-menu-container">

@@ -1,6 +1,7 @@
 .header-container {
 	height: var(--header-height);
 	margin-bottom: var(--section-margin);
+	position: relative;
 
 }
 
