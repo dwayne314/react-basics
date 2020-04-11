@@ -23,12 +23,22 @@ const App = () => {
 	const location = useLocation();
 	const hiddenCls = useSelector(hamburgerMenuHiddenCls);
 	const dispatch = useDispatch();
+	const windowWidth = window.innerWidth;
+
+	const closeHamburgerMenu = () => {
+		dispatch(toggleHamburgerMenu(''));
+	}
 
 	useEffect(() => {
 		if (hiddenCls) {
-			dispatch(toggleHamburgerMenu(''));
+			closeHamburgerMenu()
 		}
 	}, [location.pathname])
+
+	useEffect(() => {
+	    window.addEventListener("resize", closeHamburgerMenu);
+	    return () => window.removeEventListener("resize", closeHamburgerMenu);
+	});
 
 	return (
 			<div className="app">
