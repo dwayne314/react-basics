@@ -14,6 +14,7 @@ import {
 	TOGGLE_AI_ACTIVE,
 	TOGGLE_SAVE_SESSION,
 	RESET_SCORE,
+	SET_FLASH_MESSAGE
 } from '../actions/actions';
 import {
 	SET_ERRORS, SET_LOADING, SET_USER
@@ -482,5 +483,17 @@ describe('RootReducer', () => {
 		const expectedState = {currentUser: {id: 1, name: 'Fred'}};
 		const updatedState = rootReducer(initialState, action);
 		expect(updatedState).toStrictEqual(expectedState)
+	})
+	it('setFlashMessage adds the flash message to the state', () => {
+		const initialState = {flashMessage: {}};
+		const action = {
+			type: SET_FLASH_MESSAGE,
+			payload: {message: 'Error', severity: 1}
+		};
+
+		const expectedState = {flashMessage: {message: 'Error', severity: 1}};
+		const updatedState = rootReducer(initialState, action);
+		expect(updatedState).toStrictEqual(expectedState)
+		
 	})
 })

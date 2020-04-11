@@ -16,6 +16,7 @@ import Logout from '../Logout/Logout';
 import Signup from '../Signup/Signup';
 import Settings from '../Settings/Settings';
 import LoggedInBanner from '../LoggedInBanner/LoggedInBanner';
+import FlashMessage from '../FlashMessage/FlashMessage';
 
 
 const App = () => {
@@ -32,7 +33,7 @@ const App = () => {
 		if (hiddenCls) {
 			closeHamburgerMenu()
 		}
-	}, [location.pathname, hiddenCls, closeHamburgerMenu])
+	}, [hiddenCls, closeHamburgerMenu])
 
 	useEffect(() => {
 		closeHamburgerMenu()
@@ -45,7 +46,7 @@ const App = () => {
 
 	return (
 			<div className="app">
-				<div></div>
+				<FlashMessage />
 				<LoggedInBanner />
 				<Header />
 				<Route exact path="/" component={Home}></Route>

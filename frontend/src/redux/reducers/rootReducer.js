@@ -12,7 +12,8 @@ import {
 	TOGGLE_HAMBURGER_MENU,
 	TOGGLE_AI_ACTIVE,
 	TOGGLE_SAVE_SESSION,
-	RESET_SCORE
+	RESET_SCORE,
+	SET_FLASH_MESSAGE
 } from '../actions/actions';
 
 import { SET_ERRORS, SET_LOADING, SET_USER} from '../actions/auth';
@@ -39,7 +40,11 @@ const initialState = {
 	},
 	errors: {},
 	isLoading: false,
-	currentUser: {}
+	currentUser: {},
+	flashMessage: {
+		message: null,
+		severity: 1,
+	}
 };
 
 export const rootReducer = (state=initialState, action) => {
@@ -195,7 +200,15 @@ export const rootReducer = (state=initialState, action) => {
 				...state,
 				currentUser: action.payload
 			}
+		case SET_FLASH_MESSAGE:
+			return {
+				...state,
+				flashMessage: {
+					...action.payload
+				}
+			}
 		default:
 			return state;
+
 	}
 };

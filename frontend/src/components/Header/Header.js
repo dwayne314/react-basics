@@ -28,6 +28,7 @@ const Header = () => {
 	const handleHamburgerMenuClick = () => {
 		dispatch(toggleHamburgerMenu(hiddenCls))
 	}
+	
 
 	return (
 		<div className="header-container">

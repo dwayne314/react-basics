@@ -8,6 +8,7 @@ import {
 	toggleAIActive,
 	toggleSaveSession,
 	resetScore,
+	setFlashMessage,
 	CHANGE_GAME_MODE,
 	CHANGE_CURRENT_PLAYER,
 	GAME_OVER,
@@ -15,7 +16,8 @@ import {
 	TOGGLE_HAMBURGER_MENU,
 	TOGGLE_AI_ACTIVE,
 	TOGGLE_SAVE_SESSION,
-	RESET_SCORE
+	RESET_SCORE,
+	SET_FLASH_MESSAGE
 } from './actions';
 
 
@@ -84,5 +86,15 @@ describe('actions', () => {
 			type: RESET_SCORE
 		}
 		expect(resetScore()).toEqual(action);
+	})
+	it('setFlashMessage returns a payload with the message and severity correctly', () => {
+		const action = {
+			type: SET_FLASH_MESSAGE,
+			payload: {
+				message: 'an error',
+				severity: 1
+			}
+		}
+		expect(setFlashMessage('an error', 1)).toEqual(action);
 	})
 })

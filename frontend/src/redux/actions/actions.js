@@ -11,6 +11,7 @@ export const TOGGLE_HAMBURGER_MENU = 'TOGGLE_HAMBURGER_MENU';
 export const TOGGLE_AI_ACTIVE = 'TOGGLE_AI_ACTIVE';
 export const TOGGLE_SAVE_SESSION = 'TOGGLE_SAVE_SESSION';
 export const RESET_SCORE = 'RESET_SCORE';
+export const SET_FLASH_MESSAGE = 'SET_FLASH_MESSAGE';
 
 
 export const createGameOver = (winner, humanIcon, cpuIcon) => {
@@ -110,6 +111,24 @@ export const toggleHamburgerMenu = (hiddenCls) => {
 		}
 	}
 };
+
+export const setFlashMessage = (message, severity) => {
+	return {
+		type: SET_FLASH_MESSAGE,
+		payload: {
+			message: message,
+			severity: severity ? severity : 1
+		}
+	}
+}
+
+export const toggleFlash = (message, severity) => dispatch => {
+	dispatch(setFlashMessage(message, severity));
+	window.setTimeout(
+		dispatch.bind(null, setFlashMessage(null, null)),
+		5000
+	)
+}
 
 export const toggleAIActive = (activeStatus) => {
 

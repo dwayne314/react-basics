@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // App Dependencies
 import Position from '../Position/Position';
+import { toggleFlash } from '../../redux/actions/actions';
 
 // Utility Dependencies
 import {
@@ -51,6 +52,8 @@ const Game = (props) => {
 
 			if (gameTerminated.winner) {
 				alert(gameTerminated.winner);
+				dispatch(toggleFlash(`${gameTerminated.winner} won`, 1))	
+
 				dispatch(createGameOver(gameTerminated.winner, userIconRef, cpuIcon));
 			}
 			else {

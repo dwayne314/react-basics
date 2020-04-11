@@ -18,8 +18,7 @@ export const getLocation = (id) => {
 
 export const getPositionIcon = (location, board) => {
 	const positionDisplay = board[location.x][location.y];
-	// console.log(positionDisplay)
-	// console.log(location)
+
 	if (Boolean(positionDisplay.length)) {
 		return positionDisplay[0];
 	}

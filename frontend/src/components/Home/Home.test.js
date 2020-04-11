@@ -8,6 +8,7 @@ import Home from './Home';
 
 // Test Dependencies
 import { createMockStore } from '../../test-utils';
+import * as actions from '../../redux/actions/actions';
 
 // Mock Dependencies
 import * as ReactReduxHooks from 'react-redux';
@@ -16,8 +17,11 @@ import * as ReactReduxHooks from 'react-redux';
 describe('Home', () => {
 	let wrapper;
 	let store;
+	// let toggleFlashMock;
 
 	beforeEach(() => {
+		// toggleFlashMock = jest.spyOn(actions, 'toggleFlash')
+
 		const initialState = {
 			games: [],
 			gameState: {
@@ -31,28 +35,39 @@ describe('Home', () => {
 					[[], [], []],
 					[[], [], []]
 				]
-			}
+			},
+			flashMessage: {
+				message: 'I\'m a message from the state',
+				severity: 1
+			}			
 		};
 		store = createMockStore([], initialState);
 
 		jest
 			.spyOn(ReactReduxHooks, "useDispatch")
 			.mockImplementation(() => store.dispatch);
-			wrapper = render(
-				<Provider store={store}>
-					<Home />
-				</Provider>);
+		wrapper = render(
+			<Provider store={store}>
+				<Home />
+			</Provider>);
 	});
+	
 	afterEach(() => {
 		store.clearActions();
+		jest.resetAllMocks();
 	});
 	
 	it('renders the login container', () => {
+		// toggleFlashMock.mockImplementationOnce(
+        // () => {type: 'f'});
+
+		// mockImplementationOnce(() => {type: 'f', payload: []});
 		const homeTitle = wrapper.getByTestId('home-title');
 		expect(homeTitle.innerHTML).toBe("Human vs Computer");
 	})
 	it('changes the game mode when the button is clicked.', () => {
-		
+		// toggleFlashMock.mockReturnValueOnce({type: 'f', payload: []});
+
 		const humanMode = wrapper.getByTestId("game-mode-human");
 		act(() => {
 			fireEvent.click(humanMode);
@@ -62,6 +77,7 @@ describe('Home', () => {
 		expect(action.payload.gameMode).toBe(1);
 	})
 	it('changes the game order to human when the human button is clicked.', () => {
+		// toggleFlashMock.mockReturnValueOnce({type: 'f', payload: []});
 		const humanFirst = wrapper.getByTestId("game-order-human");
 
 		act(() => {
@@ -73,6 +89,7 @@ describe('Home', () => {
 		expect(action.payload.gameOrder).toBe('H');
 	})
 	it('changes the game order to computer when the cpu button is clicked.', () => {
+		// toggleFlashMock.mockReturnValueOnce({type: 'f', payload: []});		
 		const cpuFirst = wrapper.getByTestId("game-order-cpu");
 
 		act(() => {
@@ -83,6 +100,7 @@ describe('Home', () => {
 		expect(action.payload.gameOrder).toBe('C');;
 	})
 	it('changes the game order to alternate when the alternate button is clicked.', () => {
+		// toggleFlashMock.mockReturnValueOnce({type: 'f', payload: []});
 		const alternateFirst = wrapper.getByTestId("game-order-alternate");
 
 		act(() => {
