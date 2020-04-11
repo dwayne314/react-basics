@@ -11,8 +11,7 @@ import {
 	makeMove,
 	changeHumanIcon,
 	setGameOverStatus,
-	setComputerMove,
-	clearBoard
+	setComputerMove
 } from '../../redux/actions/actions';
 import {
 	getGameBoard,

@@ -1,5 +1,5 @@
 // Library Dependencies
-import React from 'react';
+import React, { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -23,6 +23,7 @@ const Header = () => {
 
 	const hiddenCls = useSelector(hamburgerMenuHiddenCls)
 	const userLoggedIn = useSelector(getCurrentUser);
+	const hamburgerMenuIconRef = useRef(null);
 
 	const handleHamburgerMenuClick = () => {
 		dispatch(toggleHamburgerMenu(hiddenCls))
@@ -53,11 +54,11 @@ const Header = () => {
 					</Link>
 				</div>
 			</span>
-			<span data-testid="hamburger-menu-icon" className="mobile-settings-menu" onClick={handleHamburgerMenuClick}>
+			<span data-testid="hamburger-menu-icon" ref={hamburgerMenuIconRef} className="mobile-settings-menu" onClick={handleHamburgerMenuClick}>
 				<img src={hamburgerMenu} alt="settings-menu"/>
 			</span>
 
-			<HamburgerMenu/>
+			<HamburgerMenu hamburgerMenuIcon={hamburgerMenuIconRef.current}/>
 		</div>
 	);
 };

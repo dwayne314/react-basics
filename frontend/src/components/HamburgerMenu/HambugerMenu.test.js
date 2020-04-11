@@ -14,35 +14,40 @@ import { createMockStore } from '../../test-utils';
 import * as Selectors from '../../redux/selectors/selectors';
 import * as Actions from '../../redux/actions/actions';
 
-
 const hamburgerMenuHiddenClsSpy = jest.spyOn(Selectors, 'hamburgerMenuHiddenCls');
 const toggleHamburgerMenuSpy = jest.spyOn(Actions, 'toggleHamburgerMenu');
 
 describe('HamburgerMenu', () => {
 	let wrapper;
-	let initialState;
+	let initialState = {
+		hamburgerMenuHiddenCls: '',
+		games: [],
+		gameState: {
+			gameOrder: 'A',
+			gameMode: 0,
+			currentPlayer: 'X',
+			humanIcon: 'X',
+			cpuIcon: 'O',
+			currentBoard: [
+				[[], [], []],
+				[[], [], []],
+				[[], [], []]
+			]
+		},
+		currentUser: {}
+	};
 	let store;
+	let map;
 
 	beforeEach(() => {
 		jest.useFakeTimers();
-
-		initialState = {
-			hamburgerMenuHiddenCls: '',
-			games: [],
-			gameState: {
-				gameOrder: 'A',
-				gameMode: 0,
-				currentPlayer: 'X',
-				humanIcon: 'X',
-				cpuIcon: 'O',
-				currentBoard: [
-					[[], [], []],
-					[[], [], []],
-					[[], [], []]
-				]
-			},
-			currentUser: {}
-		};
+		map = {};
+		document.addEventListener = jest.fn((event, cb) => {
+		  map[event] = cb;
+		});
+		document.removeEventListener = jest.fn((event, cb) => {
+		  map[event] = undefined;
+		});
 
 	});
 	afterEach(() => {
@@ -103,3 +108,32 @@ describe('HamburgerMenu', () => {
 		expect(logoutLink).toBeFalsy();
 	})
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

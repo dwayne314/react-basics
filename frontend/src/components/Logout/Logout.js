@@ -16,8 +16,6 @@ const Logout = (props) => {
 		if (!isEmpty(userLoggedIn)) {
 			dispatch(logoutUser());
 		}
-		console.log(props.history)
-		alert()
 		props.history.push('/');
 
 

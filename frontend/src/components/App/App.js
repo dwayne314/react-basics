@@ -1,7 +1,12 @@
 // Library Dependencies
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Route } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import { useLocation } from 'react-router';
+
+// Utility Dependencies
+import { toggleHamburgerMenu } from '../../redux/actions/actions';
+import { hamburgerMenuHiddenCls } from '../../redux/selectors/selectors';
 
 // App Dependencies
 import Header from '../Header/Header';
@@ -12,13 +17,20 @@ import Signup from '../Signup/Signup';
 import Settings from '../Settings/Settings';
 import LoggedInBanner from '../LoggedInBanner/LoggedInBanner';
 
-// Utility Dependencies
-import { store } from '../../redux/store/store';
-
 
 const App = () => {
+
+	const location = useLocation();
+	const hiddenCls = useSelector(hamburgerMenuHiddenCls);
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		if (hiddenCls) {
+			dispatch(toggleHamburgerMenu(''));
+		}
+	}, [location.pathname])
+
 	return (
-		<Provider store={store}>
 			<div className="app">
 				<LoggedInBanner />
 				<Header />
@@ -28,7 +40,6 @@ const App = () => {
 				<Route exact path="/login" component={Login}></Route>
 				<Route exact path="/logout" component={Logout}></Route>
 			</div>
-		</Provider>
 	);
 };
 
