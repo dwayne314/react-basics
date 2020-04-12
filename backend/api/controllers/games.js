@@ -20,7 +20,30 @@ module.exports = {
 
 		return res.status(401).json(validationErrs)
 	},
-	delete: (req, res, next) => {
-		return res.json('Patching to game route');
-	}
+	delete: async (req, res, next) => {
+		let userId;
+		if (req.isAuthenticated()) {
+			userId = ((req.user || {})).id;
+
+			const { isValid, error, deletedMessage } = await gameServices.deleteGames(userId);
+			if (isValid) {
+				return res.status(201).json(deletedMessage);
+			}
+			return res.status(401).json(error);
+		}
+		return res.status(401).json({auth: 'User not authenticated'});
+	},
+	get: async (req, res, next) => {
+		let userId;
+		if (req.isAuthenticated()) {
+			userId = ((req.user || {})).id;
+
+			const { isValid, error, games } = await gameServices.getGamesByUser(userId);
+			if (isValid) {
+				return res.status(201).json(games);
+			}
+			return res.status(401).json(error);
+		}
+		return res.status(401).json({auth: 'User not authenticated'});
+	}	
 };

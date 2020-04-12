@@ -4,6 +4,7 @@ const gameRouter = express.Router();
 
 
 gameRouter.post('/', gameController.save);
-gameRouter.patch('/', gameController.delete);
+gameRouter.post('/delete', gameController.delete);
+gameRouter.get('/', gameController.get);
 
 module.exports = gameRouter;

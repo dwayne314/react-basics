@@ -72,4 +72,63 @@ describe('authService', () => {
 			expect(isValid).toBe(false);
 		})
 	})
+	describe('deleteGames', () => {
+		const userId = 1;
+		const deleteGamesMock = jest.spyOn(Games, 'deleteMany');
+
+		it('returns the \'games deleted\' if no errors are thrown', async () => {
+			deleteGamesMock.mockImplementationOnce(
+				() => new Promise((resolved, rejected) => {
+					resolved('');
+				})
+			)
+			const { error, isValid, deletedMessage} = await gamesServices.deleteGames(userId);
+			expect(error).toBe(null);
+			expect(isValid).toBe(true);
+			expect(deletedMessage).toBe('games deleted');
+		})
+		it('returns the error if an error is thrown', async () => {
+			const userId = 1;
+			const deleteGamesError = 'Cannot Delete';
+			deleteGamesMock.mockImplementationOnce(
+				() => new Promise((resolved, rejected) => {
+					rejected(deleteGamesError);
+				})
+			)
+			const { error, isValid, deletedMessage} = await gamesServices.deleteGames(userId);
+			expect(error).toBe(deleteGamesError);
+			expect(isValid).toBe(false);
+			expect(deletedMessage).toBe(null);
+		})
+	})
+	describe('getGamesByUser', () => {
+		const getGamesMock = jest.spyOn(Games, 'find');
+
+		it('returns the games if no errors are thrown', async () => {
+			const expectedGames = [{id: 1}, {id: 2}]
+			getGamesMock.mockImplementationOnce(
+				() => new Promise((resolved, rejected) => {
+					resolved(expectedGames)
+				})
+			)
+			const userId = 1;
+			const { error, isValid, games} = await gamesServices.getGamesByUser(userId);
+			expect(error).toBe(null);
+			expect(isValid).toBe(true);
+			expect(games).toStrictEqual(expectedGames);
+		})
+		it('returns the error if an error is thrown', async () => {
+			const expectedError = 'Error'
+			getGamesMock.mockImplementationOnce(
+				() => new Promise((resolved, rejected) => {
+					rejected(expectedError)
+				})
+			)
+			const userId = 1;
+			const { error, isValid, games} = await gamesServices.getGamesByUser(userId);
+			expect(error).toBe(expectedError);
+			expect(isValid).toBe(false);
+			expect(games).toBe(null);
+		})
+	})
 })
