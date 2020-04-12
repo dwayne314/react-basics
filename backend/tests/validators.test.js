@@ -127,7 +127,7 @@ describe('Validators', () => {
 		})
 	})
 	describe('validateSaveGame', () => {
-		let win ='';
+		let status ='';
 		let human_first ='';
 		let ai_active ='';
 		let userId ='';
@@ -137,17 +137,17 @@ describe('Validators', () => {
 				() => new Promise((resolved, rejected) =>{
 					resolved('')
 				}))
-			const {errors, result, isValid } = await gameValidators.validateGameSave({win, human_first, ai_active, userId});
+			const {errors, result, isValid } = await gameValidators.validateGameSave({status, human_first, ai_active, userId});
 
 			expect(errors.isValid).toBeFalsy();
 			expect(errors.result).toBeFalsy();
-			expect(errors.win.msg).toBeTruthy();
+			expect(errors.status.msg).toBeTruthy();
 			expect(errors.human_first.msg).toBeTruthy();
 			expect(errors.ai_active.msg).toBeTruthy();
 			expect(errors.user.msg).toBeTruthy();
 		})
 		it('no errors are thrown if all fields are included', async () => {
-			win = 1;
+			status = -1;
 			human_first = 1;
 			ai_active = 1;
 			userId = 1;
@@ -156,10 +156,10 @@ describe('Validators', () => {
 				() => new Promise((resolved, rejected) =>{
 					resolved('')
 				}))
-			const {errors, result, isValid } = await gameValidators.validateGameSave({win, human_first, ai_active, userId});
+			const {errors, result, isValid } = await gameValidators.validateGameSave({status, human_first, ai_active, userId});
 			expect(errors).toBeFalsy();
 			expect(result).toBeTruthy();
-			expect(result.win).toBe(win);
+			expect(result.status).toBe(status);
 			expect(result.human_first).toBe(human_first);
 			expect(result.ai_active).toBe(ai_active);
 			expect(result.played_by).toBe(userId);

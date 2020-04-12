@@ -2,11 +2,11 @@ const Validator = require('validator');
 const utils = require('../utils');
 
 
-const validateGameSave = async ({win='', human_first='', ai_active='', userId=''}) => {
+const validateGameSave = async ({status='', human_first='', ai_active='', userId=''}) => {
 	let errors = {};
 
-	if (!win) {
-		errors.win = utils.getErrors('game', 'required', {fieldName: 'Win'})
+	if (!status) {
+		errors.status = utils.getErrors('game', 'required', {fieldName: 'Status'})
 	}
 	if (!human_first) {
 		errors.human_first = utils.getErrors('game', 'required', {fieldName: 'Human first'})
@@ -20,7 +20,7 @@ const validateGameSave = async ({win='', human_first='', ai_active='', userId=''
 
 	return {
 		errors: utils.isEmpty(errors) ? null : errors,
-		result: utils.isEmpty(errors) ? {win, human_first, ai_active, played_by: userId} : null,
+		result: utils.isEmpty(errors) ? {status, human_first, ai_active, played_by: userId} : null,
 		isValid: utils.isEmpty(errors)
 	};
 }

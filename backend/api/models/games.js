@@ -3,8 +3,8 @@ const customHooks = require('./hooks');
 
 
 const GameSchema = new mongoose.Schema({
-	win: {
-		type: Boolean,
+	status: {
+		type: Number,
 		required: true,
 	},
 	human_first: {

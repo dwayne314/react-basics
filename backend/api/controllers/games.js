@@ -3,14 +3,14 @@ const gameServices = require('../services/games');
 
 module.exports = {
 	save: async (req, res, next) => {
-		const { win, human_first, ai_active } = req.body;
+		const { status, human_first, ai_active } = req.body;
 		let userId;
 		if (req.isAuthenticated()) {
 			userId = ((req.user || {})).id;
 		}
 
 		const { errors: validationErrs, result, isValid: gameSaveValid} = await validators.validateGameSave(
-			{ win, human_first, ai_active, userId })
+			{ status, human_first, ai_active, userId })
 
 		if (gameSaveValid) {
 			const { newGame, error, isValid } = await gameServices.saveGame(result)
