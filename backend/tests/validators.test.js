@@ -1,4 +1,5 @@
-const validators = require('../api/validators/auth');
+const authValidators = require('../api/validators/auth');
+const gameValidators = require('../api/validators/games');
 const Utils = require('../api/utils');
 const Users = require('../api/models/users');
 
@@ -28,7 +29,7 @@ describe('Validators', () => {
 				() => new Promise((resolved, rejected) =>{
 					resolved('')
 				}))
-			const {errors, result, isValid } = await validators.validateRegistration({first_name, last_name, username, password});
+			const {errors, result, isValid } = await authValidators.validateRegistration({first_name, last_name, username, password});
 
 			expect(errors.isValid).toBeFalsy();
 			expect(errors.result).toBeFalsy();
@@ -44,7 +45,7 @@ describe('Validators', () => {
 				() => new Promise((resolved, rejected) =>{
 					rejected('rejectedPromise')
 				}))
-			const {errors, result, isValid } = await validators.validateRegistration({first_name, last_name, username, password});
+			const {errors, result, isValid } = await authValidators.validateRegistration({first_name, last_name, username, password});
 
 			expect(errors.isValid).toBeFalsy();
 			expect(errors.result).toBeFalsy();
@@ -60,7 +61,7 @@ describe('Validators', () => {
 				() => new Promise((resolved, rejected) =>{
 					resolved('')
 				}))
-			const {errors, result, isValid } = await validators.validateRegistration({first_name, last_name, username, password});
+			const {errors, result, isValid } = await authValidators.validateRegistration({first_name, last_name, username, password});
 
 			expect(errors.isValid).toBeFalsy();
 			expect(errors.result).toBeFalsy();
@@ -79,7 +80,7 @@ describe('Validators', () => {
 				() => new Promise((resolved, rejected) =>{
 					rejected(undefined)
 				}))
-			const {errors, result, isValid } = await validators.validateRegistration({first_name, last_name, username, password});
+			const {errors, result, isValid } = await authValidators.validateRegistration({first_name, last_name, username, password});
 
 			expect(errors).toBeFalsy();
 			expect(result).toBeTruthy();
@@ -98,7 +99,7 @@ describe('Validators', () => {
 				() => new Promise((resolved, rejected) =>{
 					rejected(errorMsg)
 				}))
-			const {errors, result, isValid } = await validators.validateRegistration({first_name, last_name, username, password});
+			const {errors, result, isValid } = await authValidators.validateRegistration({first_name, last_name, username, password});
 
 			expect(consoleMock).toHaveBeenCalledWith(errorMsg);
 		})
@@ -112,17 +113,56 @@ describe('Validators', () => {
 				() => new Promise((resolved, rejected) =>{
 					resolved(errorMsg)
 				}))
-			const {errors, result, isValid } = await validators.validateRegistration({first_name, last_name, username, password});
+			const {errors, result, isValid } = await authValidators.validateRegistration({first_name, last_name, username, password});
 
 			expect(errors.username.msg).toBe('Username already exists')
 		})
 	})
 	describe('validatePassword', () => {
 		it('returns true if the passwords are equal', () => {
-			expect(validators.validatePassword('pw1', 'pw1')).toBeTruthy();
+			expect(authValidators.validatePassword('pw1', 'pw1')).toBeTruthy();
 		})
 		it('returns false if the passwords are not equal', () => {
-			expect(validators.validatePassword('pw1', 'pw2')).toBeFalsy();
+			expect(authValidators.validatePassword('pw1', 'pw2')).toBeFalsy();
+		})
+	})
+	describe('validateSaveGame', () => {
+		let win ='';
+		let human_first ='';
+		let ai_active ='';
+		let userId ='';
+
+		it('missing fields have error messages', async () => {
+			findUserMock.mockImplementationOnce(
+				() => new Promise((resolved, rejected) =>{
+					resolved('')
+				}))
+			const {errors, result, isValid } = await gameValidators.validateGameSave({win, human_first, ai_active, userId});
+
+			expect(errors.isValid).toBeFalsy();
+			expect(errors.result).toBeFalsy();
+			expect(errors.win.msg).toBeTruthy();
+			expect(errors.human_first.msg).toBeTruthy();
+			expect(errors.ai_active.msg).toBeTruthy();
+			expect(errors.user.msg).toBeTruthy();
+		})
+		it('no errors are thrown if all fields are included', async () => {
+			win = 1;
+			human_first = 1;
+			ai_active = 1;
+			userId = 1;
+
+			findUserMock.mockImplementationOnce(
+				() => new Promise((resolved, rejected) =>{
+					resolved('')
+				}))
+			const {errors, result, isValid } = await gameValidators.validateGameSave({win, human_first, ai_active, userId});
+			expect(errors).toBeFalsy();
+			expect(result).toBeTruthy();
+			expect(result.win).toBe(win);
+			expect(result.human_first).toBe(human_first);
+			expect(result.ai_active).toBe(ai_active);
+			expect(result.played_by).toBe(userId);
 		})
 	})
 })

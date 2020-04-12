@@ -8,6 +8,10 @@ const getErrors = (cls, type, data) => {
 	else if (type === 'duplicate') {
 		return {cls: cls, msg: `${data.fieldName} already exists`}
 	}
+	else if (type === 'authentication') {
+		console.log(type)
+		return {cls: cls, msg: 'Invalid authorization'}
+	}
 	return null;
 }
 

@@ -5,10 +5,11 @@ module.exports = {
 		res.json = jest.fn().mockReturnValue(res);
 		return res;
 	},
-	getMockRequest: (body={}) => {
+	getMockRequest: (body={}, isAuthenticated={}) => {
 		const req = {};
 		req.body = jest.fn().mockReturnValue(body);
-		req.logout = jest.fn().mockReturnValue(req)
+		req.logout = jest.fn().mockReturnValue(req);
+		req.isAuthenticated = jest.fn().mockReturnValue(isAuthenticated);
 		return req
 	}
 }

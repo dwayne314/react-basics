@@ -22,11 +22,18 @@ describe('Utils', () => {
 			expect(cls).toBe(expectedResult.cls);
 			expect(msg).toBe(expectedResult.msg);
 		})
-		it('returns the correct class and message if the field name is minMax', () => {
+		it('returns the correct class and message if the type is authentication', () => {
+			const expectedResult = {cls: 'errorClass'};
+			const {msg, cls} = getErrors('errorClass', 'authentication');
+			expect(cls).toBe(expectedResult.cls);
+			expect(msg).toBe('Invalid authorization');
+		})
+		it('returns null if the errorType is not specified', () => {
 			const expectedResult = null;
 			const returnError = getErrors();
 			expect(returnError).toBe(null);
 		})
+
 	})
 	describe('isEmpty', () => {
 		it('returns true if an object is empty', () => {

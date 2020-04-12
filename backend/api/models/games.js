@@ -1,4 +1,4 @@
-const mongoose = reuqire('mongoose');
+const mongoose = require('mongoose');
 const customHooks = require('./hooks');
 
 
@@ -11,8 +11,13 @@ const GameSchema = new mongoose.Schema({
 		type: Boolean,
 		required: true,
 	},
-	aiActive: {
+	ai_active: {
 		type: Boolean,
+		required: true,
+	},
+	played_by: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Users',
 		required: true,
 	},
 	created_at: {
