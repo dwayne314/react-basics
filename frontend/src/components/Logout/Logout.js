@@ -1,6 +1,7 @@
 import { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../../redux/actions/auth';
+import { clearBoard, resetScore } from '../../redux/actions/actions';
 
 // Utility Dependencies
 import { getCurrentUser } from '../../redux/selectors/selectors';
@@ -15,7 +16,8 @@ const Logout = (props) => {
 
 		if (!isEmpty(userLoggedIn)) {
 			dispatch(logoutUser());
-			// dispatch reset score
+			dispatch(clearBoard());
+			dispatch(resetScore());
 		}
 		props.history.push('/');
 

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { initializeGames, toggleFlash } from './actions';
+import { initializeGames } from './actions';
 
 
 export const SET_ERRORS = 'SET_ERRORS';

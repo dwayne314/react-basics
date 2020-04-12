@@ -25,7 +25,7 @@ import {
 	isComputerMove,
 	getCurrentUser,
 	getLastFirstMove,
-	getGameMode
+	isSessionSaved
 } from '../../redux/selectors/selectors';
 import { 
 	getLocation, 
@@ -49,7 +49,8 @@ const Game = (props) => {
 	const computerMoveTrue = useSelector(isComputerMove);
 	const userLoggedIn = useSelector(getCurrentUser);
 	const lastFirstMove = useSelector(getLastFirstMove);
-	const gameMode = useSelector(getGameMode);
+	const saveSessionTrue = useSelector(isSessionSaved);
+	
 	const dispatch = useDispatch();
 
 	const handleMakeMove = useCallback((location, icon) => {
@@ -66,13 +67,12 @@ const Game = (props) => {
 				dispatch(toggleFlash(`${gameTerminated.winner} won`, winStatus))	
 			}
 			else {
-				status = 0;
 				dispatch(toggleFlash('Its a tie', 1))	
 			}
-			if (gameMode === 0) {
+			if (mode === 0) {
 				dispatch(createGameOver(gameTerminated.winner, userIconRef, cpuIcon));
 
-				if (!isEmpty(userLoggedIn)) {
+				if (!isEmpty(userLoggedIn) && saveSessionTrue) {
 					dispatch(saveGameStatus(status, lastFirstMove, 0))	
 				}	
 			}
@@ -80,7 +80,7 @@ const Game = (props) => {
 			
 
 		}
-	}, [board, dispatch, userIconRef, cpuIcon, computerMoveTrue, mode]);
+	}, [board, dispatch, userIconRef, cpuIcon, computerMoveTrue, mode, lastFirstMove, userLoggedIn]);
 
 	const onClick = (id) => {
 		if (!computerMoveTrue && !gameOver) {

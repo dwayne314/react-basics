@@ -8,7 +8,7 @@
 
 [X] Who goes first will alternate if the game is against the computer by default with functionality to decide who goes first.
 [X] The color of the winning combination will highlight green.
-* The score is logged and the player and decide to reset it.
+[X] The score is logged and the player and decide to reset it.
 
 ## Future Additions
 

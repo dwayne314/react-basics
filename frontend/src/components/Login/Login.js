@@ -2,11 +2,10 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import validate from '../../validators/auth';
-import { loginUser, setErrors } from '../../redux/actions/auth';
-import { initializeGames } from '../../redux/actions/actions';
-import { fetchGames } from '../../redux/actions/auth';
-import { getErrors } from '../../redux/selectors/selectors'
-import { toggleFlash } from '../../redux/actions/actions';
+import { loginUser, setErrors, fetchGames } from '../../redux/actions/auth';
+import { getErrors, getCurrentUser } from '../../redux/selectors/selectors'
+import { toggleFlash, clearBoard, resetScore } from '../../redux/actions/actions';
+import { isEmpty } from '../../utils/utils';
 
 // Styles
 import './Login.css';
@@ -18,6 +17,7 @@ const Login = (props) => {
 
 	const dispatch = useDispatch();
 	const errors = useSelector(getErrors)
+	const userLoggedIn = useSelector(getCurrentUser);
 
 	const updateUsername = (evt) => {
 		setUsername(evt.target.value)
@@ -37,6 +37,8 @@ const Login = (props) => {
 			dispatch(setErrors(errors));
 		}
 		else {
+			dispatch(clearBoard());
+			dispatch(resetScore());
 			props.history.push('/');
 			await dispatch(loginUser(result));
 			await dispatch(fetchGames())
