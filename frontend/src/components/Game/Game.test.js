@@ -11,17 +11,20 @@ import { createMockStore } from '../../test-utils';
 import { rootReducer } from '../../redux/reducers/rootReducer';
 
 // Mock Dependencies
-import * as Utils from '../../utils/TicTacToe/TicTacToe';
+import * as gameUtils from '../../utils/TicTacToe/TicTacToe';
+import * as appUtils from '../../utils/utils';
 import * as actions from '../../redux/actions/actions';
 import * as Selectors from '../../redux/selectors/selectors';
 
 
-const randomCpuMoveSpy = jest.spyOn(Utils, 'makeRandomComputerMove');
-const checkGameOverSpy = jest.spyOn(Utils, 'checkGameOver');
-const getPositionIconSpy = jest.spyOn(Utils, 'getPositionIcon');
+const randomCpuMoveSpy = jest.spyOn(gameUtils, 'makeRandomComputerMove');
+const checkGameOverSpy = jest.spyOn(gameUtils, 'checkGameOver');
+const getPositionIconSpy = jest.spyOn(gameUtils, 'getPositionIcon');
+const isEmptyMock = jest.spyOn(appUtils, 'isEmpty')
 
-const getPositionStatusClassSpy = jest.spyOn(Utils, 'getPositionStatusClass');
+const getPositionStatusClassSpy = jest.spyOn(gameUtils, 'getPositionStatusClass');
 const changeIconSpy = jest.spyOn(actions, 'changeHumanIcon');
+const saveGameStatusSpy = jest.spyOn(actions, 'saveGameStatus');
 const isGameOverSpy = jest.spyOn(Selectors, 'isGameOver');
 const isComputerMoveSpy = jest.spyOn(Selectors, 'isComputerMove');
 const windowSetTimeout = jest.spyOn(window, 'setTimeout').mockImplementation(() => {});
@@ -85,7 +88,10 @@ describe('Game', () => {
 	})
 	it('dispatches SET_GAME_OVER with a winner and location if the game is won', () => {
 		toggleFlashMock.mockReturnValueOnce({type: 'f', payload: []});
-
+		saveGameStatusSpy.mockReturnValueOnce({
+			type: 'saveGame',
+			payload: true
+		});	
 		const { humanIcon } = store.getState().gameState;
 		const location = [['X', 'X', 'X']]
 
@@ -107,7 +113,10 @@ describe('Game', () => {
 		toggleFlashMock.mockReturnValueOnce({
 			type:'TOGGLE_HAMBURGER_MENU',
 			payload: {message: 'tie', status: 1}})
-
+		saveGameStatusSpy.mockReturnValueOnce({
+			type: 'saveGame',
+			payload: true
+		});	
 		const positionOne = wrapper.getByTestId('game').firstChild.firstChild;
 
 		act(() => {
@@ -119,6 +128,10 @@ describe('Game', () => {
 	})
 	it('dispatches GAME_OVER with the correct status if the game is over', () => {
 		toggleFlashMock.mockReturnValueOnce({type: 'f', payload: []});
+		saveGameStatusSpy.mockReturnValueOnce({
+			type: 'saveGame',
+			payload: true
+		});		
 		const { humanIcon } = store.getState().gameState;
 
 		checkGameOverSpy.mockReturnValueOnce({winner: humanIcon, location:[]});
@@ -135,6 +148,10 @@ describe('Game', () => {
 	})
 	it('The mergeboard function will highlight the winning squares if the human won', () => {
 		toggleFlashMock.mockReturnValueOnce({type: 'f', payload: []});
+		saveGameStatusSpy.mockReturnValueOnce({
+			type: 'saveGame',
+			payload: true
+		});			
 		const location = [
 			{x: 0, y: 0},
 			{x: 0, y: 1},
@@ -151,7 +168,11 @@ describe('Game', () => {
 		expect(action.payload.winner).toBe('X');
 	})
 	it('The mergeBoard function will highlight the losing squares if the cpu won', () => {
-		toggleFlashMock.mockReturnValueOnce({type: 'f', payload: []});		
+		toggleFlashMock.mockReturnValueOnce({type: 'f', payload: []});
+		saveGameStatusSpy.mockReturnValueOnce({
+			type: 'saveGame',
+			payload: true
+		});	
 		const { cpuIcon } = store.getState().gameState;
 		const location = [
 			{x: 0, y: 0},

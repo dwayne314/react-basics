@@ -37,10 +37,11 @@ export const getGameOrder = state => state.gameState.gameOrder;
 
 export const isAIActive = state => state.gameState.isAIActive;
 
+export const getLastFirstMove = state => state.gameState.lastFirstMove;
+
 export const isSessionSaved = state => state.isSessionSaved;
 
 export const hamburgerMenuHiddenCls = state => state.hamburgerMenuHiddenCls;
-
 
 export const getErrors = state => state.errors;
 

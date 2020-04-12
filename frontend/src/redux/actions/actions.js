@@ -38,6 +38,14 @@ export const createGameOver = (winner, humanIcon, cpuIcon) => {
 	}
 };
 
+export const saveGameStatus = (status, human_first, ai_active) => dispatch => {
+	const game = {status, human_first, ai_active}
+	return axios
+		.post('/api/games', game)
+		.then(game => game.data)
+		.catch(err => console.log(err.response.data))
+}
+
 export const initializeGames = (games) => {
 	return {
 		type: INITIALIZE_GAMES,

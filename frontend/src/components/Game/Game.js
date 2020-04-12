@@ -2,6 +2,8 @@
 import React, { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
+import { isEmpty } from '../../utils/utils';
+
 // App Dependencies
 import Position from '../Position/Position';
 
@@ -12,14 +14,18 @@ import {
 	changeHumanIcon,
 	setGameOverStatus,
 	setComputerMove,
-	toggleFlash
+	toggleFlash,
+	saveGameStatus
 } from '../../redux/actions/actions';
 import {
 	getGameBoard,
 	getHumanIcon,
 	getCpuIcon,
 	isGameOver,
-	isComputerMove
+	isComputerMove,
+	getCurrentUser,
+	getLastFirstMove,
+	getGameMode
 } from '../../redux/selectors/selectors';
 import { 
 	getLocation, 
@@ -41,6 +47,9 @@ const Game = (props) => {
 	const cpuIcon = useSelector(getCpuIcon);
 	const gameOver = useSelector(isGameOver);
 	const computerMoveTrue = useSelector(isComputerMove);
+	const userLoggedIn = useSelector(getCurrentUser);
+	const lastFirstMove = useSelector(getLastFirstMove);
+	const gameMode = useSelector(getGameMode);
 	const dispatch = useDispatch();
 
 	const handleMakeMove = useCallback((location, icon) => {
@@ -48,19 +57,28 @@ const Game = (props) => {
 		const gameTerminated = checkGameOver(board);
 
 		if (gameTerminated) {
+			let status;
 			dispatch(setGameOverStatus(gameTerminated));
 
 			if (gameTerminated.winner) {
-				const winStatus = (mode === 0 && computerMoveTrue) ? 3 : 1
+				status = (mode === 0 && computerMoveTrue) ? -1 : 1;
+				const winStatus = (mode === 0 && computerMoveTrue) ? 3 : 1;
 				dispatch(toggleFlash(`${gameTerminated.winner} won`, winStatus))	
-				dispatch(createGameOver(gameTerminated.winner, userIconRef, cpuIcon));
-				// Dispatch posting game data
 			}
 			else {
+				status = 0;
 				dispatch(toggleFlash('Its a tie', 1))	
-				dispatch(createGameOver(gameTerminated.winner, userIconRef, cpuIcon));
-				// Dispatch posting game data
 			}
+			if (gameMode === 0) {
+				dispatch(createGameOver(gameTerminated.winner, userIconRef, cpuIcon));
+
+				if (!isEmpty(userLoggedIn)) {
+					dispatch(saveGameStatus(status, lastFirstMove, 0))	
+				}	
+			}
+			
+			
+
 		}
 	}, [board, dispatch, userIconRef, cpuIcon, computerMoveTrue, mode]);
 

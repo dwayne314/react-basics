@@ -17,10 +17,8 @@ import * as ReactReduxHooks from 'react-redux';
 describe('Home', () => {
 	let wrapper;
 	let store;
-	// let toggleFlashMock;
 
 	beforeEach(() => {
-		// toggleFlashMock = jest.spyOn(actions, 'toggleFlash')
 
 		const initialState = {
 			games: [],
@@ -58,16 +56,10 @@ describe('Home', () => {
 	});
 	
 	it('renders the login container', () => {
-		// toggleFlashMock.mockImplementationOnce(
-        // () => {type: 'f'});
-
-		// mockImplementationOnce(() => {type: 'f', payload: []});
 		const homeTitle = wrapper.getByTestId('home-title');
 		expect(homeTitle.innerHTML).toBe("Human vs Computer");
 	})
 	it('changes the game mode when the button is clicked.', () => {
-		// toggleFlashMock.mockReturnValueOnce({type: 'f', payload: []});
-
 		const humanMode = wrapper.getByTestId("game-mode-human");
 		act(() => {
 			fireEvent.click(humanMode);
@@ -77,7 +69,6 @@ describe('Home', () => {
 		expect(action.payload.gameMode).toBe(1);
 	})
 	it('changes the game order to human when the human button is clicked.', () => {
-		// toggleFlashMock.mockReturnValueOnce({type: 'f', payload: []});
 		const humanFirst = wrapper.getByTestId("game-order-human");
 
 		act(() => {
@@ -89,7 +80,6 @@ describe('Home', () => {
 		expect(action.payload.gameOrder).toBe('H');
 	})
 	it('changes the game order to computer when the cpu button is clicked.', () => {
-		// toggleFlashMock.mockReturnValueOnce({type: 'f', payload: []});		
 		const cpuFirst = wrapper.getByTestId("game-order-cpu");
 
 		act(() => {

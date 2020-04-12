@@ -1,3 +1,6 @@
+import axios from 'axios';
+import { createMockStore } from '../../test-utils';
+
 // Utility Dependencies
 import {
 	changeGameMode, 
@@ -10,6 +13,7 @@ import {
 	resetScore,
 	setFlashMessage,
 	toggleFlash,
+	saveGameStatus,
 	CHANGE_GAME_MODE,
 	CHANGE_CURRENT_PLAYER,
 	GAME_OVER,
@@ -21,8 +25,18 @@ import {
 	SET_FLASH_MESSAGE
 } from './actions';
 
-
 describe('actions', () => {
+
+	const axiosPostMock = jest.spyOn(axios, 'post');
+	const logMock = jest.spyOn(window.console, 'log');
+
+	const store = createMockStore([], {});
+
+	afterEach(() => {
+		jest.resetAllMocks();
+		store.clearActions();
+	})
+
 	it('changeGameMode returns the specified mode', () => {
 		const mode = 0;
 		const action =  {
@@ -103,5 +117,27 @@ describe('actions', () => {
 		const action = setFlashMessage('msg', 1)
 		expect(action.type).toBe('SET_FLASH_MESSAGE');
 		expect(action.payload.message).toBe('msg');
+	})
+	it('saveGameStatus posts the game data if the post was successful', async () => {
+		const gameData = 'saved game';
+		axiosPostMock.mockImplementationOnce(
+	        () => new Promise((resolved, rejected) =>{
+	            resolved({response: {data: gameData}});
+	        }));
+
+		const gameSave = await saveGameStatus(1,1,0)(store.dispatch);
+		const storeActions = store.getActions();
+		expect(axiosPostMock).toHaveBeenCalledWith("/api/games", {"ai_active": 0, "human_first": 1, "status": 1});
+	})
+	it('saveGameStatus logs an error if the post was unsuccessful', async () => {
+		const errorMsg = 'saved game';
+		axiosPostMock.mockImplementationOnce(
+	        () => new Promise((resolved, rejected) =>{
+	            rejected({response: {data: errorMsg}});
+	        }));
+
+		const gameSave = await saveGameStatus(1,1,0)(store.dispatch);
+		const storeActions = store.getActions();
+		expect(logMock).toHaveBeenCalledWith(errorMsg);
 	})
 })
