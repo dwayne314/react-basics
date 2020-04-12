@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // App Dependencies
 import Position from '../Position/Position';
-import { toggleFlash } from '../../redux/actions/actions';
 
 // Utility Dependencies
 import {
@@ -12,7 +11,8 @@ import {
 	makeMove,
 	changeHumanIcon,
 	setGameOverStatus,
-	setComputerMove
+	setComputerMove,
+	toggleFlash
 } from '../../redux/actions/actions';
 import {
 	getGameBoard,
@@ -53,12 +53,13 @@ const Game = (props) => {
 			if (gameTerminated.winner) {
 				const winStatus = (mode === 0 && computerMoveTrue) ? 3 : 1
 				dispatch(toggleFlash(`${gameTerminated.winner} won`, winStatus))	
-
 				dispatch(createGameOver(gameTerminated.winner, userIconRef, cpuIcon));
+				// Dispatch posting game data
 			}
 			else {
 				dispatch(toggleFlash('Its a tie', 1))	
 				dispatch(createGameOver(gameTerminated.winner, userIconRef, cpuIcon));
+				// Dispatch posting game data
 			}
 		}
 	}, [board, dispatch, userIconRef, cpuIcon, computerMoveTrue, mode]);

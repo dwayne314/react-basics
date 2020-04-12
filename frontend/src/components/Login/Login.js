@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import validate from '../../validators/auth';
 import { loginUser, setErrors } from '../../redux/actions/auth';
+import { initializeGames } from '../../redux/actions/actions';
+import { fetchGames } from '../../redux/actions/auth';
 import { getErrors } from '../../redux/selectors/selectors'
 import { toggleFlash } from '../../redux/actions/actions';
 
@@ -25,7 +27,7 @@ const Login = (props) => {
 		setPassword(evt.target.value)
 	}
 
-	const submitForm = (e) => {
+	const submitForm = async (e) => {
 		e.preventDefault();
 
 		dispatch(setErrors({}));	
@@ -35,9 +37,10 @@ const Login = (props) => {
 			dispatch(setErrors(errors));
 		}
 		else {
-			dispatch(loginUser(result));
-			dispatch(toggleFlash(`Welcome ${result.username}`, 1));
 			props.history.push('/');
+			await dispatch(loginUser(result));
+			await dispatch(fetchGames())
+			dispatch(toggleFlash(`Welcome ${result.username}`, 1));
 		}
 	}
 

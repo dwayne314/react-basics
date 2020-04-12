@@ -14,7 +14,8 @@ import {
 	TOGGLE_AI_ACTIVE,
 	TOGGLE_SAVE_SESSION,
 	RESET_SCORE,
-	SET_FLASH_MESSAGE
+	SET_FLASH_MESSAGE,
+	INITIALIZE_GAMES
 } from '../actions/actions';
 import {
 	SET_ERRORS, SET_LOADING, SET_USER
@@ -493,7 +494,19 @@ describe('RootReducer', () => {
 
 		const expectedState = {flashMessage: {message: 'Error', severity: 1}};
 		const updatedState = rootReducer(initialState, action);
-		expect(updatedState).toStrictEqual(expectedState)
-		
+		expect(updatedState).toStrictEqual(expectedState)	
+	})
+	it('initializeGame adds overites the games to the state', () => {
+		const initialState = {games: []};
+		const action = {
+			type: INITIALIZE_GAMES,
+			payload: {
+				games: [0,1,1]
+			}
+		};
+
+		const expectedState = {games: [0,1,1]};
+		const updatedState = rootReducer(initialState, action);
+		expect(updatedState).toStrictEqual(expectedState)	
 	})
 })

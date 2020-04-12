@@ -6,10 +6,11 @@ import { createMockStore } from '../../test-utils';
 
 describe('actions', () => {
 	
-	const axiosMock = jest.spyOn(axios, 'post');
+	const axiosPostMock = jest.spyOn(axios, 'post');
+	const axiosGetMock = jest.spyOn(axios, 'get');
 	const store = createMockStore([], {});
 
-	// const mockDispatch = jest.fn();
+	const logMock = jest.spyOn(window.console, 'log');
 
 
 	afterEach(() => {
@@ -33,7 +34,7 @@ describe('actions', () => {
 
 	})
 	it('registerUser dispatches the correct actions if the post is successful', async () => {
-		axiosMock.mockImplementationOnce(
+		axiosPostMock.mockImplementationOnce(
 	        () => new Promise((resolved, rejected) =>{
 	            resolved('');
 	        }));
@@ -41,7 +42,7 @@ describe('actions', () => {
 		await auth.registerUser('user')(store.dispatch)
 		const storeActions = store.getActions();
 		
-		expect(axiosMock).toHaveBeenCalledWith('/api/register', expect.any(String));
+		expect(axiosPostMock).toHaveBeenCalledWith('/api/register', expect.any(String));
 		expect(storeActions[0].type).toBe('SET_LOADING');
 		expect(storeActions[0].payload).toBe(true);
 		expect(storeActions[1].type).toBe('SET_LOADING');
@@ -49,7 +50,7 @@ describe('actions', () => {
 	})
 	it('registerUser dispatches the correct actions if the post is rejected', async () => {
 		const errorMessage = 'post error'
-		axiosMock.mockImplementationOnce(
+		axiosPostMock.mockImplementationOnce(
 	        () => new Promise((resolved, rejected) =>{
 	            rejected({response: {data: errorMessage}});
 	        }));
@@ -57,7 +58,7 @@ describe('actions', () => {
 		await auth.registerUser('user')(store.dispatch)		
 		const storeActions = store.getActions();
 
-		expect(axiosMock).toHaveBeenCalledWith('/api/register', expect.any(String));
+		expect(axiosPostMock).toHaveBeenCalledWith('/api/register', expect.any(String));
 		expect(storeActions[0].type).toBe('SET_LOADING');
 		expect(storeActions[0].payload).toBe(true);
 		expect(storeActions[1].type).toBe('SET_ERRORS');
@@ -66,7 +67,7 @@ describe('actions', () => {
 		expect(storeActions[2].payload).toBe(false);
 	})
 	it('loginUser dispatches the correct actions if the post is successful', async () => {
-		axiosMock.mockImplementationOnce(
+		axiosPostMock.mockImplementationOnce(
 	        () => new Promise((resolved, rejected) =>{
 	            resolved({data: 'user data'});
 	        }));
@@ -74,7 +75,7 @@ describe('actions', () => {
 		await auth.loginUser('user')(store.dispatch)
 		const storeActions = store.getActions();
 		
-		expect(axiosMock).toHaveBeenCalledWith('/api/login', expect.any(String));
+		expect(axiosPostMock).toHaveBeenCalledWith('/api/login', expect.any(String));
 		expect(storeActions[0].type).toBe('SET_LOADING');
 		expect(storeActions[0].payload).toBe(true);
 		expect(storeActions[1].type).toBe('SET_USER');
@@ -84,7 +85,7 @@ describe('actions', () => {
 	})
 	it('loginUser dispatches the correct actions if the post is rejected', async () => {
 		const errorMessage = 'post error'
-		axiosMock.mockImplementationOnce(
+		axiosPostMock.mockImplementationOnce(
 	        () => new Promise((resolved, rejected) =>{
 	            rejected({response: {data: errorMessage}});
 	        }));
@@ -92,7 +93,7 @@ describe('actions', () => {
 		await auth.loginUser('user')(store.dispatch)		
 		const storeActions = store.getActions();
 
-		expect(axiosMock).toHaveBeenCalledWith('/api/login', expect.any(String));
+		expect(axiosPostMock).toHaveBeenCalledWith('/api/login', expect.any(String));
 		expect(storeActions[0].type).toBe('SET_LOADING');
 		expect(storeActions[0].payload).toBe(true);
 		expect(storeActions[1].type).toBe('SET_ERRORS');
@@ -100,8 +101,8 @@ describe('actions', () => {
 		expect(storeActions[2].type).toBe('SET_LOADING');
 		expect(storeActions[2].payload).toBe(false);
 	})
-		it('logoutUser dispatches the correct actions if the post is successful', async () => {
-		axiosMock.mockImplementationOnce(
+	it('logoutUser dispatches the correct actions if the post is successful', async () => {
+		axiosPostMock.mockImplementationOnce(
 	        () => new Promise((resolved, rejected) =>{
 	            resolved({});
 	        }));
@@ -109,13 +110,13 @@ describe('actions', () => {
 		await auth.logoutUser()(store.dispatch)
 		const storeActions = store.getActions();
 		
-		expect(axiosMock).toHaveBeenCalledWith('/api/logout');
+		expect(axiosPostMock).toHaveBeenCalledWith('/api/logout');
 		expect(storeActions[0].type).toBe('SET_USER');
 		expect(storeActions[0].payload).toStrictEqual({});
 	})
 	it('logoutUser dispatches the correct actions if the post is rejected', async () => {
 		const errorMessage = 'post error'
-		axiosMock.mockImplementationOnce(
+		axiosPostMock.mockImplementationOnce(
 	        () => new Promise((resolved, rejected) =>{
 	            rejected({response: {data: errorMessage}});
 	        }));
@@ -123,8 +124,34 @@ describe('actions', () => {
 		await auth.logoutUser()(store.dispatch)		
 		const storeActions = store.getActions();
 
-		expect(axiosMock).toHaveBeenCalledWith('/api/logout');
+		expect(axiosPostMock).toHaveBeenCalledWith('/api/logout');
 		expect(storeActions[0].type).toBe('SET_ERRORS');
 		expect(storeActions[0].payload).toBe(errorMessage);
+	})
+	it('initializeGames dispatches the correct actions if the get is successful', async () => {
+		axiosGetMock.mockImplementationOnce(
+	        () => new Promise((resolved, rejected) =>{
+	            resolved({data: [{_id: 1, status: 1}, {_id: 2, status: -1}]});
+	        }));
+
+		await auth.fetchGames()(store.dispatch)
+		const storeActions = store.getActions();
+		
+		expect(axiosGetMock).toHaveBeenCalledWith('/api/games');
+		expect(storeActions[0].type).toBe('INITIALIZE_GAMES');
+		expect(storeActions[0].payload.games).toStrictEqual([1, -1]);
+	})
+	it('initializeGames dispatches the correct actions if the get is rejected', async () => {
+		const errorMsg = 'Error';
+		axiosGetMock.mockImplementationOnce(
+	        () => new Promise((resolved, rejected) =>{
+	            rejected(errorMsg);
+	        }));
+
+		await auth.fetchGames()(store.dispatch)
+		const storeActions = store.getActions();
+		
+		expect(axiosGetMock).toHaveBeenCalledWith('/api/games');
+		expect(logMock).toHaveBeenCalledWith('Error getting games!')
 	})
 })

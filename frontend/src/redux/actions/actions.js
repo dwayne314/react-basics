@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const GAME_OVER = 'GAME_OVER';
 export const CHANGE_GAME_MODE = 'CHANGE_GAME_MODE';
 export const CLEAR_BOARD = 'CLEAR_BOARD';
@@ -12,6 +14,7 @@ export const TOGGLE_AI_ACTIVE = 'TOGGLE_AI_ACTIVE';
 export const TOGGLE_SAVE_SESSION = 'TOGGLE_SAVE_SESSION';
 export const RESET_SCORE = 'RESET_SCORE';
 export const SET_FLASH_MESSAGE = 'SET_FLASH_MESSAGE';
+export const INITIALIZE_GAMES = 'INITIALIZE_GAMES';
 
 
 export const createGameOver = (winner, humanIcon, cpuIcon) => {
@@ -34,6 +37,15 @@ export const createGameOver = (winner, humanIcon, cpuIcon) => {
 		}
 	}
 };
+
+export const initializeGames = (games) => {
+	return {
+		type: INITIALIZE_GAMES,
+		payload: {
+			games: games
+		}
+	}
+}
 
 export const changeGameMode = (mode) => {
 	return {

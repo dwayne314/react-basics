@@ -21,6 +21,7 @@ describe('Login', () => {
 	
 	const validateSignupMock = jest.spyOn(validate, 'login');
 	const loginMock = jest.spyOn(authActions, 'loginUser');
+	const fetchGamesMock = jest.spyOn(authActions, 'fetchGames');
 
 	describe('Login without errors',() => {
 		let wrapper;
@@ -81,6 +82,10 @@ describe('Login', () => {
 				type: 'login',
 				payload: true
 			})
+			fetchGamesMock.mockReturnValueOnce({
+				type: 'fetchGames',
+				payload: true
+			});
 			toggleFlashMock.mockReturnValueOnce({type: 'f', payload: []});
 
 			validateSignupMock.mockReturnValueOnce({isValid: true, result: 'user'})
@@ -90,11 +95,15 @@ describe('Login', () => {
 			expect(loginMock).toHaveBeenCalledWith('user')
 			expect(store.getActions().find(action => action.type === 'login').payload).toBe(true)
 		})
-		it('redirects to home if the user is logged in', () => {
+		it('redirects to home if the user is logged in', async () => {
 			loginMock.mockReturnValueOnce({
 				type: 'login',
 				payload: true
 			})
+			fetchGamesMock.mockReturnValueOnce({
+				type: 'fetchGames',
+				payload: true
+			});
 			toggleFlashMock.mockReturnValueOnce({type: 'f', payload: []});
 			validateSignupMock.mockReturnValueOnce({isValid: true, result: 'user'})
 			const submitBtn = wrapper.getByTestId('submit-button');

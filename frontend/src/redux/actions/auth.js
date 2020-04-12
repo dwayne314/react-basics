@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { initializeGames, toggleFlash } from './actions';
+
 
 export const SET_ERRORS = 'SET_ERRORS';
 export const SET_LOADING = 'SET_LOADING';
@@ -64,3 +66,14 @@ export const logoutUser = () => dispatch => {
 			dispatch(setErrors(err.response.data));
 		})
 };
+
+
+export const fetchGames = () => dispatch => {
+	return axios
+		.get('/api/games')
+		.then((games) => {
+			return games.data.map(game => game.status);
+		})
+		.then(gameStatus => dispatch(initializeGames(gameStatus)))
+		.catch((err) => console.log('Error getting games!'))
+}

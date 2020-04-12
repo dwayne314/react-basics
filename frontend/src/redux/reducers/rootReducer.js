@@ -13,7 +13,8 @@ import {
 	TOGGLE_AI_ACTIVE,
 	TOGGLE_SAVE_SESSION,
 	RESET_SCORE,
-	SET_FLASH_MESSAGE
+	SET_FLASH_MESSAGE,
+	INITIALIZE_GAMES
 } from '../actions/actions';
 
 import { SET_ERRORS, SET_LOADING, SET_USER} from '../actions/auth';
@@ -55,6 +56,11 @@ export const rootReducer = (state=initialState, action) => {
 				...state,
 				games: [...state.games, status]
 			};
+		case INITIALIZE_GAMES:
+			return {
+				...state,
+				games: action.payload.games
+			}
 		case CHANGE_GAME_MODE:
 			const { gameMode } = action.payload;
 			const computerMoveTrue = gameMode === 1 ? false : state.gameState.isComputerMove;

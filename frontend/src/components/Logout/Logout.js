@@ -15,6 +15,7 @@ const Logout = (props) => {
 
 		if (!isEmpty(userLoggedIn)) {
 			dispatch(logoutUser());
+			// dispatch reset score
 		}
 		props.history.push('/');
 
