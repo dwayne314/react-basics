@@ -1,6 +1,7 @@
 // Library Dependencies
 import React from 'react';
 import { render, fireEvent, act } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 // App Dependencies
@@ -27,7 +28,8 @@ describe('Signup', () => {
 	
 		const validateSignupMock = jest.spyOn(validate, 'registration')
 		const registerUserMock = jest.spyOn(authActions, 'registerUser')
-	
+		const historyMock = {push: jest.fn(), goBack: jest.fn()}
+
 		beforeEach(() => {
 			const initialState = {
 				games: [],
@@ -52,8 +54,8 @@ describe('Signup', () => {
 	
 				wrapper = render(
 					<Provider store={store}>
-						<Signup />
-					</Provider>);
+						<Signup history={historyMock}/>
+					</Provider>, {wrapper: MemoryRouter});
 		});
 		afterEach(() => {
 			jest.resetAllMocks();

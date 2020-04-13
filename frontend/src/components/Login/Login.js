@@ -1,5 +1,6 @@
 // App Dependencies
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import validate from '../../validators/auth';
 import { loginUser, setErrors, fetchGames } from '../../redux/actions/auth';
@@ -75,6 +76,9 @@ const Login = (props) => {
 				</div>
 				<div className="form-button-container">
 					<div data-testid="submit-button" onClick={submitForm} className="form-submit">Submit</div>
+				</div>
+				<div className="register-link">
+					Dont have a password? <Link to='/register'>Register here</Link>
 				</div>
 			</div>
 

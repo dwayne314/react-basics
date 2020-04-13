@@ -1,6 +1,7 @@
 // Library Dependencies
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import validate from '../../validators/auth';
 import { Provider } from 'react-redux';
 
@@ -45,7 +46,7 @@ describe('Login', () => {
 				wrapper = render(
 					<Provider store={store}>
 						<Login history={historyMock}/>
-					</Provider>);
+					</Provider>, {wrapper: MemoryRouter});
 		});
 		afterEach(() => {
 			jest.resetAllMocks();
@@ -127,7 +128,6 @@ describe('Login', () => {
 		let dispatchMock;
 		let historyMock;
 	
-		
 
 		beforeEach(() => {
 			historyMock = {push: jest.fn(), goBack: jest.fn()}
@@ -142,7 +142,7 @@ describe('Login', () => {
 				wrapper = render(
 					<Provider store={store}>
 						<Login history={historyMock}/>
-					</Provider>);
+					</Provider>, {wrapper: MemoryRouter});
 		});
 		afterEach(() => {
 			jest.resetAllMocks();

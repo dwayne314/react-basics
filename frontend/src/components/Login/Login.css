@@ -50,3 +50,11 @@
 	color: red;
 	padding-top: 7px;
 }
+
+.register-link {
+	margin-top: 10px;
+}
+
+.register-link > a {
+	color: blue;
+}

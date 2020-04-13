@@ -9,7 +9,7 @@ import { getErrors } from '../../redux/selectors/selectors'
 import './Signup.css';
 
 
-const Signup = () => {
+const Signup = (props) => {
 	const [first_name, setFirstName] = useState('');
 	const [last_name, setLastName] = useState('');
 	const [username, setUsername] = useState('');
@@ -44,7 +44,8 @@ const Signup = () => {
 			dispatch(setErrors(errors));
 		}
 		else {
-			dispatch(registerUser(result))
+			dispatch(registerUser(result));
+			props.history.push('/login')
 		}
 	}
 
