@@ -8,7 +8,6 @@ module.exports = {
 		if (req.isAuthenticated()) {
 			userId = ((req.user || {})).id;
 		}
-
 		const { errors: validationErrs, result, isValid: gameSaveValid} = await validators.validateGameSave(
 			{ status, human_first, ai_active, userId })
 

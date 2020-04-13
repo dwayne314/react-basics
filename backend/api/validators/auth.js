@@ -1,6 +1,7 @@
 const Validator = require('validator');
 const utils = require('../utils');
 const Users = require('../models/users');
+const bcrypt = require('bcrypt');
 
 
 const validateRegistration = async ({first_name='', last_name='', username='', password=''}) => {
@@ -42,7 +43,7 @@ const validateRegistration = async ({first_name='', last_name='', username='', p
 
 
 const validatePassword = (password, passwordHash) => {
-	return password === passwordHash;
+	return bcrypt.compareSync(password, passwordHash);
 };
 
 

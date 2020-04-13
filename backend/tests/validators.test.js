@@ -2,6 +2,7 @@ const authValidators = require('../api/validators/auth');
 const gameValidators = require('../api/validators/games');
 const Utils = require('../api/utils');
 const Users = require('../api/models/users');
+const bcrypt = require('bcrypt');
 
 
 describe('Validators', () => {
@@ -120,10 +121,12 @@ describe('Validators', () => {
 	})
 	describe('validatePassword', () => {
 		it('returns true if the passwords are equal', () => {
-			expect(authValidators.validatePassword('pw1', 'pw1')).toBeTruthy();
+			const passwordHash = bcrypt.hashSync('pw1', 10);
+
+			expect(authValidators.validatePassword('pw1', passwordHash)).toBeTruthy();
 		})
 		it('returns false if the passwords are not equal', () => {
-			expect(authValidators.validatePassword('pw1', 'pw2')).toBeFalsy();
+			expect(authValidators.validatePassword('pw1', 'pw1')).toBeFalsy();
 		})
 	})
 	describe('validateSaveGame', () => {

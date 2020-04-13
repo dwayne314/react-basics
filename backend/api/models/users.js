@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const customHooks = require('./hooks');
 
@@ -34,6 +35,7 @@ const UserSchema = new mongoose.Schema({
 
 });
 
-UserSchema.pre('update', customHooks.setUpdatedAt)
+UserSchema.pre('update', customHooks.setUpdatedAt);
+UserSchema.pre('save', customHooks.hashPassword);
 
 module.exports = mongoose.model('Users', UserSchema);
