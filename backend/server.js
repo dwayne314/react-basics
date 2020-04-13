@@ -6,8 +6,9 @@ const MongoStore = require('connect-mongo')(session);
 const passport = require('passport');
 
 const API_PORT = 3001;
-const DB_URI = 'mongodb://localhost:27017/tic-tac';
-const SECRET_KEY = 'lasfkjflkafdlfj;afjal;fjfalfjafjkl;f;lafa;lffhafjaf;alfs';
+require('dotenv').config();
+const DB_URI = process.env.DB_URI || 'mongodb://localhost:27017/tic-tac';
+const SECRET_KEY = process.env.SECRET_KEY || 'lasfkjflkafdlfj;afjal;fjfalfjafjkl;f;lafa;lffhafjaf;alfs';
 
 // App Middleware
 app.use(express.json());
