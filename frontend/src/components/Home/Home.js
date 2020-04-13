@@ -19,8 +19,8 @@ const Home = () => {
 	const losses = useSelector(getLosses);
 	const ties = useSelector(getTies);
 	const gameMode = useSelector(getGameMode);
-	const gameOver = useSelector(isGameOver)
-	const gameOrder = useSelector(getGameOrder)
+	const gameOver = useSelector(isGameOver);
+	const gameOrder = useSelector(getGameOrder);
 
 	const dispatch = useDispatch();
 
@@ -37,7 +37,7 @@ const Home = () => {
 	return (
 		<div className="home-container">
 			<div data-testid="home-title" className="home-title">
-				Human vs Computer
+				{(gameMode === 0) ? "Human vs Computer" : "Human vs Human" }
 			</div>
 			<Game mode={gameMode} />
 			<SideMenu
